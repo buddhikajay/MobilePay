@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".sellerActivity"
+    android:background="#ffffff">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/seller_id_text"
+                android:id="@+id/seller_id_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/id_edittext"
+                android:id="@+id/id_edittext"
+                android:layout_marginLeft="20dp"
+                android:ems="10"
+                android:layout_marginTop="10dp"
+                android:enabled="false"
+                android:backgroundTint="@color/colorPrimary"
+                android:inputType="text"
+                android:layout_weight="1.56"
+                android:editable="false"
+                android:textColor="@color/colorAccent" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/name"
+                android:text="@string/seller_name_text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/name_edittext"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/id_edittext"
+
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1.56"
+                android:editable="false" />
+
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/addrestext"
+                android:text="@string/seller_address_text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="10"
+                    android:id="@+id/address_edittext1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/id_edittext"
+
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1.56"
+                    android:editable="false" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="10"
+                    android:id="@+id/address_edittext2"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/id_edittext"
+
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1.56"
+                    android:editable="false" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="10"
+                    android:id="@+id/address_edittext3"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/id_edittext"
+
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1.56"
+                    android:editable="false"
+                    android:elegantTextHeight="false" />
+            </LinearLayout>
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/prize_text"
+            android:id="@+id/prize_text"
+            android:layout_below="@+id/seller_id_text"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+
+             />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/prize_edittext"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/id_edittext"
+
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1.56"
+                android:editable="true" />
+
+        </TableRow>
+
+    </TableLayout>
+
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pay_button"
+        android:id="@+id/pay_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@drawable/button_background_selector"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+         />
+</RelativeLayout>

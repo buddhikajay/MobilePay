@@ -10,10 +10,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.buddhikajay.mobilepay.loginActivity"
-    tools:showIn="@layout/activity_login">
+    tools:showIn="@layout/activity_login"
+    android:background="#ffffff">
 
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:id="@+id/logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/login_image"/>
+    <EditText
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/login_pin"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:cursorVisible="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        android:focusable="true"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="10dp"
+        />
+
+
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/log_button"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/login_pin"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background_selector"
+        android:textColor="@color/colorPrimaryDark"
+        android:focusable="true"
+        />
+
 </RelativeLayout>

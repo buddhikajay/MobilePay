@@ -1,13 +1,17 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class loginActivity extends AppCompatActivity {
 
@@ -18,14 +22,36 @@ public class loginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+
+        final TextView passField = (TextView)findViewById(R.id.login_pin);
+
+
+        Button btn=(Button)findViewById(R.id.log_button);
+
+        btn.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if( passwordMatch(passField)){
+                    finish();
+                    Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
+                    loginActivity.this.startActivity(myIntent);
+                }
+                else {
+
+                    showError(passField);
+
+                }
+
+
             }
         });
+    }
+    private void showError(TextView passField) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        passField.startAnimation(shake);
+        passField.setError("wrong pin");
     }
 
     @Override
@@ -48,5 +74,19 @@ public class loginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public boolean passwordMatch(TextView passField){
+        String userpin="123";
+        String toastMessage = passField.getText().toString();
+        if(userpin.equals(toastMessage)){
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Exit: " , Toast.LENGTH_LONG).show();
+        finish();
+        System.exit(0);
     }
 }
