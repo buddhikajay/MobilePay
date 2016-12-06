@@ -57,6 +57,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             }
         });
 
+        myQRCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(scanActivity.this, MyQRActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     @Override
     public void handleResult(Result rawResult) {

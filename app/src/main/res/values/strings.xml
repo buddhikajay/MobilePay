@@ -15,7 +15,8 @@
     <string name="id_edittext">Cargills Foodcity Bambalabitiya</string>
 
 
-    <string name="transation_message">You transaction is successful</string>
+    <string name="transation_message">You transaction was successful</string>
+    <string name="title_activity_my_qr">My QRCode</string>
 
 
 </resources>
