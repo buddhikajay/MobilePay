@@ -19,8 +19,8 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     private ZXingScannerView mScannerView;
     private boolean scannerType =  true; // true for merchant pay, false for fund transfer
-//    private String phoneNumber = "714927459";
-    private String phoneNumber = "+94713821925";
+    private String phoneNumber = "+94714927459";
+//    private String phoneNumber = "+94713821925";
     //
     private String id = "0097";
     private String name = "Cargills Foodcity Bambalabitiya";
@@ -50,9 +50,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onClick(View v) {
                 scannerType = false;//direct fund transfer
-                id = "0021";
+                id = "021";
                 name = "Dinesh Eranga";
-//                phoneNumber = "+94772448144";
+                phoneNumber = "+94772448144";
                 QrScanner(v);
             }
         });
@@ -99,7 +99,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
      @Override
     public void onPause() {
             super.onPause();
-            mScannerView.stopCamera();   // Stop camera on pause<br />
+         if(mScannerView!=null){
+             mScannerView.stopCamera();   // Stop camera on pause<br />
+         }
     }
     public void scanQR() {
         IntentIntegrator integrator = new IntentIntegrator(this);
