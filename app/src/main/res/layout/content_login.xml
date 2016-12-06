@@ -18,9 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:id="@+id/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/login_image"/>
+        android:src="@drawable/sampath_wide_logo"
+        android:layout_alignRight="@+id/login_pin"
+        android:layout_alignEnd="@+id/login_pin" />
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -50,8 +50,8 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/login_pin"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_background_selector"
-        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
         android:focusable="true"
         />
 

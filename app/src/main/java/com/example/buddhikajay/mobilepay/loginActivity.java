@@ -76,7 +76,7 @@ public class loginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public boolean passwordMatch(TextView passField){
-        String userpin="123";
+        String userpin="1234";
         String toastMessage = passField.getText().toString();
         if(userpin.equals(toastMessage)){
             return true;
