@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".scanActivity" />
         <activity android:name=".qrscanActivity" />
-        <activity android:name=".sellerActivity" />
+        <activity android:name=".CheckoutActivity" />
         <activity android:name=".finishActivity">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

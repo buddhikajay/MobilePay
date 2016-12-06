@@ -18,20 +18,42 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     private ZXingScannerView mScannerView;
+    private boolean scannerType =  true; // true for merchant pay, false for fund transfer
+//    private String phoneNumber = "714927459";
+    private String phoneNumber = "+94713821925";
+    //
+    private String id = "0097";
+    private String name = "Cargills Foodcity Bambalabitiya";
+    private String address = "123 Galle Road, Colombo 04";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        Button btn=(Button)findViewById(R.id.scan_button);
+        Button merchantPayButton=(Button)findViewById(R.id.buttonMerchantPay);
+        Button fundTransferButton = (Button)findViewById(R.id.buttonFundTransfer);
+        Button myQRCodeButton = (Button)findViewById(R.id.buttonMyQRCode);
 
-        btn.setOnClickListener(new View.OnClickListener()
+        merchantPayButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
+                scannerType = true; // merchant pay
                 QrScanner(v);
                 //
+            }
+        });
+
+        fundTransferButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scannerType = false;//direct fund transfer
+                id = "0021";
+                name = "Dinesh Eranga";
+//                phoneNumber = "+94772448144";
+                QrScanner(v);
             }
         });
 
@@ -48,8 +70,13 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 builder.setMessage(rawResult.getText());
                 //AlertDialog alert1 = builder.create();
                 //alert1.show();
-                Intent myIntent = new Intent(scanActivity.this, sellerActivity.class);
+                Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
                 myIntent.putExtra("userdata",rawResult.getText());
+                myIntent.putExtra("scannerType", this.scannerType);
+                myIntent.putExtra("id", this.id);
+                myIntent.putExtra("name", this.name);
+                myIntent.putExtra("address", this.address);
+                myIntent.putExtra("phoneNumber", this.phoneNumber);
 
                 scanActivity.this.startActivity(myIntent);
                 // If you would like to resume scanning, call this method below:<br />

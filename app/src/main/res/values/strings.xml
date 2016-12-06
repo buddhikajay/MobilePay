@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MobilePay</string>
+    <string name="app_name">Sampath Direct Pay</string>
     <string name="action_settings">Settings</string>
 
     <string name="login">Login</string>
@@ -8,11 +8,11 @@
     <string name="qrscan_button">OK</string>
 
     <string name="pay_button">Pay</string>
-    <string name="prize_text">Prize</string>
-    <string name="seller_id_text">SellerId</string>
-    <string name="seller_name_text">Seller Name</string>
-    <string name="seller_address_text">Seller Address</string>
-    <string name="id_edittext">johnKiles</string>
+    <string name="price_text">Amount</string>
+    <string name="seller_id_text">Merchant Id</string>
+    <string name="seller_name_text">Merchant Name</string>
+    <string name="seller_address_text">Merchant Address</string>
+    <string name="id_edittext">Cargills Foodcity Bambalabitiya</string>
 
 
     <string name="transation_message">You transaction is successful</string>

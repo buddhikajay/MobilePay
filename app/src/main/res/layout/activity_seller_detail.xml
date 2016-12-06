@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".sellerActivity"
+    tools:context=".CheckoutActivity"
     android:background="#ffffff">
 
     <TableLayout
@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/prize_text"
+            android:text="@string/price_text"
             android:id="@+id/prize_text"
             android:layout_below="@+id/seller_id_text"
             android:layout_marginLeft="10dp"
