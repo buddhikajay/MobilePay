@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:id="@+id/logo"
-        android:src="@drawable/sampath_wide_logo"
+        android:src="@drawable/logo_wide"
         android:layout_alignRight="@+id/login_pin"
         android:layout_alignEnd="@+id/login_pin" />
     <EditText
