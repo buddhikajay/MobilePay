@@ -177,8 +177,8 @@
         android:layout_height="wrap_content"
         android:text="@string/pay_button"
         android:id="@+id/pay_button"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/button_background_selector"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimaryDark"
         android:layout_centerVertical="true"
         android:layout_alignParentBottom="true"
          />
