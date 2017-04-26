@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -49,6 +50,8 @@ public class CheckoutActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 TextView amountTextView = (TextView) findViewById(R.id.amountEditText);
                 String amount = amountTextView.getText().toString();
                 showmessgebox(amount, intent.getStringExtra("name"));
@@ -146,6 +149,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void sendSms(String phoneNumber, String message){
         try{
+
+
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(phoneNumber, null, message, null, null);
             Toast.makeText(getApplicationContext(), "sent", Toast.LENGTH_SHORT).show();
