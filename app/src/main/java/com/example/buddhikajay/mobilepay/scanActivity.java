@@ -19,7 +19,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     private ZXingScannerView mScannerView;
     private boolean scannerType =  true; // true for merchant pay, false for fund transfer
-    private String phoneNumber = "+94714927459";
+    private String phoneNumber = "+94772448144";
 //    private String phoneNumber = "+94713821925";
     //
     private String id = "0097";
