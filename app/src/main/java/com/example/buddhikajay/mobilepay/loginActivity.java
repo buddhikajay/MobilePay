@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 public class loginActivity extends AppCompatActivity {
 
-    private String url = "https://192.168.8.105:8243/mobilepay/1.0.0/register";
+    private String url = "https://192.168.8.105:8243/api/1.0.0/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
