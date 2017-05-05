@@ -9,18 +9,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.buddhikajay.mobilepay.loginActivity"
-    tools:showIn="@layout/activity_login"
+    tools:context="com.example.buddhikajay.mobilepay.registerActivity"
+    tools:showIn="@layout/activity_register"
     android:background="#ffffff">
 
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="100dp"
         android:id="@+id/logo"
         android:src="@drawable/logo_wide"
         android:layout_alignRight="@+id/login_pin"
         android:layout_alignEnd="@+id/login_pin" />
+
+
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -37,14 +39,14 @@
         android:focusable="true"
         android:layout_below="@+id/logo"
         android:layout_marginTop="10dp"
-        android:hint="Account Number"
+        android:hint="accountNo"
         />
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
+        android:inputType="text"
         android:ems="10"
-        android:id="@+id/login_pin"
+        android:id="@+id/nic"
         android:text=""
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -55,6 +57,42 @@
         android:focusable="true"
         android:layout_below="@+id/accountNo"
         android:layout_marginTop="10dp"
+        android:hint="nic"
+        />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/mobileNo"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:cursorVisible="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        android:focusable="true"
+        android:layout_below="@+id/nic"
+        android:layout_marginTop="10dp"
+        android:hint="mobileNo"
+        />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:cursorVisible="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        android:focusable="true"
+        android:layout_below="@+id/mobileNo"
+        android:layout_marginTop="10dp"
         />
 
 
@@ -63,10 +101,10 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:id="@+id/log_button"
+        android:text="@string/signup"
+        android:id="@+id/signup_button"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/login_pin"
+        android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
