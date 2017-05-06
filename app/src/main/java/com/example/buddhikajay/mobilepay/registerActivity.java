@@ -82,9 +82,9 @@ public class registerActivity extends AppCompatActivity {
         //create pay load
         JSONObject payload = new JSONObject();
         try {
-            payload.put("accountNo",account_number);
+            payload.put("accountNumber",account_number);
             payload.put("nic",nic_number);
-            payload.put("mobileNo",mobile_no);
+            payload.put("phoneNumber",mobile_no);
             payload.put("password",password_t);
         } catch (JSONException e) {
             e.printStackTrace();
