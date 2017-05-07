@@ -28,6 +28,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -63,19 +64,16 @@ public class loginActivity extends AppCompatActivity {
 
     private String url = "https://192.168.8.102:9446/oauth2/token";
     public static final String TOKEN = "token";
-    //private SharedPreferences.Editor editor;
-    private String clientkey= "hVECPGN0o3eKGYdjzf6TaHfoVIMa";
-    private String secretkey = "dCRryHuCJfy2P1di2VV2ImEF65ka";
+
+    private String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
+    private String secretkey = "1lA5dSLYQC5r0li6d3hp_RqLp6Ma";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //SecurityHandler.handleSSLHandshake();
+        SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //editor = getSharedPreferences(TOKEN, MODE_PRIVATE).edit();
-
 
         final TextView passField = (TextView)findViewById(R.id.login_pin);
         final TextView accountField = (TextView)findViewById(R.id.accountNo);
@@ -97,7 +95,6 @@ public class loginActivity extends AppCompatActivity {
                     showError(passField);
 
                 }
-
 
             }
         });
@@ -137,33 +134,39 @@ public class loginActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
     public boolean AuthenticateUser(final TextView passField , final TextView accountField){
 
-        JSONObject payload = new JSONObject();
-        try {
-            payload.put("grant_type","password");
-            payload.put("username",""+12345);
-            payload.put("password",""+123456);
-            payload.put("scope","openid");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, url,payload , new Response.Listener<JSONObject>() {
+        StringRequest jsObjRequest = new StringRequest
+                (Request.Method.POST, url, new Response.Listener<String>() {
 
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
                         //mTxtDisplay.setText("Response: " + response.toString());
-                        Log.d("response login" ,""+response.toString());
-                        //editor.putString("access_token", response.toString());
+                        JSONObject obj = null;
+                        try {
+                            obj = new JSONObject(response.toString());
+                            String token = obj.getString("access_token");
+                            if(token!=null){
+                                Api.setAccessToken(getApplicationContext(),token);
+                                Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
+                                //login successs go totransaction
+                                Log.d("loginActivity","user login success");
+                                finish();
+                                Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
+                                loginActivity.this.startActivity(myIntent);
+                            }
+                            else {
+                                Log.d("Token","bad response");
 
-                        //editor.commit();
+
+                            }
 
 
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -172,32 +175,25 @@ public class loginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         // As of f605da3 the following should work
-                        VolleyLog.d("TAG", "Error: " + error);
-
-
+                        Log.d("volley error", error.getMessage());
                     }
                 }){
-           /* @Override
+           @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params=new HashMap<String,String>();
                 params.put("grant_type","password");
-                params.put("username",""+12345);
-                params.put("password",""+123456);
+                params.put("username",""+accountField.getText().toString());
+                params.put("password",""+passField.getText().toString());
                 params.put("scope","openid");
                 return params;
 
-            }*/
+            }
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-
-
-                params.put("Content-Type", "application/x-www-form-urlencoded; application/json;charset=UTF-8");
-                //params.put("Content-Type", "application/json");
-                params.put("Accept", "application/json");
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 String key = clientkey+":"+secretkey;
                 params.put("Authorization", "Basic "+Base64.encodeToString(key.getBytes(), Base64.DEFAULT));
-
                 return params;
             }
 
@@ -216,6 +212,67 @@ public class loginActivity extends AppCompatActivity {
         Toast.makeText(this, "Exit: " , Toast.LENGTH_LONG).show();
         finish();
         System.exit(0);
+    }
+
+    public void AutheticationGrant(final String token){
+
+
+        StringRequest jsObjRequest = new StringRequest
+                (Request.Method.POST, "https://192.168.8.102:8243/merchantpay/1.0.0/transaction/merchantpay", new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        //mTxtDisplay.setText("Response: " + response.toString());
+
+                            Log.d("res",response.toString());
+
+
+
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        // As of f605da3 the following should work
+                        Log.d("TAdfghjG", error.getMessage());
+
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params=new HashMap<String,String>();
+                params.put("merchantId","12345");
+                params.put("amount","1000");
+                params.put("accessToken",""+token);
+
+                return params;
+
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                //params.put("Content-Type", "application/json");
+                //params.put("Accept", "application/json");
+
+                params.put("Authorization", "Bearer "+token);
+
+                return params;
+            }
+
+        };
+
+        // final RequestQueue requestQueue = Volley.newRequestQueue(this, hurlStack);
+
+        // Add a request (in this example, called stringRequest) to your RequestQueue.
+        MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+
     }
 
 

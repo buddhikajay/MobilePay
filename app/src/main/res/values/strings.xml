@@ -19,4 +19,10 @@
     <string name="title_activity_my_qr">My QRCode</string>
 
     <string name="signup">SignUp</string>
+
+
+
+
+    //store data
+    <string name="access_token">1</string>
 </resources>
