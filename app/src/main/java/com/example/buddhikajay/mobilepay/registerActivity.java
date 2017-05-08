@@ -76,9 +76,6 @@ public class registerActivity extends AppCompatActivity {
         String mobile_no = mobileNo.getText().toString();
         String password_t = password.getText().toString();
 
-
-
-
         //create pay load
         JSONObject payload = new JSONObject();
         try {

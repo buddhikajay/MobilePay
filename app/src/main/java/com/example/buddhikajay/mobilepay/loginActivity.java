@@ -147,9 +147,8 @@ public class loginActivity extends AppCompatActivity {
                         JSONObject obj = null;
                         try {
                             obj = new JSONObject(response.toString());
-                            String token = obj.getString("access_token");
-                            if(token!=null){
-                                Api.setAccessToken(getApplicationContext(),token);
+                            if(obj.has("access_token")){
+                                Api.setAccessToken(getApplicationContext(),obj.getString("access_token"));
                                 Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
                                 //login successs go totransaction
                                 Log.d("loginActivity","user login success");
@@ -257,9 +256,9 @@ public class loginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
 
-                params.put("Content-Type", "application/x-www-form-urlencoded");
+                params.put("Content-Type", "application/json");
                 //params.put("Content-Type", "application/json");
-                //params.put("Accept", "application/json");
+                params.put("Accept", "application/json");
 
                 params.put("Authorization", "Bearer "+token);
 
