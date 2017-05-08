@@ -14,15 +14,20 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -63,7 +68,7 @@ import javax.net.ssl.X509TrustManager;
 public class loginActivity extends AppCompatActivity {
 
     private String url = "https://192.168.8.102:9446/oauth2/token";
-    public static final String TOKEN = "token";
+
 
     private String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
     private String secretkey = "1lA5dSLYQC5r0li6d3hp_RqLp6Ma";
@@ -75,8 +80,8 @@ public class loginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final TextView passField = (TextView)findViewById(R.id.login_pin);
-        final TextView accountField = (TextView)findViewById(R.id.accountNo);
+        final EditText passField = (EditText) findViewById(R.id.login_pin);
+        final EditText accountField = (EditText)findViewById(R.id.accountNo);
 
         Button btn=(Button)findViewById(R.id.log_button);
 
@@ -84,22 +89,26 @@ public class loginActivity extends AppCompatActivity {
         {
             public void onClick(View v)
             {
-                if( AuthenticateUser(passField,accountField)){
-                    finish();
+
+                if( !accountField.getText().toString().matches("") && !passField.getText().toString().matches("")){
+                        Api.authenticateUser(passField,accountField,getApplicationContext(),loginActivity.this);
+                        Api.merchantpay(Api.getAccessToken(getApplicationContext()),getApplicationContext());
+                    //AuthenticateUser(passField,accountField);
                     //Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
-                    Intent myIntent = new Intent(loginActivity.this, registerActivity.class);
-                    loginActivity.this.startActivity(myIntent);
+                    //Intent myIntent = new Intent(loginActivity.this, registerActivity.class);
+                    //loginActivity.this.startActivity(myIntent);
                 }
                 else {
 
                     showError(passField);
+
 
                 }
 
             }
         });
     }
-    private void showError(TextView passField) {
+    private void showError(EditText passField) {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         passField.startAnimation(shake);
         passField.setError("wrong pin");
@@ -136,7 +145,7 @@ public class loginActivity extends AppCompatActivity {
     }
 
 
-    public boolean AuthenticateUser(final TextView passField , final TextView accountField){
+    /* public void AuthenticateUser(final EditText passField , final EditText accountField){
 
         StringRequest jsObjRequest = new StringRequest
                 (Request.Method.POST, url, new Response.Listener<String>() {
@@ -144,6 +153,7 @@ public class loginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         //mTxtDisplay.setText("Response: " + response.toString());
+                        Log.d("response",response.toString());
                         JSONObject obj = null;
                         try {
                             obj = new JSONObject(response.toString());
@@ -157,9 +167,7 @@ public class loginActivity extends AppCompatActivity {
                                 loginActivity.this.startActivity(myIntent);
                             }
                             else {
-                                Log.d("Token","bad response");
-
-
+                                Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
                             }
 
 
@@ -174,7 +182,21 @@ public class loginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         // As of f605da3 the following should work
-                        Log.d("volley error", error.getMessage());
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            Toast.makeText(getApplicationContext(),"time out",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Toast.makeText(getApplicationContext(),"incorrect account number or password",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //TODO
+                            Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //TODO
+                            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Toast.makeText(getApplicationContext(),"Error in Application(Parse Error)",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }){
            @Override
@@ -204,8 +226,7 @@ public class loginActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
 
         //requestQueue.add(jsObjRequest);
-        return false;
-    }
+    }*/
     @Override
     public void onBackPressed() {
         Toast.makeText(this, "Exit: " , Toast.LENGTH_LONG).show();
@@ -213,7 +234,7 @@ public class loginActivity extends AppCompatActivity {
         System.exit(0);
     }
 
-    public void AutheticationGrant(final String token){
+    public void transaction(final String token){
 
 
         StringRequest jsObjRequest = new StringRequest
