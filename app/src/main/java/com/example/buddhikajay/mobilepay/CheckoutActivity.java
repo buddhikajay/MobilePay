@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CheckoutActivity extends AppCompatActivity {
 
     @Override
@@ -56,6 +59,10 @@ public class CheckoutActivity extends AppCompatActivity {
                 String amount = amountTextView.getText().toString();
                 showmessgebox(amount, intent.getStringExtra("name"));
                 sendSms(intent.getStringExtra("phoneNumber"), "LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
+
+                //pay transaction
+                payTrasaction(intent.getStringExtra("id"),amount,Api.getAccessToken(getApplicationContext()));
+
             }
         });
 
@@ -119,6 +126,19 @@ public class CheckoutActivity extends AppCompatActivity {
 //        EditText address3 = (EditText) findViewById(R.id.address_edittext3);
 //        address3.setText(userDetail.getAddress()[2]);
 
+    }
+    private void payTrasaction(String mechantId,String amount,String accessToken){
+
+        JSONObject pay = new JSONObject();
+        try {
+            pay.put("merchantId",""+mechantId);
+            pay.put("amount",""+amount);
+            pay.put("accessToken",""+accessToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Api.merchantpay(Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
     private void showmessgebox(String amount,String username){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();

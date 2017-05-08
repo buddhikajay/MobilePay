@@ -35,7 +35,8 @@ public class Api {
 
     // url
     private static String mechantpayUrl= "https://192.168.8.102:8243/merchantpay/1.0.0/transaction/merchantpay";
-    private static String  loginUtl = "https://192.168.8.102:9446/oauth2/token";
+    private static String loginUrl = "https://192.168.8.102:9446/oauth2/token";
+    private static String  registerUrl = "https://192.168.8.102:8243/merchantpay/1.0.0/register";
 
     //authenticate crential
     private static String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
@@ -54,29 +55,50 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static boolean authenticateUser(Context context,String account,String password){
-
-
-
-        return false;
-    }
-    public static boolean isTokenExpire(){
-
-        return  false;
-    }
-    public static void merchantpay(final String token,Context context){
-
-        JSONObject payload = new JSONObject();
-        try {
-            payload.put("merchantId","12345");
-            payload.put("amount","1000");
-            payload.put("accessToken",""+token);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public static void userRegister(Context context,JSONObject user){
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST,mechantpayUrl,payload , new Response.Listener<JSONObject>() {
+                (Request.Method.POST, registerUrl,user , new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //mTxtDisplay.setText("Response: " + response.toString());
+                        Log.d("response register" ,""+response.toString());
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("dss",error.getMessage());
+                    }
+                }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+                params.put("Authorization", "Bearer");
+                return params;
+            }
+
+        };
+
+
+        // Add a request (in this example, called stringRequest) to your RequestQueue.
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+
+
+    }
+    public static void merchantpay(final String token,JSONObject pay,Context context){
+
+
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST,mechantpayUrl,pay , new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -117,7 +139,7 @@ public class Api {
     public static void authenticateUser(final EditText passField , final EditText accountField, final Context context, final Activity activity){
 
         StringRequest jsObjRequest = new StringRequest
-                (Request.Method.POST, loginUtl, new Response.Listener<String>() {
+                (Request.Method.POST, loginUrl, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {

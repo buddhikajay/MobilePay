@@ -40,7 +40,7 @@ public class registerActivity extends AppCompatActivity {
 
     //parameters
     //register url
-    private String url = "https://192.168.8.105:8243/mobilepay/1.0.0/register";
+    private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     private EditText accountNo;
     private EditText nic;
     private EditText mobileNo;
@@ -88,41 +88,7 @@ public class registerActivity extends AppCompatActivity {
         }
 
 
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, url,payload , new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            //mTxtDisplay.setText("Response: " + response.toString());
-                            Log.d("response register" ,""+response.toString());
-
-
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO Auto-generated method stub
-
-                        }
-                    }){
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("Content-Type", "application/json");
-                    params.put("Accept", "application/json");
-                    params.put("Authorization", "Bearer");
-                    return params;
-                }
-
-            };
-
-
-        // Add a request (in this example, called stringRequest) to your RequestQueue.
-        MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
-
-
+        Api.userRegister(getApplicationContext(),payload);
 
 
 

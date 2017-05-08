@@ -91,8 +91,10 @@ public class loginActivity extends AppCompatActivity {
             {
 
                 if( !accountField.getText().toString().matches("") && !passField.getText().toString().matches("")){
+
+
                         Api.authenticateUser(passField,accountField,getApplicationContext(),loginActivity.this);
-                        Api.merchantpay(Api.getAccessToken(getApplicationContext()),getApplicationContext());
+
                     //AuthenticateUser(passField,accountField);
                     //Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
                     //Intent myIntent = new Intent(loginActivity.this, registerActivity.class);
