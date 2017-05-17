@@ -21,8 +21,7 @@
     <string name="signup">SignUp</string>
 
 
-
-
     //store data
     <string name="access_token">1</string>
+    <string name="register">2</string>
 </resources>

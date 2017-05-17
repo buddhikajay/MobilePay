@@ -34,10 +34,12 @@ import java.util.Map;
 public class Api {
 
     // url
-    private static String mechantpayUrl= "https://192.168.8.102:8243/merchantpay/1.0.0/transaction/merchantpay";
-    private static String loginUrl = "https://192.168.8.102:9446/oauth2/token";
-    private static String  registerUrl = "https://192.168.8.102:8243/merchantpay/1.0.0/register";
-
+    private static String ip="https://192.168.8.103";
+    private static String mechantpayUrl= ip+":8243/merchantpay/1.0.0/transaction/merchantpay";
+    private static String loginUrl = ip+":9446/oauth2/token";
+    private static String  registerUrl = ip+":8243/merchantpay/1.0.0/register";
+    private static String  registerVerifyUrl = ip+":8243/merchantpay/1.0.0/register/verify";
+    //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
     private static String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
     private static String secretkey = "1lA5dSLYQC5r0li6d3hp_RqLp6Ma";
@@ -55,8 +57,45 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static void userRegister(Context context,JSONObject user){
+    public static boolean setRegisterId(Context context,String id){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putString("register_id", id);
+        editor.putString("register", "true");
+        editor.putString("register_verify", "false");
+        editor.apply();
+        return true;
+    }
+    public static boolean setRegisterVerify(Context context,String id){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
+        editor.putString("register_verify", "true");
+        editor.apply();
+        return true;
+    }
+    public static String getRegisterId(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String token =sharedPref.getString("register_id",null);
+
+        return token;
+    }
+    public static boolean isRegisterVerify(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String token =sharedPref.getString("register_verify",null);
+        if(token!=null && token.equals("true")){
+            return true;
+        }
+        return false;
+    }
+    public static boolean isRegister(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String token =sharedPref.getString("register",null);
+        if(token!=null && token.equals("true")){
+            return true;
+        }
+        return false;
+    }
+    public static void userRegister(final VolleyCallback callback,Context context,JSONObject user){
+        Log.d("register payload",user.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, registerUrl,user , new Response.Listener<JSONObject>() {
 
@@ -64,7 +103,7 @@ public class Api {
                     public void onResponse(JSONObject response) {
                         //mTxtDisplay.setText("Response: " + response.toString());
                         Log.d("response register" ,""+response.toString());
-
+                        callback.onSuccess(response);
 
                     }
                 }, new Response.ErrorListener() {
@@ -136,7 +175,7 @@ public class Api {
     }
 
 
-    public static void authenticateUser(final EditText passField , final EditText accountField, final Context context, final Activity activity){
+    public static void authenticateUser(final VolleyCallback callback,final Map<String,String> payload, final Context context){
 
         StringRequest jsObjRequest = new StringRequest
                 (Request.Method.POST, loginUrl, new Response.Listener<String>() {
@@ -145,25 +184,8 @@ public class Api {
                     public void onResponse(String response) {
                         //mTxtDisplay.setText("Response: " + response.toString());
                         Log.d("response",response.toString());
-                        JSONObject obj = null;
                         try {
-                            obj = new JSONObject(response.toString());
-                            if(obj.has("access_token")){
-                                Api.setAccessToken(context,obj.getString("access_token"));
-                                Log.d("accesstoken",Api.getAccessToken(context));
-                                //login successs go totransaction
-                                Log.d("loginActivity","user login success");
-
-                                activity.finish();
-
-                                Intent myIntent = new Intent(activity, scanActivity.class);
-                                activity.startActivity(myIntent);
-                            }
-                            else {
-                                Toast.makeText(context,"No Access Token in Response",Toast.LENGTH_LONG).show();
-                            }
-
-
+                            callback.onSuccess(new JSONObject(response.toString()));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -194,13 +216,7 @@ public class Api {
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params=new HashMap<String,String>();
-                params.put("grant_type","password");
-               // params.put("username",""+accountField.getText().toString());
-               // params.put("password",""+passField.getText().toString());
-                params.put("username","9100");
-               params.put("password","password");
-                params.put("scope","openid");
+                Map<String,String> params=payload;
                 return params;
 
             }
@@ -218,6 +234,47 @@ public class Api {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
 
     }
+    public static void userRegisterUsingPin(final VolleyCallback callback,Context context,JSONObject user){
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, registerVerifyUrl,user , new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //mTxtDisplay.setText("Response: " + response.toString());
+                        Log.d("response register" ,""+response.toString());
+                        callback.onSuccess(response);
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("dss",error.getMessage());
+                    }
+                }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+                params.put("Authorization", "Bearer");
+                return params;
+            }
+
+        };
 
 
+        // Add a request (in this example, called stringRequest) to your RequestQueue.
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+
+
+    }
+
+
+    public interface VolleyCallback{
+        void onSuccess(JSONObject result);
+    }
 }

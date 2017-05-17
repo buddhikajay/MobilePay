@@ -72,5 +72,13 @@
         android:textColor="@color/white"
         android:focusable="true"
         />
+    <TextView android:id="@+id/link_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_below="@+id/log_button"
+        android:text="register"
+        android:gravity="center"
+        android:textSize="16dip"/>
 
 </RelativeLayout>
