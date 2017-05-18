@@ -41,7 +41,7 @@ public class loginActivity extends AppCompatActivity {
 
          passField = (EditText) findViewById(R.id.login_pin);
          accountField = (EditText)findViewById(R.id.accountNo);
-        signupLink = (TextView) findViewById(R.id.link_signup);
+
         Button btn=(Button)findViewById(R.id.log_button);
 
         btn.setOnClickListener(new View.OnClickListener()
@@ -54,13 +54,7 @@ public class loginActivity extends AppCompatActivity {
             }
         });
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signup(v);
 
-            }
-        });
     }
     private boolean isEnterdValideLoginData(){
         username = accountField.getText().toString();
@@ -74,20 +68,7 @@ public class loginActivity extends AppCompatActivity {
         }
         return false;
     }
-    private void appState(){
-        boolean register = Api.isRegister(getApplication());
-        boolean verify = Api.isRegisterVerify(getApplicationContext());
-        if( register&& verify){
-            signupLink.setVisibility(View.GONE);
-        }
-        else if(register && !verify){
-            moveToPinActivity();
-        }
-        else{
-            moveToRegisterActivity();
-        }
 
-    }
     private Map<String,String> getLoginCredential(){
         Map<String,String> params=new HashMap<String,String>();
         params.put("grant_type","password");
@@ -121,24 +102,6 @@ public class loginActivity extends AppCompatActivity {
         }
 
 
-
-
-    }
-    private void signup(View v){
-
-        boolean register = Api.isRegister(getApplication());
-        boolean verify = Api.isRegisterVerify(getApplicationContext());
-        if( register&& verify){
-
-            Log.d("user  register","registerd and verify please log in");
-        }
-        else if(register && !verify){
-            moveToPinActivity();
-            Log.d("user register","registerd but not verify");
-        }
-        else{
-            moveToRegisterActivity();
-        }
 
 
     }
