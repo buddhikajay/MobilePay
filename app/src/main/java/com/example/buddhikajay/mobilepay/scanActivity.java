@@ -13,6 +13,10 @@ import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
@@ -30,6 +34,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
 
         Button merchantPayButton=(Button)findViewById(R.id.buttonMerchantPay);
@@ -76,9 +81,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 builder.setTitle("Intents.Scan Result");
 
                 builder.setMessage(rawResult.getText());
+                Merchant merchant = new Merchant(rawResult.getText());
+                getUserDetail(merchant);
                 //AlertDialog alert1 = builder.create();
                 //alert1.show();
-                Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
+                /*Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
                 myIntent.putExtra("userdata",rawResult.getText());
                 myIntent.putExtra("scannerType", this.scannerType);
                 myIntent.putExtra("id", this.id);
@@ -86,10 +93,57 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 myIntent.putExtra("address", this.address);
                 myIntent.putExtra("phoneNumber", this.phoneNumber);
 
-                scanActivity.this.startActivity(myIntent);
+                scanActivity.this.startActivity(myIntent);*/
                 // If you would like to resume scanning, call this method below:<br />
         // mScannerView.resumeCameraPreview(this);<br />
     }
+    private void getUserDetail(final Merchant merchant){
+
+        JSONObject detail = new JSONObject();
+        try {
+            detail.put("id",""+merchant.getId());
+
+            Api.api(new Api.VolleyCallback() {
+                @Override
+                public void onSuccess(JSONObject result) {
+                    merchantDetailResponseHandler(merchant,result);
+                    moveToCheckoutActivity(merchant);
+                }
+            },Api.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void merchantDetailResponseHandler(Merchant merchant,JSONObject result){
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+                Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+    private void moveToCheckoutActivity(Merchant merchant) {
+        Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
+        myIntent.putExtra("id",merchant.getMerchantName());
+        myIntent.putExtra("name",merchant.getMerchantName());
+        myIntent.putExtra("address",merchant.getMerchantAddress());
+        myIntent.putExtra("scannerType", this.scannerType);
+        myIntent.putExtra("phoneNumber", this.phoneNumber);
+        scanActivity.this.startActivity(myIntent);
+        finish();
+    }
+
     public void QrScanner(View view){
           mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view<br />
         setContentView(mScannerView);

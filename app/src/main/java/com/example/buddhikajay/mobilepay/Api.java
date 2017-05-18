@@ -39,6 +39,7 @@ public class Api {
     private static String loginUrl = ip+":9446/oauth2/token";
     private static String  registerUrl = ip+":8243/merchantpay/1.0.0/register";
     private static String  registerVerifyUrl = ip+":8243/merchantpay/1.0.0/register/verify";
+    public static String  urlMerchantDetail = ip+":8243/merchantpay/1.0.0/merchant/details";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
     private static String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
@@ -272,6 +273,49 @@ public class Api {
 
 
     }
+    public static void api(final VolleyCallback callback,String url,final String token,JSONObject pay,Context context){
+
+
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST,url,pay , new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("response",""+response.toString());
+                        callback.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("err",error.getMessage());
+                    }
+                }){
+            /* @Override
+             protected Map<String, String> getParams() throws AuthFailureError {
+                 Map<String,String> params=new HashMap<String,String>();
+                 params.put("merchantId","12345");
+                 params.put("amount","1000");
+                 params.put("accessToken",""+token);
+
+                 return params;
+
+             }*/
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("Accept", "application/json");
+                params.put("Authorization", "Bearer "+token);
+                return params;
+            }
+
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
 
 
     public interface VolleyCallback{

@@ -37,7 +37,7 @@
         android:focusable="true"
         android:layout_below="@+id/logo"
         android:layout_marginTop="10dp"
-        android:hint="Account Number"
+        android:hint="Nic"
         />
     <EditText
         android:layout_width="fill_parent"
