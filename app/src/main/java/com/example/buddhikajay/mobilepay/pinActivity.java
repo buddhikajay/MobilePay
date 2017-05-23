@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +66,17 @@ public class pinActivity extends AppCompatActivity {
                         }
 
 
+                    }
+                    else if(result.has("errors")){
+                        JSONArray array= (JSONArray) result.opt("errors");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            if(jsonObject.opt("status").toString().equals("5000")){
+                                Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }

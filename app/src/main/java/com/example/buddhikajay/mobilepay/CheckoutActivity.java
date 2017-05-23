@@ -199,4 +199,11 @@ public class CheckoutActivity extends AppCompatActivity {
         user.setAddress(address);
         return user;
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
+        //scanActivity.this.startActivity(myIntent);
+        finish();
+    }
 }

@@ -55,9 +55,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onClick(View v) {
                 scannerType = false;//direct fund transfer
-                id = "021";
-                name = "Dinesh Eranga";
-                phoneNumber = "+94772448144";
+                //id = "021";
+                //name = "Dinesh Eranga";
+                //phoneNumber = "+94772448144";
                 QrScanner(v);
             }
         });
@@ -106,8 +106,46 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             Api.api(new Api.VolleyCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    merchantDetailResponseHandler(merchant,result);
-                    moveToCheckoutActivity(merchant);
+
+                    if(result.has("data")){
+                        JSONArray array= (JSONArray) result.opt("data");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                            //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                            merchantDetailResponseHandler(merchant, jsonObject);
+                            moveToCheckoutActivity(merchant);
+                           // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+                            //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                    else if(result.has("errors")){
+                        JSONArray array= (JSONArray) result.opt("errors");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            if(jsonObject.opt("status").toString().equals("5000")){
+                                //setContentView(R.layout.activity_scan);
+                                Toast.makeText(getApplicationContext(),"wrong qr code",Toast.LENGTH_LONG).show();
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+
+                                Log.d("error","5000");
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
                 }
             },Api.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
 
@@ -116,21 +154,17 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         }
     }
     private void merchantDetailResponseHandler(Merchant merchant,JSONObject result){
-        if(result.has("data")){
-            JSONArray array= (JSONArray) result.opt("data");
-            try {
-                JSONObject jsonObject = array.getJSONObject(0);
-                merchant.setMerchantName(jsonObject.opt("merchantName").toString());
-                merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+
+                merchant.setMerchantName(result.opt("merchantName").toString());
+                merchant.setMerchantAddress(result.opt("merchantAddress").toString());
                 Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
 
-        }
+
+
+
 
     }
     private void moveToCheckoutActivity(Merchant merchant) {
@@ -156,7 +190,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
          if(mScannerView!=null){
              mScannerView.stopCamera();   // Stop camera on pause<br />
          }
+         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
+         //scanActivity.this.startActivity(myIntent);
+         finish();
     }
+
     public void scanQR() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setOrientationLocked(false);
@@ -187,6 +225,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         finish();
         android.os.Process.killProcess(android.os.Process.myPid());
 
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        // put your code here...
+        /*Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
+        scanActivity.this.startActivity(myIntent);
+        finish();*/
     }
 
 }

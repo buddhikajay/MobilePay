@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +65,9 @@ public class registerActivity extends AppCompatActivity {
         }
         else {
 
-            Log.d("register","not valide register Data");
+            //Log.d("register","not valide register Data");
+            Toast.makeText(getApplicationContext(),"please fill register impormation",Toast.LENGTH_LONG).show();
+
         }
         return false;
     }
@@ -82,6 +87,7 @@ public class registerActivity extends AppCompatActivity {
     }
     private void userRegister(View v) {
         Log.d("registerActivity", "user validations");
+        //Toast.makeText(getApplicationContext(),"Credential not valide",Toast.LENGTH_LONG).show();
 
         if(isValideRgisterData()){
             JSONObject payload = getRegisterData();
@@ -93,7 +99,9 @@ public class registerActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
                             Log.d("sss", jsonObject.opt("id").toString() );
-                            Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString());
+                            Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic);
+                            //Api.setNic(getApplicationContext(),nic);
+                           // Api.set(getApplicationContext(),jsonObject.opt("id").toString());
                             //Log.d("sss", Api.getRegisterId(getApplicationContext()) );
                             finish();
                             moveToPinActivity();
@@ -104,6 +112,18 @@ public class registerActivity extends AppCompatActivity {
 
 
                     }
+                    else if(result.has("errors")){
+                        JSONArray array= (JSONArray) result.opt("errors");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            if(jsonObject.opt("status").toString().equals("500")){
+                                Toast.makeText(getApplicationContext(),"check password",Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
 
                 }
             },getApplicationContext(),payload);
@@ -116,6 +136,11 @@ public class registerActivity extends AppCompatActivity {
         Intent myIntent = new Intent(registerActivity.this, pinActivity.class);
         registerActivity.this.startActivity(myIntent);
 
+    }
+    private void showError(EditText passField,String error) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        passField.startAnimation(shake);
+        passField.setError(""+error);
     }
 
 

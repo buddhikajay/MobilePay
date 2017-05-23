@@ -24,10 +24,10 @@ import java.util.Map;
 public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
-    private EditText accountField;
+    //private EditText accountField;
     private TextView signupLink;
 
-    private String username;
+    //private String username;
     private String password;
 
     @Override
@@ -40,7 +40,7 @@ public class loginActivity extends AppCompatActivity {
          setSupportActionBar(toolbar);
 
          passField = (EditText) findViewById(R.id.login_pin);
-         accountField = (EditText)findViewById(R.id.accountNo);
+         //accountField = (EditText)findViewById(R.id.accountNo);
 
         Button btn=(Button)findViewById(R.id.log_button);
 
@@ -57,9 +57,9 @@ public class loginActivity extends AppCompatActivity {
 
     }
     private boolean isEnterdValideLoginData(){
-        username = accountField.getText().toString();
+        //username = accountField.getText().toString();
         password = passField.getText().toString();
-        if( !username.matches("") && !password.matches("")){
+        if( !password.matches("")){
             return true;
         }
         else {
@@ -72,13 +72,13 @@ public class loginActivity extends AppCompatActivity {
     private Map<String,String> getLoginCredential(){
         Map<String,String> params=new HashMap<String,String>();
         params.put("grant_type","password");
-        params.put("username",""+username);
+        params.put("username",""+Api.getNic(getApplicationContext()));
         params.put("password",""+password);
         params.put("scope","openid");
         return params;
     }
     private void login(View v){
-
+        Log.d("login data",""+Api.getNic(getApplicationContext()));
         if(isEnterdValideLoginData()){
             Map<String,String> params = getLoginCredential();
 

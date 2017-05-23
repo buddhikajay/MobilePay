@@ -20,7 +20,9 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.NetworkResponse;
 
+import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,12 +36,14 @@ import java.util.Map;
 public class Api {
 
     // url
-    private static String ip="https://192.168.8.103";
-    private static String mechantpayUrl= ip+":8243/merchantpay/1.0.0/transaction/merchantpay";
-    private static String loginUrl = ip+":9446/oauth2/token";
-    private static String  registerUrl = ip+":8243/merchantpay/1.0.0/register";
-    private static String  registerVerifyUrl = ip+":8243/merchantpay/1.0.0/register/verify";
-    public static String  urlMerchantDetail = ip+":8243/merchantpay/1.0.0/merchant/details";
+    //private static String ip="https://192.168.8.103";
+    private static String identityServer = "https://192.168.8.103:9446";
+    private static String apim = "https://192.168.8.103:8243";
+    private static String mechantpayUrl= apim+"/merchantpay/1.0.0/transaction/merchantpay";
+    private static String loginUrl = identityServer+"/oauth2/token";
+    private static String  registerUrl = apim+"/merchantpay/1.0.0/register";
+    private static String  registerVerifyUrl = apim+"/merchantpay/1.0.0/register/verify";
+    public static String  urlMerchantDetail = apim+"/merchantpay/1.0.0/merchant/details";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
     private static String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
@@ -52,20 +56,29 @@ public class Api {
 
         return token;
     }
+    public static String getNic(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String nic =sharedPref.getString("nic",null);
+
+        return nic;
+    }
     public static boolean setAccessToken(Context context,String token){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
         editor.putString("access_token", token);
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id){
+    public static boolean setRegisterId(Context context,String id,String nic){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("register_id", id);
+        editor.putString("nic", nic);
         editor.putString("register", "true");
         editor.putString("register_verify", "false");
         editor.apply();
+
         return true;
     }
+
     public static boolean setRegisterVerify(Context context,String id){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
@@ -95,7 +108,7 @@ public class Api {
         }
         return false;
     }
-    public static void userRegister(final VolleyCallback callback,Context context,JSONObject user){
+    public static void userRegister(final VolleyCallback callback,final Context context,JSONObject user){
         Log.d("register payload",user.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, registerUrl,user , new Response.Listener<JSONObject>() {
@@ -112,7 +125,31 @@ public class Api {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        Log.d("dss",error.getMessage());
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                            // HTTP Status Code: 401 Unauthorized
+                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
+                        }
+                        else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
+                            Toast.makeText(context,"password is not valide",Toast.LENGTH_LONG).show();
+
+                        }
+
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Toast.makeText(context,"incorrect detail",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //TODO
+                            Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //TODO
+                            Toast.makeText(context,"Network Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Toast.makeText(context,"Error in Application(Parse Error)",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }){
 
@@ -198,6 +235,15 @@ public class Api {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         // As of f605da3 the following should work
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                            // HTTP Status Code: 401 Unauthorized
+                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
+                        }
+                        else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
+                            Toast.makeText(context,"password wrong",Toast.LENGTH_LONG).show();
+
+                        }
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
                         } else if (error instanceof AuthFailureError) {
@@ -273,7 +319,7 @@ public class Api {
 
 
     }
-    public static void api(final VolleyCallback callback,String url,final String token,JSONObject pay,Context context){
+    public static void api(final VolleyCallback callback,String url,final String token,JSONObject pay,final Context context){
 
 
 
@@ -291,6 +337,31 @@ public class Api {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         Log.d("err",error.getMessage());
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                            // HTTP Status Code: 401 Unauthorized
+                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
+                        }
+                        else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
+                            Toast.makeText(context,"error",Toast.LENGTH_LONG).show();
+
+                        }
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            //TODO
+                            Toast.makeText(context,"incorrect account number or password",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            //TODO
+                            Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NetworkError) {
+                            //TODO
+                            Toast.makeText(context,"Network Error",Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            //TODO
+                            Toast.makeText(context,"Error in Application(Parse Error)",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }){
             /* @Override
@@ -315,6 +386,7 @@ public class Api {
         };
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+
 
 
 
