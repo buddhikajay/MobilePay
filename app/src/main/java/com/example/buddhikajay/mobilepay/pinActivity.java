@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +39,7 @@ public class pinActivity extends AppCompatActivity {
     private void registerUser(View v){
 
         String pintext = pin.getText().toString();
-        Log.d("user id",""+Api.getRegisterId(getApplicationContext()));
+        Log.d("user id",""+ Api.getRegisterId(getApplicationContext()));
         JSONObject payload = new JSONObject();
         try {
             payload.put("userId",Api.getRegisterId(getApplicationContext()));
@@ -58,6 +61,8 @@ public class pinActivity extends AppCompatActivity {
                             JSONObject jsonObject = array.getJSONObject(0);
                             Log.d("sss", jsonObject.opt("success").toString() );
                             Api.setRegisterVerify(getApplicationContext(),"true");
+                            //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+                            //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
                             finish();
                             moveToLogin();
 

@@ -2,13 +2,12 @@ package com.example.buddhikajay.mobilepay;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
+
+import com.example.buddhikajay.mobilepay.Services.Api;
 
 import net.glxn.qrgen.android.QRCode;
 
@@ -25,7 +24,7 @@ public class MyQRActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            Bitmap myBitmap = QRCode.from(""+Api.getRegisterId(getApplicationContext())).withSize(400,400).bitmap();
+            Bitmap myBitmap = QRCode.from(""+ Api.getRegisterId(getApplicationContext())).withSize(400,400).bitmap();
             ImageView myImage = (ImageView) findViewById(R.id.imageView2);
             myImage.setImageBitmap(myBitmap);
         }

@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -72,7 +75,7 @@ public class loginActivity extends AppCompatActivity {
     private Map<String,String> getLoginCredential(){
         Map<String,String> params=new HashMap<String,String>();
         params.put("grant_type","password");
-        params.put("username",""+Api.getNic(getApplicationContext()));
+        params.put("username",""+ Api.getNic(getApplicationContext()));
         params.put("password",""+password);
         params.put("scope","openid");
         return params;

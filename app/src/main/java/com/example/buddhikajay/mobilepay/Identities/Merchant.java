@@ -1,4 +1,4 @@
-package com.example.buddhikajay.mobilepay;
+package com.example.buddhikajay.mobilepay.Identities;
 
 /**
  * Created by supun on 18/05/17.
@@ -8,6 +8,9 @@ public class Merchant {
     private String id;
     private String merchantName;
     private String merchantAddress;
+    private String phoneNumber;
+
+
 
     public Merchant(String id) {
         this.id = id;
@@ -35,5 +38,13 @@ public class Merchant {
 
     public void setMerchantAddress(String merchantAddress) {
         this.merchantAddress = merchantAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumbers) {
+        this.phoneNumber = phoneNumbers;
     }
 }

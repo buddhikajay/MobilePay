@@ -1,12 +1,10 @@
-package com.example.buddhikajay.mobilepay;
+package com.example.buddhikajay.mobilepay.Services;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telephony.SmsManager;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.NetworkResponse;
+import com.example.buddhikajay.mobilepay.MySingleton;
+import com.example.buddhikajay.mobilepay.R;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
@@ -44,6 +44,7 @@ public class Api {
     private static String  registerUrl = apim+"/merchantpay/1.0.0/register";
     private static String  registerVerifyUrl = apim+"/merchantpay/1.0.0/register/verify";
     public static String  urlMerchantDetail = apim+"/merchantpay/1.0.0/merchant/details";
+    public static String  urlTransactionDetail = apim+"/merchantpay/1.0.0/transactions/agent/between";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
     private static String clientkey= "kmuf4G6ifQNaHLbm0znhEvD2kgYa";
@@ -62,16 +63,23 @@ public class Api {
 
         return nic;
     }
+    public static String getPhoneNumber(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String nic =sharedPref.getString("phoneNumber",null);
+
+        return nic;
+    }
     public static boolean setAccessToken(Context context,String token){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
         editor.putString("access_token", token);
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String nic){
+    public static boolean setRegisterId(Context context,String id,String nic,String phone){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("register_id", id);
         editor.putString("nic", nic);
+        editor.putString("phoneNumber", phone);
         editor.putString("register", "true");
         editor.putString("register_verify", "false");
         editor.apply();
@@ -170,7 +178,7 @@ public class Api {
 
 
     }
-    public static void merchantpay(final String token,JSONObject pay,Context context){
+    public static void merchantpay(final VolleyCallback callback,final String token,JSONObject pay,Context context){
 
 
 
@@ -180,6 +188,7 @@ public class Api {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("response",""+response.toString());
+                        callback.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -319,12 +328,12 @@ public class Api {
 
 
     }
-    public static void api(final VolleyCallback callback,String url,final String token,JSONObject pay,final Context context){
+    public static void api(final VolleyCallback callback,String url,final String token,JSONObject parameters,final Context context){
 
 
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST,url,pay , new Response.Listener<JSONObject>() {
+                (Request.Method.POST,url,parameters , new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -392,5 +401,24 @@ public class Api {
 
     public interface VolleyCallback{
         void onSuccess(JSONObject result);
+    }
+
+    public static void sendSms(String phoneNumber, String message,Context context){
+        try{
+
+
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, message, null, null);
+            Toast.makeText(context, "sent", Toast.LENGTH_SHORT).show();
+        }
+        catch(Exception e){
+            Toast.makeText(context,
+                    "SMS faild, please try again later!",
+                    Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+
+
     }
 }

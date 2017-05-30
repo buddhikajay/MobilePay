@@ -12,18 +12,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Identities.Merchant;
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Identities.User;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CheckoutActivity extends AppCompatActivity {
 
+    String phoneNumber;
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         final Intent intent = getIntent();
 
-        final String username = intent.getStringExtra("userdata");
+        username = intent.getStringExtra("userdata");
+        phoneNumber = intent.getStringExtra("phoneNumber");
         final boolean scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
         TextView idTextView = (TextView) findViewById(R.id.merchantIdTextView);
@@ -58,10 +66,10 @@ public class CheckoutActivity extends AppCompatActivity {
                 TextView amountTextView = (TextView) findViewById(R.id.amountEditText);
                 String amount = amountTextView.getText().toString();
                 showmessgebox(amount, intent.getStringExtra("name"));
-                sendSms(intent.getStringExtra("phoneNumber"), "LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
+                //Log.d("CheckoutActivity:number",phoneNumber);
 
                 //pay transaction
-                payTrasaction(intent.getStringExtra("id"),amount,Api.getAccessToken(getApplicationContext()));
+                payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()));
 
             }
         });
@@ -127,7 +135,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //        address3.setText(userDetail.getAddress()[2]);
 
     }
-    private void payTrasaction(String mechantId,String amount,String accessToken){
+    private void payTrasaction(String mechantId, final String amount, String accessToken){
 
         JSONObject pay = new JSONObject();
         try {
@@ -138,7 +146,28 @@ public class CheckoutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Api.merchantpay(Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
+        Api.merchantpay(new Api.VolleyCallback(){
+
+
+            @Override
+            public void onSuccess(JSONObject result) {
+                if(result.has("data")){
+                    JSONArray array= (JSONArray) result.opt("data");
+                    try {
+                        JSONObject jsonObject = array.getJSONObject(0);
+                        Log.d("Transaction:Checkout",jsonObject.toString());
+                        Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        },Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
     private void showmessgebox(String amount,String username){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
@@ -167,24 +196,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
-    private void sendSms(String phoneNumber, String message){
-        try{
-
-
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phoneNumber, null, message, null, null);
-            Toast.makeText(getApplicationContext(), "sent", Toast.LENGTH_SHORT).show();
-        }
-        catch(Exception e){
-            Toast.makeText(getApplicationContext(),
-                    "SMS faild, please try again later!",
-                    Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-
-
-    }
     @Override
     public void onBackPressed() {
         Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
@@ -196,7 +207,7 @@ public class CheckoutActivity extends AppCompatActivity {
      User user=new User();
         user.setName("Kamal");
         String address[]={"3/36","Dharmapala Mawatha","Katubedda"};
-        user.setAddress(address);
+        //user.setAddress(address);
         return user;
     }
     @Override
@@ -206,4 +217,5 @@ public class CheckoutActivity extends AppCompatActivity {
         //scanActivity.this.startActivity(myIntent);
         finish();
     }
+
 }

@@ -51,9 +51,10 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/login_pin"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/button_background_selector"
         android:textColor="@color/white"
         android:focusable="true"
+
         />
 
 

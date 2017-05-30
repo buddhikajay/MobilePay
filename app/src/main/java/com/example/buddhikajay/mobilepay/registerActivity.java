@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.MobileNumberPicker;
+import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +54,10 @@ public class registerActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
                 userRegister(v);
+
             }
         });
 
@@ -94,12 +101,17 @@ public class registerActivity extends AppCompatActivity {
             Api.userRegister(new Api.VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
+                    //Log.d("register response",result.toString());
                     if(result.has("data")){
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
                             Log.d("sss", jsonObject.opt("id").toString() );
-                            Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic);
+                            Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo);
+
+                            Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+                            Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+
                             //Api.setNic(getApplicationContext(),nic);
                            // Api.set(getApplicationContext(),jsonObject.opt("id").toString());
                             //Log.d("sss", Api.getRegisterId(getApplicationContext()) );
