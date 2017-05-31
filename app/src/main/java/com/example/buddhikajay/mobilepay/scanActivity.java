@@ -40,6 +40,8 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
 
+
+/*
         Button merchantPayButton=(Button)findViewById(R.id.buttonMerchantPay);
         Button fundTransferButton = (Button)findViewById(R.id.buttonFundTransfer);
         Button myQRCodeButton = (Button)findViewById(R.id.buttonMyQRCode);
@@ -80,7 +82,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 Intent intent = new Intent(scanActivity.this, TransactionReportActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
     @Override
     public void handleResult(Result rawResult) {

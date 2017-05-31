@@ -106,15 +106,13 @@ public class registerActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            Log.d("sss", jsonObject.opt("id").toString() );
+                            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                            Log.d("RegisterActivity:status","Succss");
+                            Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
                             Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo);
-
-                            Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+                            Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
+                            //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                             Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
-
-                            //Api.setNic(getApplicationContext(),nic);
-                           // Api.set(getApplicationContext(),jsonObject.opt("id").toString());
-                            //Log.d("sss", Api.getRegisterId(getApplicationContext()) );
                             finish();
                             moveToPinActivity();
 
@@ -128,8 +126,9 @@ public class registerActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("errors");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            if(jsonObject.opt("status").toString().equals("500")){
-                                Toast.makeText(getApplicationContext(),"check password",Toast.LENGTH_LONG).show();
+
+                            if(jsonObject.opt("status").toString().equals("409")){
+                                Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

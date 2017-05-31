@@ -139,7 +139,7 @@ public class Api {
                             Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
                         }
                         else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
-                            Toast.makeText(context,"password is not valide",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"internal server error",Toast.LENGTH_LONG).show();
 
                         }
 
@@ -253,12 +253,9 @@ public class Api {
                             Toast.makeText(context,"password wrong",Toast.LENGTH_LONG).show();
 
                         }
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                             Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
-                        } else if (error instanceof AuthFailureError) {
-                            //TODO
-                            Toast.makeText(context,"incorrect account number or password",Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ServerError) {
+                        }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
                         } else if (error instanceof NetworkError) {
@@ -361,7 +358,7 @@ public class Api {
                         } else if (error instanceof AuthFailureError) {
                             //TODO
                             Toast.makeText(context,"incorrect account number or password",Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ServerError) {
+                        } else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
                         } else if (error instanceof NetworkError) {
