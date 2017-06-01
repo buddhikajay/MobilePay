@@ -19,6 +19,8 @@
     <string name="title_activity_my_qr">My QRCode</string>
 
     <string name="signup">SignUp</string>
+    <string name="password_hint">Please Enter Password</string>
+
 
 
     //store data

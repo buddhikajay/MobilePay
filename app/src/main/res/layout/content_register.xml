@@ -93,6 +93,7 @@
         android:focusable="true"
         android:layout_below="@+id/mobileNo"
         android:layout_marginTop="10dp"
+        android:hint="@string/password_hint"
         />
 
 

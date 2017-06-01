@@ -181,6 +181,7 @@ public class loginActivity extends AppCompatActivity {
             Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
             //login successs go totransaction
             Log.d("loginActivity","user login success");
+            Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
             moveToScanActivity();
 
         }

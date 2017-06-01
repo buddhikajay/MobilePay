@@ -90,6 +90,7 @@ public class pinActivity extends AppCompatActivity {
                 Api.setRegisterVerify(getApplicationContext(),"true");
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+                Toast.makeText(getApplicationContext(),"Registation Success",Toast.LENGTH_LONG).show();
                 finish();
                 moveToLogin();
 

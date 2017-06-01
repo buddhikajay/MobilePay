@@ -193,6 +193,23 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("422")){
+                    //setContentView(R.layout.activity_scan);
+                    Toast.makeText(getApplicationContext(), "insufficient Balance", Toast.LENGTH_LONG).show();
+
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
     }
     private void moveToFinishActivity(String amount){

@@ -143,7 +143,7 @@ public class registerActivity extends AppCompatActivity {
     private void showmessgebox(){
         AlertDialog alertDialog=new AlertDialog.Builder(registerActivity.this).create();
         alertDialog .setTitle("Account Verification");
-        alertDialog .setMessage("please go to the you bank and collect pin");
+        alertDialog .setMessage("Please Collect Your Verification Code From Bank");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -187,6 +187,9 @@ public class registerActivity extends AppCompatActivity {
 
                 if(jsonObject.opt("status").toString().equals("409")){
                     Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
+                }
+                else if(jsonObject.opt("status").toString().equals("422")){
+                    Toast.makeText(getApplicationContext(),"Account Does Not Exist",Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

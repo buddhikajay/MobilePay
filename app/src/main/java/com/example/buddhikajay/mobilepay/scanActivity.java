@@ -298,7 +298,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 JSONObject jsonObject = array.getJSONObject(0);
                 if(jsonObject.opt("status").toString().equals("5000")){
                     //setContentView(R.layout.activity_scan);
-                    Toast.makeText(getApplicationContext(),"wrong qr code",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
                     Intent intent = getIntent();
                     finish();
                     startActivity(intent);

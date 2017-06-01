@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.app.ActionBar;
+import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
 import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
@@ -95,6 +96,10 @@ public class TransactionReportActivity extends AppCompatActivity {
                     Log.d("Transaction:Transaction",jsonObject.toString());
                     populateTransactionList(array);
                 }
+                else {
+                    Toast.makeText(getApplicationContext(),"Not Any Transaction",Toast.LENGTH_LONG).show();
+                }
+
 
 
             } catch (JSONException e) {
@@ -102,6 +107,18 @@ public class TransactionReportActivity extends AppCompatActivity {
             }
 
 
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+
+                if(jsonObject.opt("status").toString().equals("422")){
+                    Toast.makeText(getApplicationContext(),"Server Error",Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
