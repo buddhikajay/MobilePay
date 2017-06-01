@@ -107,7 +107,6 @@ public class Api {
     public static void sendSms(String phoneNumber, String message,Context context) {
         try{
 
-
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(phoneNumber, null, message, null, null);
             //Toast.makeText(context, "sent", Toast.LENGTH_SHORT).show();

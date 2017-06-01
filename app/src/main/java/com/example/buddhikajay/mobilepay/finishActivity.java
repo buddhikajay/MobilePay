@@ -29,7 +29,7 @@ public class finishActivity extends AppCompatActivity {
                 finish();
                 Intent myIntent = new Intent(finishActivity.this, loginActivity.class);
                 finishActivity.this.startActivity(myIntent);
-                finish();
+
 
 
 

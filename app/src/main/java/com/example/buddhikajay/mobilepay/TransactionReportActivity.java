@@ -69,22 +69,7 @@ public class TransactionReportActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject result) {
-                if(result.has("data")){
-                    JSONArray array= (JSONArray) result.opt("data");
-                    try {
-                        if(array.length()!=0){
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            Log.d("Transaction:Transaction",jsonObject.toString());
-                            populateTransactionList(array);
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
+                responseProcess(result);
             }
 
             @Override
@@ -98,6 +83,26 @@ public class TransactionReportActivity extends AppCompatActivity {
             }
         }, Parameter.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
 
+    }
+
+    private void responseProcess(JSONObject result){
+
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                if(array.length()!=0){
+                    JSONObject jsonObject = array.getJSONObject(0);
+                    Log.d("Transaction:Transaction",jsonObject.toString());
+                    populateTransactionList(array);
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
     }
 
     public void moveLogin(){
