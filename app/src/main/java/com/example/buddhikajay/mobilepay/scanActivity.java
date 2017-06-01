@@ -200,6 +200,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                  public void login() {
                      moveLogin();
                  }
+
+                 @Override
+                 public void enableButton() {
+
+                 }
              }, Parameter.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
 
         } catch (JSONException e) {

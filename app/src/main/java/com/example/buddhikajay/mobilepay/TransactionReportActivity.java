@@ -89,6 +89,11 @@ public class TransactionReportActivity extends AppCompatActivity {
             public void login() {
 
             }
+
+            @Override
+            public void enableButton() {
+
+            }
         }, Parameter.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
 
     }

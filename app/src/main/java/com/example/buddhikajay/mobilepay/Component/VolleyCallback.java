@@ -10,4 +10,5 @@ public interface VolleyCallback {
 
     void onSuccess(JSONObject result);
     void login();
+    void enableButton();
 }

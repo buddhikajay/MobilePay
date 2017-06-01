@@ -72,6 +72,7 @@ public class VolleyRequestHandlerApi {
 
                         else if (error instanceof TimeoutError) {
                             Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
+                            callback.enableButton();
                         }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
@@ -135,10 +136,13 @@ public class VolleyRequestHandlerApi {
                         }
                         else if(error instanceof NoConnectionError){
                             Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
+                            callback.enableButton();
                         }
 
                         else if (error instanceof TimeoutError) {
+                            callback.enableButton();
                             Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
+
                         }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();

@@ -118,6 +118,11 @@ public class CheckoutActivity extends AppCompatActivity {
             public void login() {
                     moveLogin();
             }
+
+            @Override
+            public void enableButton() {
+
+            }
         }, Parameter.mechantpayUrl,Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
 

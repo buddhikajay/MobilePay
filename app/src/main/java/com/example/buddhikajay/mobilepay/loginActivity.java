@@ -33,6 +33,7 @@ public class loginActivity extends AppCompatActivity {
     //private String username;
     private String password;
 
+     Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class loginActivity extends AppCompatActivity {
          passField = (EditText) findViewById(R.id.login_pin);
          //accountField = (EditText)findViewById(R.id.accountNo);
 
-        final Button btn=(Button)findViewById(R.id.log_button);
+        btn=(Button)findViewById(R.id.log_button);
 
         btn.setOnClickListener(new View.OnClickListener()
         {
@@ -80,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
         params.put("scope","openid");
         return params;
     }
-    private void login(View v){
+    private void login(final View v){
         Log.d("login data",""+Api.getNic(getApplicationContext()));
         if(isEnterdValideLoginData()){
             Map<String,String> params = getLoginCredential();
@@ -88,23 +89,19 @@ public class loginActivity extends AppCompatActivity {
             VolleyRequestHandlerApi.authenticateUser(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
-                    if(result.has("access_token")){
-                        Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
-                        Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
-                        //login successs go totransaction
-                        Log.d("loginActivity","user login success");
-                        moveToScanActivity();
-
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
-                    }
+                    responseProcess(result);
 
                 }
 
                 @Override
                 public void login() {
 
+                }
+
+                @Override
+                public void enableButton() {
+                    btn.setEnabled(true);
+                    //v.setVisibility(View.VISIBLE);
                 }
             },params,getApplicationContext());
         }
@@ -175,6 +172,21 @@ public class loginActivity extends AppCompatActivity {
         finish();
         Intent myIntent = new Intent(loginActivity.this, registerActivity.class);
         loginActivity.this.startActivity(myIntent);
+    }
+
+    private void responseProcess(JSONObject result){
+
+        if(result.has("access_token")){
+            Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
+            Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
+            //login successs go totransaction
+            Log.d("loginActivity","user login success");
+            moveToScanActivity();
+
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
+        }
     }
 
 }

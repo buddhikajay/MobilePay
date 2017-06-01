@@ -41,6 +41,8 @@ public class registerActivity extends AppCompatActivity {
     private String nic;
     private String mobileNo;
     private String password;
+
+     Button signup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +57,11 @@ public class registerActivity extends AppCompatActivity {
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
 
-        Button signup = (Button) findViewById(R.id.signup_button);
+        signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                signup.setEnabled(false);
                 Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
                 userRegister(v);
 
@@ -107,40 +109,7 @@ public class registerActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(JSONObject result){
                     //Log.d("register response",result.toString());
-                    if(result.has("data")){
-                        JSONArray array= (JSONArray) result.opt("data");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                            Log.d("RegisterActivity:status","Succss");
-                            Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
-                            Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo);
-                            Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
-                            //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-                            Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
-                            finish();
-                            moveToPinActivity();
-                            //showmessgebox();
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                    else if(result.has("errors")){
-                        JSONArray array= (JSONArray) result.opt("errors");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-
-                            if(jsonObject.opt("status").toString().equals("409")){
-                                Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    responseProcess(result);
 
 
                 }
@@ -148,6 +117,11 @@ public class registerActivity extends AppCompatActivity {
                 @Override
                 public void login() {
 
+                }
+
+                @Override
+                public void enableButton() {
+                    signup.setEnabled(true);
                 }
             }, Parameter.registerUrl,"",payload,getApplicationContext());
 
@@ -181,6 +155,43 @@ public class registerActivity extends AppCompatActivity {
         alertDialog.show();
 
 
+    }
+    private void responseProcess(JSONObject result){
+
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                Log.d("RegisterActivity:status","Succss");
+                Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo);
+                Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
+                //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+                Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+                finish();
+                moveToPinActivity();
+                //showmessgebox();
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+
+                if(jsonObject.opt("status").toString().equals("409")){
+                    Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

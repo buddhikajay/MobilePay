@@ -21,6 +21,8 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 public class pinActivity extends AppCompatActivity {
     private EditText pin;
+
+     Button ok_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class pinActivity extends AppCompatActivity {
         ok_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ok_btn.setEnabled(false);
                 registerUser(v);
 
             }
@@ -92,6 +96,11 @@ public class pinActivity extends AppCompatActivity {
                 @Override
                 public void login() {
 
+                }
+
+                @Override
+                public void enableButton() {
+                    ok_btn.setEnabled(true);
                 }
             }, Parameter.registerVerifyUrl,"",payload,getApplicationContext());
         }
