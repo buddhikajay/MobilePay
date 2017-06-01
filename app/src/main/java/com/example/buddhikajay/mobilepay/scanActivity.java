@@ -14,11 +14,14 @@ import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.ScanAdapter;
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Identities.ScanListModel;
 import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Identities.Merchant;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -183,7 +186,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         try {
             detail.put("id",""+merchant.getId());
 
-            Api.api(new Api.VolleyCallback() {
+             VolleyRequestHandlerApi.getMerchantDetail(new VolleyCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
 
@@ -227,7 +230,12 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                     }
 
                 }
-            },Api.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
+
+                 @Override
+                 public void login() {
+                     moveLogin();
+                 }
+             }, Parameter.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -275,6 +283,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.<br />
         mScannerView.startCamera();         // Start camera<br />
     }
+
      @Override
     public void onPause() {
             super.onPause();
@@ -324,6 +333,12 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         /*Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         scanActivity.this.startActivity(myIntent);
         finish();*/
+    }
+    public void moveLogin(){
+
+        Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
+        scanActivity.this.startActivity(myIntent);
+        finish();
     }
 
 }

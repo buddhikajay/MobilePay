@@ -1,6 +1,8 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -115,6 +117,8 @@ public class registerActivity extends AppCompatActivity {
                             Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
                             finish();
                             moveToPinActivity();
+                            //showmessgebox();
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -152,6 +156,23 @@ public class registerActivity extends AppCompatActivity {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         passField.startAnimation(shake);
         passField.setError(""+error);
+    }
+
+    private void showmessgebox(){
+        AlertDialog alertDialog=new AlertDialog.Builder(registerActivity.this).create();
+        alertDialog .setTitle("Account Verification");
+        alertDialog .setMessage("please go to the you bank and collect pin");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        moveToPinActivity();
+                    }
+                });
+
+        alertDialog.show();
+
+
     }
 
 
