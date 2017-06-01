@@ -65,11 +65,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 TextView amountTextView = (TextView) findViewById(R.id.amountEditText);
                 String amount = amountTextView.getText().toString();
-                showmessgebox(amount, intent.getStringExtra("name"));
+
                 //Log.d("CheckoutActivity:number",phoneNumber);
 
                 //pay transaction
-                payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()));
+                payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent);
 
             }
         });
@@ -135,7 +135,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //        address3.setText(userDetail.getAddress()[2]);
 
     }
-    private void payTrasaction(String mechantId, final String amount, String accessToken){
+    private void payTrasaction(String mechantId, final String amount, String accessToken, final Intent intent){
 
         JSONObject pay = new JSONObject();
         try {
@@ -158,7 +158,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         Log.d("Transaction:Checkout",jsonObject.toString());
                         Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
-
+                        showmessgebox(amount, intent.getStringExtra("name"));
+                        //TransactionFinise(amount);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -169,7 +170,17 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         },Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
-    private void showmessgebox(String amount,String username){
+
+    private void TransactionFinise(String amount) {
+        Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
+        myIntent.putExtra("amount",amount);
+        CheckoutActivity.this.startActivity(myIntent);
+        finish();
+
+
+    }
+
+    private void showmessgebox(final String amount, String username){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog .setMessage("Pay "+amount+" to "+username+"?");
@@ -183,8 +194,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_LONG).show();
-                        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
+                        Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
                         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        myIntent.putExtra("amount",amount);
                         CheckoutActivity.this.startActivity(myIntent);
 
                         finish();

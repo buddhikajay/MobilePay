@@ -6,9 +6,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Component.ScanAdapter;
+import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
+import com.example.buddhikajay.mobilepay.Identities.ScanListModel;
+import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Identities.Merchant;
@@ -20,9 +27,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     private ZXingScannerView mScannerView;
     private boolean scannerType =  true; // true for merchant pay, false for fund transfer
@@ -33,13 +42,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     private String name = "Cargills Foodcity Bambalabitiya";
     private String address = "123 Galle Road, Colombo 04";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
-
+        populateScanList();
 
 /*
         Button merchantPayButton=(Button)findViewById(R.id.buttonMerchantPay);
@@ -84,6 +94,63 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             }
         });*/
     }
+
+    private void populateScanList() {
+        Log.d("Transaction activity","trnsaction list populating");
+        // Construct the data source
+        ArrayList<ScanListModel> arrayOfTrnsactions = ScanListModel.getModel();
+        // Create the adapter to convert the array to views
+        ScanAdapter adapter = new ScanAdapter(this, arrayOfTrnsactions);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.sacanList);
+
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // When clicked, show a toast with the TextView text
+                switch (position){
+
+                    case 0 : myQrCode();
+                        break;
+                    case 1 : merchantPay();
+                        break;
+                    case 2 : fundTransfer();
+                        break;
+                    case 3 : transactionList();
+                        break;
+                    default:
+                        break;
+
+                }
+
+            }
+        });
+
+    }
+    private void myQrCode(){
+        Intent intent = new Intent(scanActivity.this, MyQRActivity.class);
+        startActivity(intent);
+
+    }
+    private void merchantPay(){
+
+        scannerType = true; // merchant pay
+        QrScanner();
+    }
+    private void fundTransfer(){
+
+        scannerType = false; // merchant pay
+        QrScanner();
+    }
+    private void transactionList(){
+
+        Intent intent = new Intent(scanActivity.this, TransactionReportActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void handleResult(Result rawResult) {
         // Do something with the result here</p>
@@ -202,7 +269,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         finish();
     }
 
-    public void QrScanner(View view){
+    public void QrScanner(){
           mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view<br />
         setContentView(mScannerView);
                 mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.<br />

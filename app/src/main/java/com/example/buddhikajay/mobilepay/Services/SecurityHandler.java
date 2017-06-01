@@ -8,6 +8,7 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -35,6 +36,7 @@ public class SecurityHandler {
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
                 }
             }};
+
 
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new SecureRandom());

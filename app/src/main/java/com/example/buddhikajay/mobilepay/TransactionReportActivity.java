@@ -67,9 +67,12 @@ public class TransactionReportActivity extends AppCompatActivity {
                 if(result.has("data")){
                     JSONArray array= (JSONArray) result.opt("data");
                     try {
-                        JSONObject jsonObject = array.getJSONObject(0);
-                        Log.d("Transaction:Transaction",jsonObject.toString());
-                        populateTransactionList(array);
+                        if(array.length()!=0){
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            Log.d("Transaction:Transaction",jsonObject.toString());
+                            populateTransactionList(array);
+                        }
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

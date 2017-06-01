@@ -400,7 +400,7 @@ public class Api {
         void onSuccess(JSONObject result);
     }
 
-    public static void sendSms(String phoneNumber, String message,Context context){
+    public static void sendSms(String phoneNumber, String message,Context context) {
         try{
 
 
@@ -409,11 +409,17 @@ public class Api {
             Toast.makeText(context, "sent", Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
+            Log.d("exception:sms","Sms");
             Toast.makeText(context,
                     "SMS faild, please try again later!",
                     Toast.LENGTH_LONG).show();
             e.printStackTrace();
+            Log.d("exception:sms","Sms");
         }
+        catch (Error error){
+
+        }
+
 
 
 
