@@ -1,6 +1,7 @@
 package com.example.buddhikajay.mobilepay.Services;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,10 +16,12 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Component.VolleyComponent;
 
 import org.apache.http.HttpStatus;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,8 +34,76 @@ import java.util.Map;
 public class VolleyRequestHandlerApi {
 
 
+    public static void authenticateUser(final VolleyCallback callback, final Map<String,String> payload, final Context context){
 
-    public static void getMerchantDetail(final VolleyCallback callback, String url, final String token, JSONObject parameters, final Context context){
+        StringRequest jsObjRequest = new StringRequest
+                (Request.Method.POST, Parameter.loginUrl, new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        //mTxtDisplay.setText("Response: " + response.toString());
+                        Log.d("response",response.toString());
+                        try {
+                            callback.onSuccess(new JSONObject(response.toString()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        // As of f605da3 the following should work
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                            // HTTP Status Code: 401 Unauthorized
+                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
+                        }
+                        else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
+                            Toast.makeText(context,"password wrong",Toast.LENGTH_LONG).show();
+
+                        }
+
+                        else if(error instanceof NoConnectionError){
+                            Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
+                        }
+
+                        else if (error instanceof TimeoutError) {
+                            Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
+                        }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                            //TODO
+                            Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
+                        }  else if (error instanceof ParseError) {
+                            //TODO
+                            Toast.makeText(context,"Error in Application(Parse Error)",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params=payload;
+                return params;
+
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                String key = Parameter.clientkey+":"+Parameter.secretkey;
+                params.put("Authorization", "Basic "+ Base64.encodeToString(key.getBytes(), Base64.DEFAULT));
+                return params;
+            }
+
+        };
+
+        VolleyComponent.getInstance(context).addToRequestQueue(jsObjRequest);
+
+    }
+
+
+    public static void api(final VolleyCallback callback, String url, final String token, JSONObject parameters, final Context context){
 
 
 
@@ -49,14 +120,14 @@ public class VolleyRequestHandlerApi {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        //Log.d("err",error.getMessage());
+                        Log.d("err",error.getMessage());
                         error.printStackTrace();
 
                         NetworkResponse networkResponse = error.networkResponse;
                         if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
                             // HTTP Status Code: 401 Unauthorized
-                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
                             callback.login();
+                            Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
                         }
                         else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
                             Toast.makeText(context,"error",Toast.LENGTH_LONG).show();
@@ -65,21 +136,13 @@ public class VolleyRequestHandlerApi {
                         else if(error instanceof NoConnectionError){
                             Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
                         }
-                        else if (error instanceof AuthFailureError) {
-                            //TODO
-                            Toast.makeText(context,"please login again",Toast.LENGTH_LONG).show();
-                        }
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+
+                        else if (error instanceof TimeoutError) {
                             Toast.makeText(context,"time out",Toast.LENGTH_LONG).show();
-
-
                         }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
-                        } else if (error instanceof NetworkError) {
-                            //TODO
-                            Toast.makeText(context,"Network Error",Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ParseError) {
+                        }  else if (error instanceof ParseError) {
                             //TODO
                             Toast.makeText(context,"Error in Application(Parse Error)",Toast.LENGTH_LONG).show();
                         }
@@ -108,6 +171,7 @@ public class VolleyRequestHandlerApi {
         };
         VolleyComponent.getInstance(context).addToRequestQueue(jsObjRequest);
     }
+
 
 
 }

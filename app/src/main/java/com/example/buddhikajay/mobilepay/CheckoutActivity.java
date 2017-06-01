@@ -20,6 +20,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.buddhikajay.mobilepay.Services.Parameter;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+
+
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
@@ -74,66 +79,6 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        //String lName = intent.getStringExtra("lastName");
-//        Button btn=(Button)findViewById(R.id.pay_button);
-//        final EditText amount=(EditText)findViewById(R.id.prize_edittext);
-//        btn.setOnClickListener(new View.OnClickListener()
-//        {
-//            public void onClick(View v)
-//            {
-//                //sendSms(amount.getText().toString());
-//               showmessgebox(amount.getText().toString(),username);
-//
-//                //Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
-//                //CheckoutActivity.this.startActivity(myIntent);
-//               //
-//
-//            }
-//        });
-//        TextView userId = (TextView) findViewById(R.id.id_edittext);
-//        userId.setText(username);
-
-//        amount.addTextChangedListener(new TextWatcher(){
-//            DecimalFormat dec = new DecimalFormat("0.00");
-//            @Override
-//            public void afterTextChanged(Editable arg0) {
-//            }
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//            private String current = "";
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if(!s.toString().equals(current)){
-//                    amount.removeTextChangedListener(this);
-//
-//                    String cleanString = s.toString().replaceAll("[£$,. LKR]", "");
-//
-//                    double parsed = Double.parseDouble(cleanString);
-//
-//                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-//
-//                    formatted=formatted.replaceAll("[£$]", "")+" LKR";
-//                    current = formatted;
-//                    amount.setText(formatted);
-//                    amount.setSelection(formatted.length());
-//
-//                    amount.addTextChangedListener(this);
-//                }
-//            }
-//        });
-        //set user detail
-//        User userDetail=getSellerDetail(userId.getText().toString());
-//        EditText userName = (EditText) findViewById(R.id.name_edittext);
-//        userName.setText(userDetail.getName());
-//        EditText address1 = (EditText) findViewById(R.id.address_edittext1);
-//        address1.setText(userDetail.getAddress()[0]);
-//        EditText address2 = (EditText) findViewById(R.id.address_edittext2);
-//        address2.setText(userDetail.getAddress()[1]);
-//        EditText address3 = (EditText) findViewById(R.id.address_edittext3);
-//        address3.setText(userDetail.getAddress()[2]);
-
     }
     private void payTrasaction(String mechantId, final String amount, String accessToken, final Intent intent){
 
@@ -146,7 +91,7 @@ public class CheckoutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Api.merchantpay(new Api.VolleyCallback(){
+        VolleyRequestHandlerApi.api(new VolleyCallback(){
 
 
             @Override
@@ -168,7 +113,12 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 }
             }
-        },Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
+
+            @Override
+            public void login() {
+                    moveLogin();
+            }
+        }, Parameter.mechantpayUrl,Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
 
     private void TransactionFinise(String amount) {
@@ -227,6 +177,13 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onPause();
         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         //scanActivity.this.startActivity(myIntent);
+        finish();
+    }
+
+    public void moveLogin(){
+
+        Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
+        CheckoutActivity.this.startActivity(myIntent);
         finish();
     }
 

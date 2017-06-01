@@ -54,48 +54,6 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         setContentView(R.layout.activity_scan);
         populateScanList();
 
-/*
-        Button merchantPayButton=(Button)findViewById(R.id.buttonMerchantPay);
-        Button fundTransferButton = (Button)findViewById(R.id.buttonFundTransfer);
-        Button myQRCodeButton = (Button)findViewById(R.id.buttonMyQRCode);
-        Button transactionList = (Button)findViewById(R.id.transactionlistBtn);
-
-        merchantPayButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                scannerType = true; // merchant pay
-                QrScanner(v);
-                //
-            }
-        });
-
-        fundTransferButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scannerType = false;//direct fund transfer
-                //id = "021";
-                //name = "Dinesh Eranga";
-                //phoneNumber = "+94772448144";
-                QrScanner(v);
-            }
-        });
-
-        myQRCodeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(scanActivity.this, MyQRActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        transactionList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(scanActivity.this, TransactionReportActivity.class);
-                startActivity(intent);
-            }
-        });*/
     }
 
     private void populateScanList() {
@@ -114,13 +72,20 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
+
+
                 switch (position){
 
                     case 0 : myQrCode();
                         break;
-                    case 1 : merchantPay();
+                    case 1 :
+                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
+                            merchantPay();
+
                         break;
-                    case 2 : fundTransfer();
+                    case 2 :
+                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
+                            fundTransfer();
                         break;
                     case 3 : transactionList();
                         break;
@@ -186,7 +151,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         try {
             detail.put("id",""+merchant.getId());
 
-             VolleyRequestHandlerApi.getMerchantDetail(new VolleyCallback() {
+             VolleyRequestHandlerApi.api(new VolleyCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
 
@@ -282,6 +247,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         setContentView(mScannerView);
                 mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.<br />
         mScannerView.startCamera();         // Start camera<br />
+
     }
 
      @Override

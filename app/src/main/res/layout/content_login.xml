@@ -36,7 +36,7 @@
         android:textCursorDrawable="@color/colorPrimary"
         android:textColor="@color/colorAccent"
         android:focusable="true"
-
+        android:hint="@string/login_hint"
         android:layout_marginTop="10dp"
         />
 

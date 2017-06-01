@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
 import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
 import org.json.JSONArray;
@@ -15,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 public class TransactionReportActivity extends AppCompatActivity {
 
@@ -51,7 +54,7 @@ public class TransactionReportActivity extends AppCompatActivity {
             JSONObject todate = new JSONObject();
             todate.put("year",2017);
             todate.put("month",6);
-            todate.put("day",1);
+            todate.put("day",2);
 
             parameter.put("fromDate",fromdate);
             parameter.put("toDate",todate);
@@ -59,7 +62,7 @@ public class TransactionReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Api.api(new Api.VolleyCallback(){
+        VolleyRequestHandlerApi.api(new VolleyCallback(){
 
 
             @Override
@@ -81,7 +84,12 @@ public class TransactionReportActivity extends AppCompatActivity {
 
                 }
             }
-        },Api.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
+
+            @Override
+            public void login() {
+
+            }
+        }, Parameter.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
 
     }
 }

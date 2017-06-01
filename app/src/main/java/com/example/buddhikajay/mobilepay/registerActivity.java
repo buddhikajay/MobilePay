@@ -15,11 +15,14 @@ import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.MobileNumberPicker;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 
 public class registerActivity extends AppCompatActivity {
@@ -100,7 +103,7 @@ public class registerActivity extends AppCompatActivity {
 
         if(isValideRgisterData()){
             JSONObject payload = getRegisterData();
-            Api.userRegister(new Api.VolleyCallback(){
+            VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
                     //Log.d("register response",result.toString());
@@ -141,7 +144,12 @@ public class registerActivity extends AppCompatActivity {
 
 
                 }
-            },getApplicationContext(),payload);
+
+                @Override
+                public void login() {
+
+                }
+            }, Parameter.registerUrl,"",payload,getApplicationContext());
 
         }
 

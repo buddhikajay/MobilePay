@@ -10,11 +10,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 public class pinActivity extends AppCompatActivity {
     private EditText pin;
@@ -52,7 +55,7 @@ public class pinActivity extends AppCompatActivity {
 
 
         if(!pintext.isEmpty()){
-            Api.userRegisterUsingPin(new Api.VolleyCallback(){
+            VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
                     if(result.has("data")){
@@ -85,7 +88,12 @@ public class pinActivity extends AppCompatActivity {
                     }
 
                 }
-            },getApplicationContext(),payload);
+
+                @Override
+                public void login() {
+
+                }
+            }, Parameter.registerVerifyUrl,"",payload,getApplicationContext());
         }
 
     }

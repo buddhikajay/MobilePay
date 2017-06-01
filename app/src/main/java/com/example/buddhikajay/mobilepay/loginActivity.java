@@ -22,8 +22,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
@@ -45,13 +45,13 @@ public class loginActivity extends AppCompatActivity {
          passField = (EditText) findViewById(R.id.login_pin);
          //accountField = (EditText)findViewById(R.id.accountNo);
 
-        Button btn=(Button)findViewById(R.id.log_button);
+        final Button btn=(Button)findViewById(R.id.log_button);
 
         btn.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
-
+                btn.setEnabled(false);
                 login(v);
 
             }
@@ -85,7 +85,7 @@ public class loginActivity extends AppCompatActivity {
         if(isEnterdValideLoginData()){
             Map<String,String> params = getLoginCredential();
 
-            Api.authenticateUser(new Api.VolleyCallback(){
+            VolleyRequestHandlerApi.authenticateUser(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
                     if(result.has("access_token")){
@@ -99,6 +99,11 @@ public class loginActivity extends AppCompatActivity {
                     else {
                         Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
                     }
+
+                }
+
+                @Override
+                public void login() {
 
                 }
             },params,getApplicationContext());
