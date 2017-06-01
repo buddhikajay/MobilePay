@@ -155,44 +155,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 @Override
                 public void onSuccess(JSONObject result) {
 
-                    if(result.has("data")){
-                        JSONArray array= (JSONArray) result.opt("data");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
-                            //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
-                            merchantDetailResponseHandler(merchant, jsonObject);
-                            moveToCheckoutActivity(merchant);
-                           // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
-                            //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                    else if(result.has("errors")){
-                        JSONArray array= (JSONArray) result.opt("errors");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            if(jsonObject.opt("status").toString().equals("5000")){
-                                //setContentView(R.layout.activity_scan);
-                                Toast.makeText(getApplicationContext(),"wrong qr code",Toast.LENGTH_LONG).show();
-                                Intent intent = getIntent();
-                                finish();
-                                startActivity(intent);
-
-                                Log.d("error","5000");
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
+                    responseProcess(result,merchant);
 
                 }
 
@@ -310,6 +273,46 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         scanActivity.this.startActivity(myIntent);
         finish();
+    }
+    private void responseProcess(JSONObject result,Merchant merchant){
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                merchantDetailResponseHandler(merchant, jsonObject);
+                moveToCheckoutActivity(merchant);
+                // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+                //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("5000")){
+                    //setContentView(R.layout.activity_scan);
+                    Toast.makeText(getApplicationContext(),"wrong qr code",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+
+                    Log.d("error","5000");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
     }
 
 
