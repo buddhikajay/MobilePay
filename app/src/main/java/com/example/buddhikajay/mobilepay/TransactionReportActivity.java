@@ -1,9 +1,11 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.app.ActionBar;
 
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
 import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
@@ -87,7 +89,7 @@ public class TransactionReportActivity extends AppCompatActivity {
 
             @Override
             public void login() {
-
+                moveLogin();
             }
 
             @Override
@@ -96,5 +98,12 @@ public class TransactionReportActivity extends AppCompatActivity {
             }
         }, Parameter.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
 
+    }
+
+    public void moveLogin(){
+
+        Intent myIntent = new Intent(TransactionReportActivity.this, loginActivity.class);
+        TransactionReportActivity.this.startActivity(myIntent);
+        finish();
     }
 }

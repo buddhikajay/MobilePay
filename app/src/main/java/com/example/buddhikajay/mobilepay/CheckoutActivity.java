@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 
 public class CheckoutActivity extends AppCompatActivity {
@@ -75,7 +76,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 //Log.d("CheckoutActivity:number",phoneNumber);
 
                 //pay transaction
-                payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent);
+                showmessgebox(amount, intent.getStringExtra("name"),intent);
+
 
             }
         });
@@ -121,7 +123,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
-    private void showmessgebox(final String amount, String username){
+    private void showmessgebox(final String amount, String username, final Intent intent){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog .setMessage("Pay "+amount+" to "+username+"?");
@@ -134,13 +136,9 @@ public class CheckoutActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_LONG).show();
-                        Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
-                        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        myIntent.putExtra("amount",amount);
-                        CheckoutActivity.this.startActivity(myIntent);
+                        payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent);
+                        //Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_LONG).show();
 
-                        finish();
                     }
                 });
 
@@ -166,9 +164,9 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
-        //scanActivity.this.startActivity(myIntent);
-        finish();
+        //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
+        //CheckoutActivity.this.startActivity(myIntent);
+        //finish();
     }
 
     public void moveLogin(){
@@ -186,8 +184,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 Log.d("Transaction:Checkout",jsonObject.toString());
                 Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
                 Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
-                showmessgebox(amount, intent.getStringExtra("name"));
-                //TransactionFinise(amount);
+                moveToFinishActivity(amount);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -195,6 +193,16 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         }
+
+    }
+    private void moveToFinishActivity(String amount){
+        Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        myIntent.putExtra("amount",amount);
+
+        CheckoutActivity.this.startActivity(myIntent);
+
+        finish();
 
     }
 

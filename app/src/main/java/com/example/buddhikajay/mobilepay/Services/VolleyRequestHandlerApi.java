@@ -67,6 +67,7 @@ public class VolleyRequestHandlerApi {
                         }
 
                         else if(error instanceof NoConnectionError){
+                            callback.login();
                             Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
                         }
 

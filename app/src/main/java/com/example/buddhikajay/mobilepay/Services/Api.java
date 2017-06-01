@@ -110,7 +110,7 @@ public class Api {
 
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(phoneNumber, null, message, null, null);
-            Toast.makeText(context, "sent", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "sent", Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
             Log.d("exception:sms","Sms");

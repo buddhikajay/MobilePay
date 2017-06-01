@@ -62,34 +62,8 @@ public class pinActivity extends AppCompatActivity {
             VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
-                    if(result.has("data")){
-                        JSONArray array= (JSONArray) result.opt("data");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            Log.d("sss", jsonObject.opt("success").toString() );
-                            Api.setRegisterVerify(getApplicationContext(),"true");
-                            //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-                            //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
-                            finish();
-                            moveToLogin();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                    else if(result.has("errors")){
-                        JSONArray array= (JSONArray) result.opt("errors");
-                        try {
-                            JSONObject jsonObject = array.getJSONObject(0);
-                            if(jsonObject.opt("status").toString().equals("5000")){
-                                Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    responseProcess(result);
 
                 }
 
@@ -106,9 +80,41 @@ public class pinActivity extends AppCompatActivity {
         }
 
     }
+    private void responseProcess(JSONObject result){
+
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                Log.d("sss", jsonObject.opt("success").toString() );
+                Api.setRegisterVerify(getApplicationContext(),"true");
+                //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+                //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+                finish();
+                moveToLogin();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("5000")){
+                    Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private void moveToLogin(){
 
         Intent myIntent = new Intent(pinActivity.this, loginActivity.class);
         pinActivity.this.startActivity(myIntent);
+        finish();
     }
 }
