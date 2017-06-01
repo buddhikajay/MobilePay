@@ -29,6 +29,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
     String username;
+    Button payButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +63,12 @@ public class CheckoutActivity extends AppCompatActivity {
         nameTextView.setText(intent.getStringExtra("name"));
         addressTextView.setText(intent.getStringExtra("address"));
 
-        Button payButton = (Button) findViewById(R.id.buttonPay);
+        payButton = (Button) findViewById(R.id.buttonPay);
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
+                payButton.setEnabled(false);
                 TextView amountTextView = (TextView) findViewById(R.id.amountEditText);
                 String amount = amountTextView.getText().toString();
 
@@ -96,22 +97,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject result) {
-                if(result.has("data")){
-                    JSONArray array= (JSONArray) result.opt("data");
-                    try {
-                        JSONObject jsonObject = array.getJSONObject(0);
-                        Log.d("Transaction:Checkout",jsonObject.toString());
-                        Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
-                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
-                        showmessgebox(amount, intent.getStringExtra("name"));
-                        //TransactionFinise(amount);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
+                responseProcess(result,amount,intent);
             }
 
             @Override
@@ -121,7 +107,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void enableButton() {
-
+                payButton.setEnabled(true);
             }
         }, Parameter.mechantpayUrl,Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
@@ -190,6 +176,26 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
         CheckoutActivity.this.startActivity(myIntent);
         finish();
+    }
+
+    private void responseProcess(JSONObject result,String amount,Intent intent){
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                Log.d("Transaction:Checkout",jsonObject.toString());
+                Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
+                Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
+                showmessgebox(amount, intent.getStringExtra("name"));
+                //TransactionFinise(amount);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
     }
 
 }
