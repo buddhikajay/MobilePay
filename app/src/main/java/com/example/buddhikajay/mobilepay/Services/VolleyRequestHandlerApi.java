@@ -101,7 +101,7 @@ public class VolleyRequestHandlerApi {
                 Map<String, String> params = new HashMap<>();
                 params.put("Content-Type", "application/json");
                 params.put("Accept", "application/json");
-                params.put("Authorization", "Bearer 602ebbb5-b95d-33a9-8d95-eb0f3d38d6e6"+token);
+                params.put("Authorization", "Bearer "+token);
                 return params;
             }
 
