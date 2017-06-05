@@ -39,7 +39,7 @@
         android:focusable="true"
         android:layout_below="@+id/logo"
         android:layout_marginTop="10dp"
-        android:hint="AccountNo"
+        android:hint="@string/Account_hint"
         />
     <EditText
         android:layout_width="fill_parent"
@@ -57,7 +57,7 @@
         android:focusable="true"
         android:layout_below="@+id/accountNo"
         android:layout_marginTop="10dp"
-        android:hint="Nic"
+        android:hint="@string/nic_hint"
         />
     <EditText
         android:layout_width="fill_parent"
@@ -75,7 +75,7 @@
         android:focusable="true"
         android:layout_below="@+id/nic"
         android:layout_marginTop="10dp"
-        android:hint="MobileNo"
+        android:hint="@string/mobile_hint"
         />
     <EditText
         android:layout_width="fill_parent"

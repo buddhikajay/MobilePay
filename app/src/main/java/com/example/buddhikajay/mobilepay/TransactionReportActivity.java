@@ -3,7 +3,9 @@ package com.example.buddhikajay.mobilepay;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.app.ActionBar;
 import android.widget.Toast;
@@ -29,11 +31,32 @@ public class TransactionReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_transaction_report);
-        getTransaction();
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTransaction);
+        //setSupportActionBar(toolbar);
+        //final ActionBar bar = getActionBar();
+        if (getSupportActionBar() != null){
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getTransaction();
+        }
+
+
 
 
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                moveLogin();
+                break;
+        }
+        return true;
+    }
+
     private void populateTransactionList(JSONArray transactions) {
         Log.d("Transaction activity","trnsaction list populating");
         // Construct the data source

@@ -19,9 +19,10 @@
     <string name="title_activity_my_qr">My QRCode</string>
 
     <string name="signup">SignUp</string>
-    <string name="password_hint">Please Enter Password</string>
-
-
+    <string name="password_hint">Password</string>
+    <string name="mobile_hint">Mobile Number</string>
+    <string name="nic_hint">Nic Number</string>
+    <string name="Account_hint">Account Number</string>
 
     //store data
     <string name="access_token">1</string>
