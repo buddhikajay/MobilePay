@@ -67,7 +67,7 @@ public class VolleyRequestHandlerApi {
                         }
 
                         else if(error instanceof NoConnectionError){
-                            callback.login();
+                            callback.enableButton();
                             Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
                         }
 
@@ -136,8 +136,9 @@ public class VolleyRequestHandlerApi {
 
                         }
                         else if(error instanceof NoConnectionError){
-                            Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
                             callback.enableButton();
+                            Toast.makeText(context,"Connection Error",Toast.LENGTH_LONG).show();
+
                         }
 
                         else if (error instanceof TimeoutError) {

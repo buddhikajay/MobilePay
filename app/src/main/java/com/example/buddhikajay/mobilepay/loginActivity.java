@@ -100,6 +100,7 @@ public class loginActivity extends AppCompatActivity {
 
                 @Override
                 public void enableButton() {
+
                     btn.setEnabled(true);
                     //v.setVisibility(View.VISIBLE);
                 }
