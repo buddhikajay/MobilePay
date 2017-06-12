@@ -1,10 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -35,12 +37,14 @@ public class registerActivity extends AppCompatActivity {
     private EditText nicField;
     private EditText mobileNoField;
     private EditText passwordField;
+    private EditText rePasswordField;
 
 
     private String accountNo;
     private String nic;
     private String mobileNo;
     private String password;
+    private String rePassword;
 
      Button signup;
     @Override
@@ -56,6 +60,7 @@ public class registerActivity extends AppCompatActivity {
         nicField = (EditText) findViewById(R.id.nic);
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
+        rePasswordField = (EditText) findViewById(R.id.retypepassword);
 
         signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
@@ -74,15 +79,40 @@ public class registerActivity extends AppCompatActivity {
         nic = nicField.getText().toString();
         mobileNo = mobileNoField.getText().toString();
         password = passwordField.getText().toString();
-        if( !accountNo.matches("") && !nic.matches("") && !mobileNo.matches("") && !password.matches("")){
-            return true;
+        rePassword =rePasswordField.getText().toString();
+        if (accountNo.matches("")){
+            accountNoField.requestFocus();
+            accountNoField.setError("Enter Account Number");
+            //showError(accountNoField,"Enter Account Number");
         }
+        else if  (nic.matches("")){
+            nicField.requestFocus();
+            nicField.setError("Enter NIC");
+            //showError(nicField,"Enter NIC");
+        }
+        else if (mobileNo.matches("")){
+            mobileNoField.requestFocus();
+            mobileNoField.setError("Enter Mobile Number");
+        }
+        else if (password.matches("")){
+            passwordField.requestFocus();
+            passwordField.setError("Enter Password");
+        }
+        else if (rePassword.matches("")){
+            rePasswordField.requestFocus();
+            rePasswordField.setError("Re Enter Password");
+        }
+        else if(password.matches(rePassword.toString())){
+                return true;
+            }
         else {
-
-            //Log.d("register","not valide register Data");
-            Toast.makeText(getApplicationContext(),"please fill register impormation",Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getApplicationContext(),"password doesnt match",Toast.LENGTH_LONG).show();
+            rePasswordField.requestFocus();
+            rePasswordField.setError("password doesnt match");
         }
+
+
+
         return false;
     }
     private JSONObject getRegisterData(){

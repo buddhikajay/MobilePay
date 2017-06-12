@@ -23,6 +23,7 @@
     <string name="mobile_hint">Mobile Number</string>
     <string name="nic_hint">Nic Number</string>
     <string name="Account_hint">Account Number</string>
+    <string name="retype_password_hint">Retype Password</string>
 
     //store data
     <string name="access_token">1</string>
@@ -30,4 +31,5 @@
 
     //login Screen
     <string name="login_hint">Please Enter Password</string>
+
 </resources>

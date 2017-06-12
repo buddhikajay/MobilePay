@@ -30,7 +30,7 @@ public class pinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pin);
 
         pin = (EditText) findViewById(R.id.reg_pin);
-        final Button ok_btn = (Button) findViewById(R.id.ok_button);
+        ok_btn = (Button) findViewById(R.id.ok_button);
 
         ok_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +44,7 @@ public class pinActivity extends AppCompatActivity {
     }
 
     private void registerUser(View v){
-
+        if(pintextValidation()){
         String pintext = pin.getText().toString();
         Log.d("user id",""+ Api.getRegisterId(getApplicationContext()));
         JSONObject payload = new JSONObject();
@@ -58,7 +58,7 @@ public class pinActivity extends AppCompatActivity {
         }
 
 
-        if(!pintext.isEmpty()){
+
             VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
@@ -79,6 +79,20 @@ public class pinActivity extends AppCompatActivity {
             }, Parameter.registerVerifyUrl,"",payload,getApplicationContext());
         }
 
+    }
+    private boolean pintextValidation(){
+        String pintext = pin.getText().toString();
+
+        if (pintext.matches("")){
+            pin.requestFocus();
+            pin.setError("Enter Pin Number");
+            //showError(accountNoField,"Enter Account Number");
+
+        }
+        else {
+            return true;
+        }
+        return false;
     }
     private void responseProcess(JSONObject result){
 
@@ -105,7 +119,10 @@ public class pinActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 if(jsonObject.opt("status").toString().equals("5000")){
-                    Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+                    pin.requestFocus();
+                    pin.setError("Pin Number Wrong");
+                    ok_btn.setEnabled(true);
+                    //Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
