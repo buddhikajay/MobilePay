@@ -1,5 +1,6 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.example.buddhikajay.mobilepay.AppManu.MyQrCode;
 import com.example.buddhikajay.mobilepay.Services.Api;
 
 import net.glxn.qrgen.android.QRCode;
@@ -35,6 +37,7 @@ public class MyQRActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            moveLogin();
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
@@ -46,7 +49,20 @@ public class MyQRActivity extends AppCompatActivity {
 
         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         //scanActivity.this.startActivity(myIntent);
+        moveLogin();
+        finish();
+    }
+    public void moveLogin(){
+
+        Intent myIntent = new Intent(MyQRActivity.this, loginActivity.class);
+        MyQRActivity.this.startActivity(myIntent);
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveLogin();
+        finish();
+    }
 }

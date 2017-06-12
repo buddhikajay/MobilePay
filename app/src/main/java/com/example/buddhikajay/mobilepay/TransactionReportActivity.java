@@ -151,4 +151,12 @@ public class TransactionReportActivity extends AppCompatActivity {
         TransactionReportActivity.this.startActivity(myIntent);
         finish();
     }
+    @Override
+    public void onBackPressed() {
+//        Intent myIntent = new Intent(CheckoutActivity.this, Main2Activity.class);
+//        CheckoutActivity.this.startActivity(myIntent);
+        moveLogin();
+        finish();
+
+    }
 }

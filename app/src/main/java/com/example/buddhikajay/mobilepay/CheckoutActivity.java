@@ -149,8 +149,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
-        CheckoutActivity.this.startActivity(myIntent);
+//        Intent myIntent = new Intent(CheckoutActivity.this, Main2Activity.class);
+//        CheckoutActivity.this.startActivity(myIntent);
+        moveLogin();
         finish();
 
     }
@@ -164,6 +165,7 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        moveLogin();
         //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
@@ -222,5 +224,6 @@ public class CheckoutActivity extends AppCompatActivity {
         finish();
 
     }
+
 
 }
