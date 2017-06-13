@@ -62,6 +62,7 @@ public class VolleyRequestHandlerApi {
                             Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
                         }
                         else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
+                            callback.enableButton();
                             Toast.makeText(context,"password wrong",Toast.LENGTH_LONG).show();
 
                         }
@@ -124,6 +125,7 @@ public class VolleyRequestHandlerApi {
                         // TODO Auto-generated method stub
                         Log.d("err",error.getMessage());
                         error.printStackTrace();
+                        callback.login();
 
                         NetworkResponse networkResponse = error.networkResponse;
                         if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {

@@ -51,10 +51,16 @@ public class TransactionReportActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                moveLogin();
+                moveScan();
                 break;
         }
         return true;
+    }
+
+    private void moveScan() {
+        Intent myIntent = new Intent(TransactionReportActivity.this, scanActivity.class);
+        TransactionReportActivity.this.startActivity(myIntent);
+        finish();
     }
 
     private void populateTransactionList(JSONArray transactions) {
@@ -78,9 +84,9 @@ public class TransactionReportActivity extends AppCompatActivity {
             fromdate.put("day",1);
 
             JSONObject todate = new JSONObject();
-            todate.put("year",2017);
+            todate.put("year",2018);
             todate.put("month",6);
-            todate.put("day",2);
+            todate.put("day",22);
 
             parameter.put("fromDate",fromdate);
             parameter.put("toDate",todate);
@@ -153,9 +159,8 @@ public class TransactionReportActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-//        Intent myIntent = new Intent(CheckoutActivity.this, Main2Activity.class);
-//        CheckoutActivity.this.startActivity(myIntent);
-        moveLogin();
+        moveScan();
+        //moveLogin();
         finish();
 
     }

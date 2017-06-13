@@ -164,7 +164,7 @@ public class loginActivity extends AppCompatActivity {
     }
     public void moveToScanActivity(){
         finish();
-        Intent myIntent = new Intent(loginActivity.this, Main2Activity.class);
+        Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
         loginActivity.this.startActivity(myIntent);
 
     }

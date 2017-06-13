@@ -144,9 +144,7 @@ public class Main2Activity extends AppCompatActivity
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_my_qr:
-                myQrCode();
-                break;
+
             case R.id.nav_merchant_pay:
                 Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
                 merchantPay();
@@ -154,6 +152,9 @@ public class Main2Activity extends AppCompatActivity
             case R.id.nav_fund_transfer:
                 Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
                 fundTransfer();
+                break;
+            case R.id.nav_my_qr:
+                myQrCode();
                 break;
             case R.id.nav_Transaction_report:
                 transactionList();

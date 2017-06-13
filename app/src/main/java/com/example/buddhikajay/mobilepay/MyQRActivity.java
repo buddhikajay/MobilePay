@@ -15,6 +15,7 @@ import net.glxn.qrgen.android.QRCode;
 
 public class MyQRActivity extends AppCompatActivity {
 
+    private boolean complete=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class MyQRActivity extends AppCompatActivity {
 
         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         //scanActivity.this.startActivity(myIntent);
+        if(!complete)
         moveLogin();
         finish();
     }
@@ -62,7 +64,14 @@ public class MyQRActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        moveLogin();
+        complete = true;
+        moveScan();
+        finish();
+    }
+
+    private void moveScan() {
+        Intent myIntent = new Intent(MyQRActivity.this, scanActivity.class);
+        MyQRActivity.this.startActivity(myIntent);
         finish();
     }
 }

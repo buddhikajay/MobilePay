@@ -76,16 +76,17 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
                 switch (position){
 
-                    case 0 : myQrCode();
-                        break;
-                    case 1 :
+
+                    case 0 :
                             Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
                             merchantPay();
 
                         break;
-                    case 2 :
+                    case 1 :
                             Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
                             fundTransfer();
+                        break;
+                    case 2 : myQrCode();
                         break;
                     case 3 : transactionList();
                         break;
