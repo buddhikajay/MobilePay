@@ -17,4 +17,7 @@ public class Formate {
         formatted=formatted.replaceAll("[$]", "")+" LKR";
          return formatted;
     }
+    public static boolean mobileNumberValidate(String mobileNumber){
+        return true;
+    }
 }

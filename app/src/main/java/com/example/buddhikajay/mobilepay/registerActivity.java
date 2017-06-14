@@ -7,6 +7,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,6 +28,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class registerActivity extends AppCompatActivity {
@@ -68,7 +74,136 @@ public class registerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 signup.setEnabled(false);
                 Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
-                userRegister(v);
+                if(isValideRgisterData()){
+                    userRegister(v);
+                }
+                else {
+                    signup.setEnabled(true);
+                }
+
+
+            }
+        });
+        mobileValidate(mobileNoField);
+        nicValidation(nicField);
+        //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+    }
+    private void nicValidation(final EditText nic){
+
+        nic.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String regex;
+                Pattern p;
+                Matcher m;
+                nic.removeTextChangedListener(this);
+                if (s.length()<=9){
+                    Log.d("change","9");
+                    regex = "[^\\d]";
+                    p = Pattern.compile(regex);
+                    m = p.matcher(s.toString());
+                    nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    if(m.matches()){
+                        String cleanString = s.toString().replaceAll(regex, "");
+                        nic.setText(cleanString);
+
+                        nic.setSelection(cleanString.length());
+                    }
+                    if(s.length()==9){
+                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+                    }
+
+
+                }
+                else if(s.length()==10){
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X'){
+
+                    }
+                    else {
+                        String cleanString = s.toString().replaceAll("[^\\d]", "");
+                        nic.setText(cleanString);
+                        nic.setSelection(9);
+                    }
+                }
+                nic.addTextChangedListener(this);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+    }
+    private void mobileValidate(final EditText mobileText){
+        mobileText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mobileText.removeTextChangedListener(this);
+                Log.d("mobile listene","true");
+                if (s.length()!=0){
+                        String regex;
+                        Pattern p;
+                        Matcher m;
+                        if(s.length() == 1){
+                            //Log.d("lenght","1");
+                            regex = "^[0]";
+                            p = Pattern.compile(regex);
+                            m = p.matcher(s.toString());
+                            if(!m.matches()){
+                                Log.d("length","1");
+                                String cleanString = s.toString().replaceAll(regex, "");
+
+                                mobileText.setText("");
+
+
+                            }
+
+                        }
+                        else if(s.length() ==2){
+                            regex = "^[0][1,7,9]";
+                            p = Pattern.compile(regex);
+                            m = p.matcher(s.toString());
+                            if(!m.matches()){
+                                //String cleanString = s.toString().replaceAll(regex, "");
+                                //Log.d("length",""+s.charAt(0));
+                                mobileText.setText(s.charAt(0)+"");
+                                mobileText.setSelection(1);
+                            }
+                        }
+                        else if(s.length() ==3){
+                            regex = "^[0](11|71|70|75|76|77|72|78])";
+                            p = Pattern.compile(regex);
+                            m = p.matcher(s.toString());
+                            if(!m.matches()){
+                                Log.d("length3",""+s.toString());
+                                //String cleanString = s.toString().replaceAll(regex, "");
+                                mobileText.setText(s.charAt(0)+""+s.charAt(1));
+                                mobileText.setSelection(2);
+                            }
+
+                        }
+
+
+                    }
+
+                mobileText.addTextChangedListener(this);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -85,24 +220,37 @@ public class registerActivity extends AppCompatActivity {
             accountNoField.setError("Enter Account Number");
             //showError(accountNoField,"Enter Account Number");
         }
-        else if  (nic.matches("")){
+        else if  (nic.matches("") || nic.length() < 10){
             nicField.requestFocus();
             nicField.setError("Enter NIC");
             //showError(nicField,"Enter NIC");
         }
-        else if (mobileNo.matches("")){
+        else if (mobileNo.matches("") || mobileNo.length() < 10){
             mobileNoField.requestFocus();
             mobileNoField.setError("Enter Mobile Number");
         }
-        else if (password.matches("")){
-            passwordField.requestFocus();
-            passwordField.setError("Enter Password");
+        else if (password.matches("") || password.length() <6){
+            if(password.length() <6){
+                passwordField.requestFocus();
+                passwordField.setError("password length greater than 6");
+            }
+            else {
+                passwordField.requestFocus();
+                passwordField.setError("Enter Password");
+            }
         }
-        else if (rePassword.matches("")){
-            rePasswordField.requestFocus();
-            rePasswordField.setError("Re Enter Password");
+        else if (rePassword.matches("") || rePasswordField.length() <6){
+            if(rePasswordField.length() <6){
+                rePasswordField.requestFocus();
+                rePasswordField.setError("password length greater than 5");
+            }
+            else {
+                rePasswordField.requestFocus();
+                rePasswordField.setError("Re Enter Password");
+            }
+
         }
-        else if(password.matches(rePassword.toString())){
+        else if(password.matches(rePassword.toString()) && rePassword.length() >=6){
                 return true;
             }
         else {
@@ -133,7 +281,7 @@ public class registerActivity extends AppCompatActivity {
         Log.d("registerActivity", "user validations");
         //Toast.makeText(getApplicationContext(),"Credential not valide",Toast.LENGTH_LONG).show();
 
-        if(isValideRgisterData()){
+
             JSONObject payload = getRegisterData();
             VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
@@ -155,7 +303,7 @@ public class registerActivity extends AppCompatActivity {
                 }
             }, Parameter.registerUrl,"",payload,getApplicationContext());
 
-        }
+
 
     }
 
@@ -217,9 +365,11 @@ public class registerActivity extends AppCompatActivity {
 
                 if(jsonObject.opt("status").toString().equals("409")){
                     Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
+                    signup.setEnabled(true);
                 }
                 else if(jsonObject.opt("status").toString().equals("422")){
                     Toast.makeText(getApplicationContext(),"Account Does Not Exist",Toast.LENGTH_LONG).show();
+                    signup.setEnabled(true);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

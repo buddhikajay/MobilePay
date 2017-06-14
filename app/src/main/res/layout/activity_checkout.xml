@@ -72,7 +72,8 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/amountEditText" />
+        android:id="@+id/amountEditText"
+        android:hint="Amount"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button

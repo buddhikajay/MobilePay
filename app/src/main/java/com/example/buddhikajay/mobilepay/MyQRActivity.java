@@ -38,7 +38,8 @@ public class MyQRActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            moveLogin();
+            complete=true;
+            moveScan();
             finish(); // close this activity and return to preview activity (if there is any)
         }
 

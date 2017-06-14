@@ -277,7 +277,7 @@ public class CheckoutActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
-                Api.sendSms(phoneNumber, "LKR "+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
+                Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
                 Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
                 moveToFinishActivity(amount);
 

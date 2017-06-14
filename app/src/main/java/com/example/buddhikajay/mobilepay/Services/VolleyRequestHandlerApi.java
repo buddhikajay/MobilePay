@@ -125,7 +125,7 @@ public class VolleyRequestHandlerApi {
                         // TODO Auto-generated method stub
                         Log.d("err",error.getMessage());
                         error.printStackTrace();
-                        callback.login();
+                        //callback.login();
 
                         NetworkResponse networkResponse = error.networkResponse;
                         if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
