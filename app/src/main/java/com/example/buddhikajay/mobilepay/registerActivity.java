@@ -365,6 +365,7 @@ public class registerActivity extends AppCompatActivity {
 
                 if(jsonObject.opt("status").toString().equals("409")){
                     Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_LONG).show();
+
                     signup.setEnabled(true);
                 }
                 else if(jsonObject.opt("status").toString().equals("422")){
@@ -376,6 +377,5 @@ public class registerActivity extends AppCompatActivity {
             }
         }
     }
-
 
 }

@@ -18,6 +18,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Identities.ScanListModel;
 import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.Formate;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Identities.Merchant;
@@ -202,7 +203,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
     private void moveToCheckoutActivity(Merchant merchant) {
         Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
-        myIntent.putExtra("id",merchant.getId());
+        myIntent.putExtra("id", Formate.idSplite( merchant.getId()));
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", this.scannerType);

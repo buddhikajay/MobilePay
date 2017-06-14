@@ -60,6 +60,7 @@ public class VolleyRequestHandlerApi {
                         if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
                             // HTTP Status Code: 401 Unauthorized
                             Toast.makeText(context,"Unauthorized",Toast.LENGTH_LONG).show();
+                            callback.enableButton();
                         }
                         else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
                             callback.enableButton();

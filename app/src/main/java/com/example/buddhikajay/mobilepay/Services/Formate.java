@@ -20,4 +20,9 @@ public class Formate {
     public static boolean mobileNumberValidate(String mobileNumber){
         return true;
     }
+    public static String idSplite(String id){
+        String splite[] = id.split("-");
+        return splite[0];
+
+    }
 }
