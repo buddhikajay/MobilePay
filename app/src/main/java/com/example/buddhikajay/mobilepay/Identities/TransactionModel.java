@@ -1,5 +1,7 @@
 package com.example.buddhikajay.mobilepay.Identities;
 
+import com.example.buddhikajay.mobilepay.Services.Formate;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +25,7 @@ public class TransactionModel {
 
     public TransactionModel(JSONObject object) {
         try {
-            this.accountNumber = object.getString("payerId");
+            this.accountNumber = Formate.idSplite(object.getString("payerId"));
             this.amount = object.getString("amount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = date.getString("date");
