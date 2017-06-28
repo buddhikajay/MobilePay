@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,9 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.buddhikajay.mobilepay.Identities.Merchant;
 import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Identities.User;
+import com.example.buddhikajay.mobilepay.Model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +26,6 @@ import com.example.buddhikajay.mobilepay.Services.Formate;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
-import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -70,7 +67,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
 
-        idTextView.setText(intent.getStringExtra("id"));
+        idTextView.setText(Formate.idSplite(intent.getStringExtra("id")));
         nameTextView.setText(intent.getStringExtra("name"));
         addressTextView.setText(intent.getStringExtra("address"));
         amountTextView = (EditText) findViewById(R.id.amountEditText);

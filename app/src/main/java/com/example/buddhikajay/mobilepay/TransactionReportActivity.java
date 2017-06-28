@@ -3,15 +3,13 @@ package com.example.buddhikajay.mobilepay;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.app.ActionBar;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
-import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
+import com.example.buddhikajay.mobilepay.Model.TransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;

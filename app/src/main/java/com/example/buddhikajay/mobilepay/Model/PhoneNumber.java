@@ -1,4 +1,4 @@
-package com.example.buddhikajay.mobilepay.Identities;
+package com.example.buddhikajay.mobilepay.Model;
 
 /**
  * Created by supun on 24/05/17.

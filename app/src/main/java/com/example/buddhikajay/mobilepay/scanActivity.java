@@ -7,21 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.ScanAdapter;
-import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
-import com.example.buddhikajay.mobilepay.Identities.ScanListModel;
-import com.example.buddhikajay.mobilepay.Identities.TransactionModel;
+import com.example.buddhikajay.mobilepay.Model.ScanListModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.Formate;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
-import com.example.buddhikajay.mobilepay.Identities.Merchant;
+import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -131,22 +126,13 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 builder.setTitle("Intents.Scan Result");
 
                 builder.setMessage(rawResult.getText());
-                Merchant merchant = new Merchant(rawResult.getText());
-                getMerchantDetail(merchant);
-                //AlertDialog alert1 = builder.create();
-                //alert1.show();
-                /*Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
-                myIntent.putExtra("userdata",rawResult.getText());
-                myIntent.putExtra("scannerType", this.scannerType);
-                myIntent.putExtra("id", this.id);
-                myIntent.putExtra("name", this.name);
-                myIntent.putExtra("address", this.address);
-                myIntent.putExtra("phoneNumber", this.phoneNumber);
 
-                scanActivity.this.startActivity(myIntent);*/
-                // If you would like to resume scanning, call this method below:<br />
-        // mScannerView.resumeCameraPreview(this);<br />
+                //QrCodeDecode
+//                Merchant merchant = new Merchant(rawResult.getText());
+//                getMerchantDetail(merchant);
     }
+
+
     private void getMerchantDetail(final Merchant merchant){
 
         JSONObject detail = new JSONObject();
@@ -183,29 +169,13 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 Log.d("address",address.toString());
                 merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
                 merchant.setPhoneNumber(result.opt("phoneNumber").toString());
-                //Log.d("phone Number",result.toString());
-                /*JSONArray numbers = (JSONArray) result.opt("phoneNumbers");
-                PhoneNumber phoneNumber = new PhoneNumber();
-
-                try {
-                    JSONObject number = (JSONObject) numbers.get(0);
-                    phoneNumber.setType(number.optString("value"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                PhoneNumber[] phoneNumbers = new PhoneNumber[1];
-                phoneNumbers[0] = phoneNumber;
-                merchant.setPhoneNumbers(phoneNumbers);
-                */
-
-
                 Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
     }
     private void moveToCheckoutActivity(Merchant merchant) {
         Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
-        myIntent.putExtra("id", Formate.idSplite( merchant.getId()));
+        myIntent.putExtra("id",  merchant.getId());
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", this.scannerType);

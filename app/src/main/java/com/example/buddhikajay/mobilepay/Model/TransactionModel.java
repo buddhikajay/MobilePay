@@ -1,4 +1,4 @@
-package com.example.buddhikajay.mobilepay.Identities;
+package com.example.buddhikajay.mobilepay.Model;
 
 import com.example.buddhikajay.mobilepay.Services.Formate;
 
