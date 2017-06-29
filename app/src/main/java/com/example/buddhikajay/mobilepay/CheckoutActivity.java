@@ -107,7 +107,9 @@ public class CheckoutActivity extends AppCompatActivity {
         staticAndDynamicQrHandle(paymentModel);
     }
     private void staticAndDynamicQrHandle(PaymentModel paymentModel){
+        Log.d("payment",paymentModel.toString());
 
+;
         if (paymentModel.isDynamic()){
             amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setEnabled(false);

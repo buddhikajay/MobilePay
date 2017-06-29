@@ -35,8 +35,7 @@ public class QrCodeSplite {
             QrModel qrModel = new QrModel();
 
             qrModel.setId(params[0]);
-
-            if(params[1].equals("$")){
+            if(params[1].equals("$") && params[2].equals("main")){
                 paymentModel.setDynamic(false);
             }
             else {
