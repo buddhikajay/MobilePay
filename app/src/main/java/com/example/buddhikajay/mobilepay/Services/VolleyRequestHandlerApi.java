@@ -127,7 +127,6 @@ public class VolleyRequestHandlerApi {
                         Log.d("err",error.getMessage());
                         error.printStackTrace();
                         //callback.login();
-
                         NetworkResponse networkResponse = error.networkResponse;
                         if (networkResponse != null && networkResponse.statusCode == HttpStatus.SC_UNAUTHORIZED) {
                             // HTTP Status Code: 401 Unauthorized

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Model.User;
 
@@ -29,6 +31,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 
 public class CheckoutActivity extends AppCompatActivity {
@@ -37,13 +40,16 @@ public class CheckoutActivity extends AppCompatActivity {
     String username;
     Button payButton;
     EditText amountTextView;
+    EditText tipTextView;
     boolean complete = false;
+    private PaymentModel paymentModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         final Intent intent = getIntent();
 
+        paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
         username = intent.getStringExtra("userdata");
         phoneNumber = intent.getStringExtra("phoneNumber");
         final boolean scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
@@ -64,13 +70,16 @@ public class CheckoutActivity extends AppCompatActivity {
             //hide address
             merchantAddressLabel.setVisibility(View.INVISIBLE);
             addressTextView.setVisibility(View.INVISIBLE);
+            tipTextView.setVisibility(View.INVISIBLE);
         }
 
 
         idTextView.setText(Formate.idSplite(intent.getStringExtra("id")));
         nameTextView.setText(intent.getStringExtra("name"));
         addressTextView.setText(intent.getStringExtra("address"));
+
         amountTextView = (EditText) findViewById(R.id.amountEditText);
+        tipTextView = (EditText) findViewById(R.id.tipEdit);
         payButton = (Button) findViewById(R.id.buttonPay);
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +99,27 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
         amountFormat( amountTextView);
+        amountFormat(tipTextView);
+        staticAndDynamicQrHandle(paymentModel);
+    }
+    private void staticAndDynamicQrHandle(PaymentModel paymentModel){
+
+        if (paymentModel.isDynamic()){
+            amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
+            amountTextView.setEnabled(false);
+
+        }else{
+
+        }
+
+        if(paymentModel.isTip()){
+
+        }
+        else{
+            tipTextView.setVisibility(View.INVISIBLE);
+        }
+
+
     }
     boolean changeAmount = false;
     private void amountFormat(final EditText value){

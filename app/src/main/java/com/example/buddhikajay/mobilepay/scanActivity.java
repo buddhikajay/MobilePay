@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.ScanAdapter;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Model.ScanListModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
+import com.example.buddhikajay.mobilepay.Services.QrCodeSplite;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
@@ -40,6 +42,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     private String id = "0097";
     private String name = "Cargills Foodcity Bambalabitiya";
     private String address = "123 Galle Road, Colombo 04";
+
 
 
     @Override
@@ -126,14 +129,15 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 builder.setTitle("Intents.Scan Result");
 
                 builder.setMessage(rawResult.getText());
-
+                PaymentModel paymentModel = QrCodeSplite.getInstance().spliteQrCode(rawResult.getText());
+                Log.d("code",paymentModel.toString());
                 //QrCodeDecode
-//                Merchant merchant = new Merchant(rawResult.getText());
-//                getMerchantDetail(merchant);
+               Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
+                getMerchantDetail(merchant,paymentModel);
     }
 
 
-    private void getMerchantDetail(final Merchant merchant){
+    private void getMerchantDetail(final Merchant merchant,final PaymentModel paymentModel){
 
         JSONObject detail = new JSONObject();
         try {
@@ -143,7 +147,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 @Override
                 public void onSuccess(JSONObject result) {
 
-                    responseProcess(result,merchant);
+                    responseProcess(result,merchant,paymentModel);
 
                 }
 
@@ -173,13 +177,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
     }
-    private void moveToCheckoutActivity(Merchant merchant) {
+    private void moveToCheckoutActivity(Merchant merchant, PaymentModel paymentModel) {
         Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
         myIntent.putExtra("id",  merchant.getId());
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", this.scannerType);
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
+        myIntent.putExtra("Paymodel",paymentModel);
         scanActivity.this.startActivity(myIntent);
         finish();
     }
@@ -248,7 +253,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         scanActivity.this.startActivity(myIntent);
         finish();
     }
-    private void responseProcess(JSONObject result,Merchant merchant){
+    private void responseProcess(JSONObject result,Merchant merchant,PaymentModel paymentModel){
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
@@ -256,7 +261,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
                 //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
                 merchantDetailResponseHandler(merchant, jsonObject);
-                moveToCheckoutActivity(merchant);
+                moveToCheckoutActivity(merchant,paymentModel);
                 // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
