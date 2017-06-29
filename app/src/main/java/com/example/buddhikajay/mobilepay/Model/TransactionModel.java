@@ -25,7 +25,7 @@ public class TransactionModel {
 
     public TransactionModel(JSONObject object) {
         try {
-            this.accountNumber = Formate.idSplite(object.getString("payerId"));
+            this.accountNumber = Formate.idSplite(object.getString("payeeId"));
             this.amount = object.getString("amount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = date.getString("date");

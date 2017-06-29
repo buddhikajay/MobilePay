@@ -43,6 +43,8 @@ public class CheckoutActivity extends AppCompatActivity {
     EditText tipTextView;
     boolean complete = false;
     private PaymentModel paymentModel;
+    private  String tipperId;
+    boolean[] changeAmount ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,8 +100,10 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        amountFormat( amountTextView);
-        amountFormat(tipTextView);
+        changeAmount = new boolean[2];
+        amountFormat( amountTextView,0);
+        amountFormat(tipTextView,1);
+
         staticAndDynamicQrHandle(paymentModel);
     }
     private void staticAndDynamicQrHandle(PaymentModel paymentModel){
@@ -114,6 +118,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         if(paymentModel.isTip()){
 
+            tipperId = paymentModel.getQrModels().get(1).getId();
         }
         else{
             tipTextView.setVisibility(View.INVISIBLE);
@@ -121,8 +126,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     }
-    boolean changeAmount = false;
-    private void amountFormat(final EditText value){
+    //boolean changeAmount = false;
+
+    private void amountFormat(final EditText value,final int i){
 
         value.addTextChangedListener(new TextWatcher(){
             DecimalFormat dec = new DecimalFormat("0.00");
@@ -157,7 +163,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     current = formatted;
                     value.setText(formatted);
 
-                    if(start ==0 && !changeAmount){
+                    if(start ==0 && !changeAmount[i]){
 
                         value.setSelection(formatted.length() - 4);
 
@@ -193,13 +199,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
                     value.addTextChangedListener(this);
-                    changeAmount = true;
+                    changeAmount[i] = true;
                 }
             }
         });
 
     }
-    private void payTrasaction(String mechantId, final String amount, String accessToken, final Intent intent){
+    private void payTrasaction(String mechantId, final String amount, String accessToken, final Intent intent, final boolean tip){
 
         JSONObject pay = new JSONObject();
         try {
@@ -215,7 +221,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(JSONObject result) {
-                responseProcess(result,amount,intent);
+                responseProcess(result,amount,intent,tip);
             }
 
             @Override
@@ -253,7 +259,17 @@ public class CheckoutActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent);
+                        payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
+                        Log.d("merchantId",intent.getStringExtra("id"));
+                        if(paymentModel.isTip() ){
+                            String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
+                            if(Double.parseDouble(tipamount)>0.0){
+                                payTrasaction(tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
+                                Log.d("tipperid",tipperId);
+                            }
+
+                        }
+
                         //Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_LONG).show();
 
                     }
@@ -298,7 +314,7 @@ public class CheckoutActivity extends AppCompatActivity {
         finish();
     }
 
-    private void responseProcess(JSONObject result,String amount,Intent intent){
+    private void responseProcess(JSONObject result,String amount,Intent intent,boolean tip){
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
@@ -306,7 +322,10 @@ public class CheckoutActivity extends AppCompatActivity {
                 Log.d("Transaction:Checkout",jsonObject.toString());
                 Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
                 Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
-                moveToFinishActivity(amount);
+                if(!tip){
+                    moveToFinishActivity(amount);
+                }
+
 
 
             } catch (JSONException e) {
