@@ -15,9 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Model.Merchant;
+import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,6 +39,10 @@ public class loginActivity extends AppCompatActivity {
     private String password;
 
      Button btn;
+
+
+    private boolean innerApp;
+    private PaymentModel paymentModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,17 @@ public class loginActivity extends AppCompatActivity {
             }
         });
 
+        final Intent intent = getIntent();
+        innerApp = intent.getBooleanExtra("innerApp",false);
+        if(innerApp){
+            paymentModel =  (PaymentModel)intent.getSerializableExtra("Paymodel");
+
+        }
+
+    }
+    private void payInnappPerchase(){
+        Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
+        getMerchantDetail(merchant,paymentModel);
 
     }
     private boolean isEnterdValideLoginData(){
@@ -183,6 +203,10 @@ public class loginActivity extends AppCompatActivity {
             //login successs go totransaction
             Log.d("loginActivity","user login success");
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
+            if (innerApp){
+                payInnappPerchase();
+            }
+            else
             moveToScanActivity();
 
         }
@@ -190,5 +214,104 @@ public class loginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+    //ToDO reuseble component change architecture
+
+    private void getMerchantDetail(final Merchant merchant,final PaymentModel paymentModel){
+
+        JSONObject detail = new JSONObject();
+        try {
+            detail.put("id",""+merchant.getId());
+
+            VolleyRequestHandlerApi.api(new VolleyCallback() {
+                @Override
+                public void onSuccess(JSONObject result) {
+
+                    responseProcess(result,merchant,paymentModel);
+
+                }
+
+                @Override
+                public void login() {
+
+                }
+
+                @Override
+                public void enableButton() {
+
+                }
+            }, Parameter.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void responseProcess(JSONObject result,Merchant merchant,PaymentModel paymentModel){
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                merchantDetailResponseHandler(merchant, jsonObject);
+                moveToCheckoutActivity(merchant,paymentModel);
+                // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+                //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("5000")){
+                    //setContentView(R.layout.activity_scan);
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+
+                    Log.d("error","5000");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    private void merchantDetailResponseHandler(Merchant merchant,JSONObject result){
+
+        merchant.setMerchantName(result.opt("merchantName").toString());
+        JSONObject address = (JSONObject) result.opt("address");
+        Log.d("address",address.toString());
+        merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
+        merchant.setPhoneNumber(result.opt("phoneNumber").toString());
+        Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+        Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+    }
+    private void moveToCheckoutActivity(Merchant merchant, PaymentModel paymentModel) {
+        Intent myIntent = new Intent(this, CheckoutActivity.class);
+        myIntent.putExtra("id",  merchant.getId());
+        myIntent.putExtra("name",merchant.getMerchantName());
+        myIntent.putExtra("address",merchant.getMerchantAddress());
+        myIntent.putExtra("scannerType", true);
+        myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
+        myIntent.putExtra("Paymodel",paymentModel);
+        startActivity(myIntent);
+        finish();
+    }
+
+
 
 }

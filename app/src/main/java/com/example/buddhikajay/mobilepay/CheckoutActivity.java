@@ -111,6 +111,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 ;
         if (paymentModel.isDynamic()){
+            Log.d("amout paymodel",paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setEnabled(false);
 
@@ -123,7 +124,9 @@ public class CheckoutActivity extends AppCompatActivity {
             tipperId = paymentModel.getQrModels().get(1).getId();
         }
         else{
-            tipTextView.setVisibility(View.INVISIBLE);
+            Log.d("tip","notip");
+            tipTextView.setEnabled(false);
+            tipTextView.setVisibility(View.GONE);
         }
 
 

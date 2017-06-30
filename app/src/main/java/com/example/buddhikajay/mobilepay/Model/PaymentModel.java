@@ -15,10 +15,19 @@ public class PaymentModel  implements Serializable {
     private ArrayList<QrModel> qrModels;
     private boolean dynamic;
     private boolean tip;
+    private boolean innerApp;
 
     public PaymentModel() {
         qrModels = new ArrayList<>();
 
+    }
+
+    public boolean isInnerApp() {
+        return innerApp;
+    }
+
+    public void setInnerApp(boolean innerApp) {
+        this.innerApp = innerApp;
     }
 
     public boolean isTip() {
@@ -45,7 +54,9 @@ public class PaymentModel  implements Serializable {
         this.qrModels = qrModels;
     }
 
-
+    public void addQrModel(QrModel model){
+        qrModels.add(model);
+    }
     @Override
     public String toString() {
         String code = "";
