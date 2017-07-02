@@ -124,7 +124,7 @@ public class TransactionReportActivity extends AppCompatActivity {
                     populateTransactionList(array);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(),"Not Any Transaction",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"No Any Transaction",Toast.LENGTH_LONG).show();
                 }
 
 

@@ -46,10 +46,10 @@ public class ScanListModel {
     public static ArrayList<ScanListModel> getModel() {
         ArrayList<ScanListModel> scanListModels = new ArrayList<ScanListModel>();
 
-        scanListModels.add(new ScanListModel(R.mipmap.merchant_pay, "Merchant Pay",0));
-        scanListModels.add(new ScanListModel(R.mipmap.fud_transfer, "Fund Transfer",1));
-        scanListModels.add(new ScanListModel(R.mipmap.qr_code, "My QR Code",2));
-        scanListModels.add(new ScanListModel(R.mipmap.tra_report, "Transactin Report",3));
+        scanListModels.add(new ScanListModel(R.mipmap.merchant_pay, "MerchantPay",0));
+        scanListModels.add(new ScanListModel(R.mipmap.fud_transfer, "FundTransfer",1));
+        scanListModels.add(new ScanListModel(R.mipmap.qr_code, "MyQRCode",2));
+        scanListModels.add(new ScanListModel(R.mipmap.tra_report, "TransactinReport",3));
         //scanListModels.add(new ScanListModel("123234", "10000","2016-3-09"));
         //scanListModels.add(new ScanListModel("123234", "10000","2016-3-09"));
         return scanListModels;

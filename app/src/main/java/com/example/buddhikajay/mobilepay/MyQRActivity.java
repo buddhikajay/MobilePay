@@ -27,6 +27,7 @@ public class MyQRActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            String code = ""+Api.getRegisterId(getApplicationContext())+" $ user";
             Bitmap myBitmap = QRCode.from(""+ Api.getRegisterId(getApplicationContext())).withSize(400,400).bitmap();
             ImageView myImage = (ImageView) findViewById(R.id.imageView2);
             myImage.setImageBitmap(myBitmap);
