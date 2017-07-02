@@ -101,6 +101,19 @@ public class loginActivity extends AppCompatActivity {
         params.put("scope","openid");
         return params;
     }
+    private JSONObject getLoginDetail(){
+        JSONObject params=new JSONObject();
+        try {
+            params.put("grant_type","password");
+            params.put("username",""+ Api.getNic(getApplicationContext()));
+            params.put("password",""+password);
+            params.put("scope","openid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return params;
+    }
     private void login(final View v){
         Log.d("login data",""+Api.getNic(getApplicationContext()));
         if(isEnterdValideLoginData()){
@@ -125,6 +138,25 @@ public class loginActivity extends AppCompatActivity {
                     //v.setVisibility(View.VISIBLE);
                 }
             },params,getApplicationContext());
+
+           /*JSONObject detailLogin = getLoginDetail();
+
+           VolleyRequestHandlerApi.api(new VolleyCallback() {
+               @Override
+               public void onSuccess(JSONObject result) {
+                   responseProcess(result);
+               }
+
+               @Override
+               public void login() {
+
+               }
+
+               @Override
+               public void enableButton() {
+                   btn.setEnabled(true);
+               }
+           },Parameter.loginUrl,"",detailLogin,getApplicationContext());*/
         }
 
 

@@ -7,14 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black" />
+
 
 
     <!--TextView
@@ -25,6 +18,8 @@
         android:layout_marginTop="5dp"
         android:text="amount"
         android:textColor="@android:color/black" /-->
+
+
     <TextView
         android:id="@+id/accountNumber"
         android:layout_width="wrap_content"
@@ -32,9 +27,13 @@
         android:text="AccountNumber: "
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
+        android:gravity="right"
 
         />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/amount"
@@ -44,8 +43,22 @@
         android:textAppearance="?android:attr/textAppearanceButton"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:layout_marginTop="60dp"
+        android:gravity="center"
         />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Date"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        android:gravity="right"
+        android:textSize="10dp"/>
 </LinearLayout>
     <!--ImageView
         android:id="@+id/item_info"
