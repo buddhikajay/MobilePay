@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".finishActivity"
+    android:background="#ffffff">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,70 +17,87 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Merchant ID"
+        android:text="Merchant ID :"
         android:id="@+id/merchantIdLable"
-        android:layout_marginTop="10sp"
-        android:layout_marginLeft="10dp" />
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="15dp"
+         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0097"
         android:id="@+id/merchantIdTextView"
-        android:layout_marginBottom="10sp"
-        android:layout_marginLeft="15dp" />
+        android:paddingBottom="8dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Merchant Name"
+        android:text="Merchant Name :"
         android:id="@+id/merchantNameLable"
-        android:layout_marginLeft="10dp" />
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="15dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+
         android:text="Cargills Foodcity Bambalabitiya"
         android:id="@+id/merchantNameTextView"
         android:layout_weight="0.05"
-        android:layout_marginBottom="10sp"
-        android:layout_marginLeft="15dp" />
+        android:paddingBottom="8dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Merchant Address"
         android:id="@+id/merchantAddressLable"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginTop="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="15dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="123 Galle Road, Colombo 04"
         android:id="@+id/addressTextView"
-        android:layout_marginBottom="10sp"
-        android:layout_marginLeft="15dp" />
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:textSize="15dp"
+        android:layout_marginLeft="20dp"
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Amount"
-        android:id="@+id/textView2"
-        android:layout_marginLeft="10dp" />
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:layout_width="360sp"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/amountEditText" />
+        android:id="@+id/amountEditText"
+        android:hint="Amount"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="360sp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/tipEdit"
+            android:hint="Tip"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="360sp"
@@ -80,5 +107,6 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:background="@color/colorPrimary"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="30dp" />
 </LinearLayout>
+    </RelativeLayout>

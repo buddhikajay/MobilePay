@@ -13,31 +13,41 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="Amount Paid"
         android:id="@+id/transation_message"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp" />
+        android:layout_marginTop="10dp"
 
-    <Button
-        android:layout_width="match_parent"
+        android:textSize="11px"/>
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK"
-        android:id="@+id/finish_btn"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:width="150dp"
-
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        />
-
+        android:text="amount paid"
+        android:id="@+id/transaction_amount"
+        android:textSize="18px"
+        android:layout_below="@+id/transation_message"
+        android:layout_marginTop="10dp"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@drawable/logo_square"
-        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_checked"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/transaction_amount"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp" />
+        />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/finish_btn"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background_selector"
+        android:textColor="@color/white"
+        android:focusable="true"
+
+        />
+
+
 </RelativeLayout>

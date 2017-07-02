@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sampath Direct Pay</string>
+    <string name="app_name">Direct Pay</string>
     <string name="action_settings">Settings</string>
 
     <string name="login">Login</string>
@@ -18,5 +18,22 @@
     <string name="transation_message">You transaction was successful</string>
     <string name="title_activity_my_qr">My QRCode</string>
 
+    <string name="signup">SignUp</string>
+    <string name="password_hint">Password</string>
+    <string name="mobile_hint">Mobile Number</string>
+    <string name="nic_hint">Nic Number</string>
+    <string name="Account_hint">Account Number</string>
+    <string name="retype_password_hint">Retype Password</string>
+
+    //store data
+    <string name="access_token">1</string>
+    <string name="register">2</string>
+
+    //login Screen
+    <string name="login_hint">Please Enter Password</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

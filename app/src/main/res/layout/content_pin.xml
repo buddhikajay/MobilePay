@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.buddhikajay.mobilepay.loginActivity"
+    tools:showIn="@layout/activity_pin"
+    android:background="#ffffff">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp">
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/reg_pin"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:cursorVisible="true"
+        android:focusable="true"
+
+        android:layout_marginTop="10dp"
+        android:hint="Direct Pay Last Transaction"
+        />
+        </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/ok_button"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/reg_pin"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:focusable="true"
+        android:background="@drawable/button_background_selector"
+        />
+</LinearLayout>
+
+</RelativeLayout>
