@@ -13,14 +13,22 @@
     tools:showIn="@layout/activity_login"
     android:background="#ffffff">
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/logo"
         android:src="@drawable/logo_wide"
-        android:layout_alignRight="@+id/login_pin"
-        android:layout_alignEnd="@+id/login_pin" />
+        android:layout_gravity="center_horizontal" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -35,10 +43,10 @@
         android:textCursorDrawable="@color/colorPrimary"
         android:textColor="@color/colorAccent"
         android:focusable="true"
-        android:layout_below="@+id/logo"
+        android:hint="@string/login_hint"
         android:layout_marginTop="10dp"
         />
-
+</android.support.design.widget.TextInputLayout>
 
 
 
@@ -48,11 +56,12 @@
         android:text="@string/login"
         android:id="@+id/log_button"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/login_pin"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/button_background_selector"
         android:textColor="@color/white"
         android:focusable="true"
+
         />
 
+</LinearLayout>
 </RelativeLayout>
