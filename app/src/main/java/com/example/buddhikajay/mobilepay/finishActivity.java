@@ -27,7 +27,7 @@ public class finishActivity extends AppCompatActivity {
             {
 
                 finish();
-                Intent myIntent = new Intent(finishActivity.this, loginActivity.class);
+                Intent myIntent = new Intent(finishActivity.this, scanActivity.class);
                 finishActivity.this.startActivity(myIntent);
 
 

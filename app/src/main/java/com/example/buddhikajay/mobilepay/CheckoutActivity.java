@@ -318,7 +318,12 @@ public class CheckoutActivity extends AppCompatActivity {
         CheckoutActivity.this.startActivity(myIntent);
         finish();
     }
+    public void moveHome(){
+        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
+        CheckoutActivity.this.startActivity(myIntent);
+        finish();
 
+    }
     private void responseProcess(JSONObject result,String amount,Intent intent,boolean tip){
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
