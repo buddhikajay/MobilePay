@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Model.User;
@@ -52,7 +53,7 @@ public class CheckoutActivity extends AppCompatActivity {
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
-        username = intent.getStringExtra("userdata");
+        username = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
         final boolean scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
@@ -330,11 +331,21 @@ public class CheckoutActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
-                Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+jsonObject.optString("fromAccount").toString(),getApplicationContext());
-                Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString(),getApplicationContext());
                 if(!tip){
+                    Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
+                    Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
+                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
                     moveToFinishActivity(amount);
                 }
+                else {
+                    Log.d("tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
+                    Log.d("tip","LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString());
+
+                   sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
+
+                }
+
 
 
 
@@ -375,6 +386,75 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     }
+    private void sendSmsToTipMerchant(String id,final String amount){
+
+        getMerchantDetail(id,amount);
+    }
+    private void getMerchantDetail(String id,final String amount){
+
+        JSONObject detail = new JSONObject();
+        try {
+            detail.put("id",""+id);
+
+            VolleyRequestHandlerApi.api(new VolleyCallback() {
+                @Override
+                public void onSuccess(JSONObject result) {
+
+                    if(result.has("data")){
+                        JSONArray array= (JSONArray) result.opt("data");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                    else if(result.has("errors")){
+                        JSONArray array= (JSONArray) result.opt("errors");
+                        try {
+                            JSONObject jsonObject = array.getJSONObject(0);
+                            if(jsonObject.opt("status").toString().equals("5000")){
+                                //setContentView(R.layout.activity_scan);
+                                Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+
+                                Log.d("error","5000");
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                }
+
+                @Override
+                public void login() {
+                    moveLogin();
+                }
+
+                @Override
+                public void enableButton() {
+
+                }
+            }, Parameter.urlMerchantDetail,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 }

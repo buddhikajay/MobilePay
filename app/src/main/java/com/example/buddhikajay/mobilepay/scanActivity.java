@@ -132,8 +132,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 PaymentModel paymentModel = QrCodeSplite.getInstance().spliteQrCode(rawResult.getText());
                 Log.d("code",paymentModel.toString());
                 //QrCodeDecode
+
                Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
                 getMerchantDetail(merchant,paymentModel);
+
+
     }
 
 
@@ -164,6 +167,50 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+    private void responseProcess(JSONObject result,Merchant merchant,PaymentModel paymentModel){
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                merchantDetailResponseHandler(merchant, jsonObject);
+                //merchantList.add(merchant);
+
+                moveToCheckoutActivity(merchant, paymentModel);
+
+
+                // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
+                //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("5000")){
+                    //setContentView(R.layout.activity_scan);
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+
+                    Log.d("error","5000");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
     private void merchantDetailResponseHandler(Merchant merchant,JSONObject result){
@@ -253,46 +300,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         scanActivity.this.startActivity(myIntent);
         finish();
     }
-    private void responseProcess(JSONObject result,Merchant merchant,PaymentModel paymentModel){
-        if(result.has("data")){
-            JSONArray array= (JSONArray) result.opt("data");
-            try {
-                JSONObject jsonObject = array.getJSONObject(0);
-                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
-                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
-                merchantDetailResponseHandler(merchant, jsonObject);
-                moveToCheckoutActivity(merchant,paymentModel);
-                // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
-                //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-        else if(result.has("errors")){
-            JSONArray array= (JSONArray) result.opt("errors");
-            try {
-                JSONObject jsonObject = array.getJSONObject(0);
-                if(jsonObject.opt("status").toString().equals("5000")){
-                    //setContentView(R.layout.activity_scan);
-                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-
-                    Log.d("error","5000");
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }
 
 
 }

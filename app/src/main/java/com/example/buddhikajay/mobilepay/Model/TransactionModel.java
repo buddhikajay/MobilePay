@@ -40,7 +40,7 @@ public class TransactionModel extends Application {
 
     public TransactionModel(JSONObject object) {
         try {
-            this.accountNumber =  object.getString("payeeId");
+            this.accountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
             this.amount = object.getString("amount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
@@ -109,6 +109,25 @@ public class TransactionModel extends Application {
 
         Intent myIntent = new Intent(this, loginActivity.class);
         this.startActivity(myIntent);
+    }
+
+
+    public String getPayeeName(JSONObject payeeDetail){
+        if(payeeDetail.has("data")){
+            JSONArray array= (JSONArray) payeeDetail.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                return jsonObject.opt("merchantName").toString();
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return "";
     }
 
 }
