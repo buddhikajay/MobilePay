@@ -352,7 +352,7 @@ public class loginActivity extends AppCompatActivity {
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         startActivity(myIntent);
-        finish();
+
     }
 
     private void forgetPassword(){

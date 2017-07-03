@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -49,9 +51,16 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
-        populateScanList();
+
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            populateScanList();
+        }
 
     }
 
@@ -199,7 +208,6 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                     //setContentView(R.layout.activity_scan);
                     Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
                     Intent intent = getIntent();
-                    finish();
                     startActivity(intent);
 
                     Log.d("error","5000");
@@ -233,7 +241,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         scanActivity.this.startActivity(myIntent);
-        finish();
+
     }
 
     public void QrScanner(){
@@ -281,10 +289,22 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Exit: " , Toast.LENGTH_LONG).show();
-        finish();
-        android.os.Process.killProcess(android.os.Process.myPid());
+        moveLogin();
+//        Toast.makeText(this, "Exit: " , Toast.LENGTH_LONG).show();
+//        finish();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+        if(mScannerView!=null){
+            mScannerView.stopCamera();   // Stop camera on pause<br />
+//            mScannerView.setVisibility(View.GONE);
+//            mScannerView = null;
+//            SecurityHandler.handleSSLHandshake();
+//            setContentView(R.layout.activity_scan);
+//            populateScanList();
 
+        }
+        else {
+            moveLogin();
+        }
     }
     @Override
     public void onResume(){
@@ -301,6 +321,25 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         finish();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if(mScannerView!=null){
+                    mScannerView.stopCamera();   // Stop camera on pause<br />
+                    mScannerView.setVisibility(View.GONE);
+                    mScannerView = null;
+                    SecurityHandler.handleSSLHandshake();
+                    setContentView(R.layout.activity_scan);
+                    populateScanList();
 
+                }
+                else {
+                    moveLogin();
+                }
+                break;
+        }
+        return true;
+    }
 
 }

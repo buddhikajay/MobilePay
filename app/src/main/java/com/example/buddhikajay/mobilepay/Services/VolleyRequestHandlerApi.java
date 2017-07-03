@@ -124,7 +124,7 @@ public class VolleyRequestHandlerApi {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        Log.d("err",error.getMessage());
+                        //Log.d("err",error.getMessage());
                         error.printStackTrace();
                         //callback.login();
                         NetworkResponse networkResponse = error.networkResponse;
