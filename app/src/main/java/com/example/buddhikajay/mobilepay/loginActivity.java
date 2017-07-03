@@ -1,6 +1,8 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -73,6 +75,15 @@ public class loginActivity extends AppCompatActivity {
             paymentModel =  (PaymentModel)intent.getSerializableExtra("Paymodel");
 
         }
+
+        TextView foreget_p = (TextView) findViewById(R.id.foreget_p);
+
+        foreget_p.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgetPassword();
+            }
+        });
 
     }
     private void payInnappPerchase(){
@@ -342,6 +353,15 @@ public class loginActivity extends AppCompatActivity {
         myIntent.putExtra("Paymodel",paymentModel);
         startActivity(myIntent);
         finish();
+    }
+
+    private void forgetPassword(){
+        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(String.valueOf(R.string.register), getApplicationContext().MODE_PRIVATE).edit();
+        editor.putString("register", "false");
+        editor.apply();
+        Log.d("forget","click");
+        Intent intent = new Intent(this,registerActivity.class);
+        startActivity(intent);
     }
 
 
