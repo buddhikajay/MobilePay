@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import com.example.buddhikajay.mobilepay.Services.Formate;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
+import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
@@ -50,6 +52,7 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
@@ -84,6 +87,11 @@ public class CheckoutActivity extends AppCompatActivity {
         amountTextView = (EditText) findViewById(R.id.amountEditText);
         tipTextView = (EditText) findViewById(R.id.tipEdit);
         payButton = (Button) findViewById(R.id.buttonPay);
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +103,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 //Log.d("CheckoutActivity:number",phoneNumber);
 
                 //pay transaction
-                showmessgebox(amount, intent.getStringExtra("name"),intent);
+
+                    showmessgebox(amount, intent.getStringExtra("name"), intent);
+
 
 
             }
@@ -269,7 +279,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         Log.d("merchantId",intent.getStringExtra("id"));
                         if(paymentModel.isTip() ){
                             String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
-                            if(Double.parseDouble(tipamount)>0.0){
+                            if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
                                 payTrasaction(tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
                                 Log.d("tipperid",tipperId);
                             }
@@ -288,10 +298,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
-       CheckoutActivity.this.startActivity(myIntent);
-        //moveLogin();
-        //finish();
+//        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
+//       CheckoutActivity.this.startActivity(myIntent);
+        moveLogin();
+        finish();
 
     }
     public User getSellerDetail(String sellerId){
@@ -334,9 +344,9 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(!tip){
                     Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
-                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
-                    moveToFinishActivity(amount);
+                    //Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                    //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                    moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
                 else {
                     Log.d("tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
@@ -374,12 +384,13 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
     }
-    private void moveToFinishActivity(String amount){
+    private void moveToFinishActivity(String amount,String name,String reciptNumber){
 
         Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         myIntent.putExtra("amount",amount);
-
+        myIntent.putExtra("payee",name);
+        myIntent.putExtra("recept",reciptNumber);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
         finish();
@@ -404,8 +415,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                            //Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                            //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -453,7 +464,16 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this,scanActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
 
 
 
