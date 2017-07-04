@@ -25,9 +25,9 @@ public class finishActivity extends AppCompatActivity {
 
         TextView receiptText = (TextView) findViewById(R.id.receipt_number);
         receiptText.setText(recept);
-        String msg = "Amount Paid to "+payee+" :";
-        TextView transactionmsg = (TextView) findViewById(R.id.transation_message);
-        transactionmsg.setText(msg);
+
+        TextView transactionmsg = (TextView) findViewById(R.id.merchant_name);
+        transactionmsg.setText(payee);
         Button btn=(Button)findViewById(R.id.finish_btn);
         btn.setOnClickListener(new View.OnClickListener()
         {
