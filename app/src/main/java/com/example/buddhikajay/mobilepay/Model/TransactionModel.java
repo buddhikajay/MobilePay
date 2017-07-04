@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,26 +28,59 @@ import java.util.Date;
  * Created by supun on 29/05/17.
  */
 
-public class TransactionModel extends Application {
+public class TransactionModel extends Application implements Serializable {
     private String accountNumber;
     private String amount;
     private String date;
+    private Merchant merchant;
+    private String recieptNumber;
 
-    public TransactionModel(String accountNumber, String amount, String date) {
+
+    public TransactionModel(String accountNumber, String amount, String date,Merchant merchant,String recieptNumber) {
+
         this.accountNumber = accountNumber;
         this.amount = amount;
         this.date = date;
+        this.merchant = merchant;
+        this.recieptNumber = recieptNumber;
     }
 
     public TransactionModel(JSONObject object) {
+
+        Log.d("transactionmodel",object.toString());
         try {
             this.accountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
-            this.amount = object.getString("amount");
+            this.amount = object.getString("payingAmount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
+            this.recieptNumber = object.getString("id");
+            JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+            JSONArray data = payeeDetaildata.getJSONArray("data");
+            JSONObject payeeDetail = data.getJSONObject(0);
+
+            Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
+            merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+            this.merchant = merchantTemp;
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
+    }
+
+    public String getRecieptNumber() {
+        return recieptNumber;
+    }
+
+    public void setRecieptNumber(String recieptNumber) {
+        this.recieptNumber = recieptNumber;
     }
 
     public String getAccountNumber() {
@@ -75,9 +109,7 @@ public class TransactionModel extends Application {
 
     public static ArrayList<TransactionModel> getTransaction() {
         ArrayList<TransactionModel> transactions = new ArrayList<TransactionModel>();
-        transactions.add(new TransactionModel("123234", "10000","2016-3-09"));
-        transactions.add(new TransactionModel("123234", "10000","2016-3-09"));
-        transactions.add(new TransactionModel("123234", "10000","2016-3-09"));
+
         return transactions;
     }
 
