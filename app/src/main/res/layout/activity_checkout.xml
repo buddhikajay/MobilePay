@@ -17,49 +17,114 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Merchant ID :"
-            android:id="@+id/merchantIdLable"
-            android:layout_marginTop="16dp"
-            android:textSize="10dp"
-            />
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Merchant ID "
+                android:id="@+id/merchantIdLable"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Merchant Name "
+                android:id="@+id/merchantNameLable"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Merchant Address "
+                android:id="@+id/merchantAddressLable"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0097"
-            android:id="@+id/merchantIdTextView"
-            android:layout_marginTop="16dp"
-            android:textSize="12dp"
-            android:layout_marginLeft="8dp"
-            android:textStyle="bold"/>
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : "
+
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : "
+
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : "
+
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0097"
+                android:id="@+id/merchantIdTextView"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"
+
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="Cargills Foodcity Bambalabitiya"
+                android:id="@+id/merchantNameTextView"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"
+
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123 Galle Road, Colombo 04"
+                android:id="@+id/addressTextView"
+                android:layout_marginTop="16dp"
+                android:textSize="12dp"
+
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+
+
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Merchant Name :"
-            android:id="@+id/merchantNameLable"
-            android:layout_marginTop="16dp"
-            android:textSize="10dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:text="Cargills Foodcity Bambalabitiya"
-            android:id="@+id/merchantNameTextView"
-            android:layout_marginTop="16dp"
-            android:textSize="12dp"
-            android:layout_marginLeft="8dp"
-            android:textStyle="bold"
-            />
+
 
     </LinearLayout>
 
@@ -67,24 +132,9 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal">
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Merchant Address :"
-           android:id="@+id/merchantAddressLable"
-           android:layout_marginTop="16dp"
-           android:textSize="10dp"/>
 
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="123 Galle Road, Colombo 04"
-           android:id="@+id/addressTextView"
-           android:layout_marginTop="16dp"
-           android:textSize="12dp"
-           android:layout_marginLeft="8dp"
-           android:textStyle="bold"
-           />
+
+
 
    </LinearLayout>
 

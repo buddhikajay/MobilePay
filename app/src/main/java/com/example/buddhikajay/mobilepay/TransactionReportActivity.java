@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
 import com.example.buddhikajay.mobilepay.Model.TransactionModel;
@@ -41,9 +43,9 @@ public class TransactionReportActivity extends AppCompatActivity {
 
 
 
-
-
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -64,12 +66,27 @@ public class TransactionReportActivity extends AppCompatActivity {
     private void populateTransactionList(JSONArray transactions) {
         Log.d("Transaction activity",transactions.toString());
         // Construct the data source
-        ArrayList<TransactionModel> arrayOfTrnsactions = TransactionModel.getTransaction(transactions);
+        final ArrayList<TransactionModel> arrayOfTrnsactions = TransactionModel.getTransaction(transactions);
         // Create the adapter to convert the array to views
         TransactionAdapter adapter = new TransactionAdapter(this, arrayOfTrnsactions);
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.transactionList);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(TransactionReportActivity.this,TransactionDetailActivity.class);
+                TransactionModel model = arrayOfTrnsactions.get(position);
+                intent.putExtra("receipt",model.getRecieptNumber());
+                intent.putExtra("name",model.getMerchant().getMerchantName());
+                intent.putExtra("amount",model.getAmount());
+                intent.putExtra("date",model.getDate());
+
+                startActivity(intent);
+
+            }
+        });
+
 
     }
     public void getTransaction(){
@@ -91,6 +108,7 @@ public class TransactionReportActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         VolleyRequestHandlerApi.api(new VolleyCallback(){
 
