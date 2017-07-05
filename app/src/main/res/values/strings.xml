@@ -36,7 +36,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="forget_password"> <u>forget password?</u></string>
+    <string name="forget_password"> <u>forgot password?</u></string>
 
 
 </resources>

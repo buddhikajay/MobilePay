@@ -50,7 +50,7 @@ public class TransactionModel extends Application implements Serializable {
         Log.d("transactionmodel",object.toString());
         try {
             this.accountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
-            this.amount = object.getString("payingAmount");
+            this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
             this.recieptNumber = object.getString("id");

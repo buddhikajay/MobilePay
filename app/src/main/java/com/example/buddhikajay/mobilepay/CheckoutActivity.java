@@ -35,8 +35,8 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
@@ -104,7 +104,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 //pay transaction
 
-                    showmessgebox(amount, intent.getStringExtra("name"), intent);
+                Double total = Double.parseDouble(amount.toString().replaceAll("[$, LKR]", ""));
+                Log.d("total",total.toString());
+                if(paymentModel.isTip() && !tipTextView.getText().toString().equals("") ){
+                    total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
+                    Log.d("total",total.toString());
+                }
+                    showmessgebox(total+ " LKR",amount, intent.getStringExtra("name"), intent);
 
 
 
@@ -262,10 +268,11 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-    private void showmessgebox(final String amount, String username, final Intent intent){
+    private void showmessgebox(final String total, final String amount, String username, final Intent intent){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
-        alertDialog .setMessage("Pay "+ amount+" to "+username+"?");
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog .setMessage("Pay "+ total+" to "+username+"?");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -275,6 +282,7 @@ public class CheckoutActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
                         Log.d("merchantId",intent.getStringExtra("id"));
                         if(paymentModel.isTip() ){
@@ -393,7 +401,7 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("recept",reciptNumber);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
-        finish();
+
 
 
     }
