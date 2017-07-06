@@ -60,11 +60,12 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String nic,String phone){
+    public static boolean setRegisterId(Context context,String id,String nic,String phone,String role){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("register_id", id);
         editor.putString("nic", nic);
         editor.putString("phoneNumber", phone);
+        editor.putString("role", role);
         editor.putString("register", "true");
         editor.putString("register_verify", "false");
         editor.apply();
@@ -88,6 +89,14 @@ public class Api {
     public static boolean isRegisterVerify(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String token =sharedPref.getString("register_verify",null);
+        if(token!=null && token.equals("true")){
+            return true;
+        }
+        return false;
+    }
+    public static boolean isMerchant(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String token =sharedPref.getString("role",null);
         if(token!=null && token.equals("true")){
             return true;
         }

@@ -150,6 +150,7 @@ public class VolleyRequestHandlerApi {
 
                         }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
+                            callback.enableButton();
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
                         }  else if (error instanceof ParseError) {
                             //TODO

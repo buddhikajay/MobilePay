@@ -1,17 +1,9 @@
 package com.example.buddhikajay.mobilepay.Model;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
-import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.Formate;
-import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
-import com.example.buddhikajay.mobilepay.TransactionReportActivity;
 import com.example.buddhikajay.mobilepay.loginActivity;
 
 import org.json.JSONArray;
@@ -29,16 +21,18 @@ import java.util.Date;
  */
 
 public class TransactionModel extends Application implements Serializable {
-    private String accountNumber;
+    private String userAccountNumber;
+    private String merchantAccountNumber;
     private String amount;
     private String date;
     private Merchant merchant;
     private String recieptNumber;
 
 
-    public TransactionModel(String accountNumber, String amount, String date,Merchant merchant,String recieptNumber) {
+    public TransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber,String merchantAccountNumber) {
 
-        this.accountNumber = accountNumber;
+        this.userAccountNumber = userAccountNumber;
+        this.merchantAccountNumber = merchantAccountNumber;
         this.amount = amount;
         this.date = date;
         this.merchant = merchant;
@@ -49,7 +43,9 @@ public class TransactionModel extends Application implements Serializable {
 
         Log.d("transactionmodel",object.toString());
         try {
-            this.accountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
+
+            this.userAccountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
+            this.merchantAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
             this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
@@ -83,12 +79,12 @@ public class TransactionModel extends Application implements Serializable {
         this.recieptNumber = recieptNumber;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getUserAccountNumber() {
+        return userAccountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setUserAccountNumber(String userAccountNumber) {
+        this.userAccountNumber = userAccountNumber;
     }
 
     public String getAmount() {
@@ -161,5 +157,30 @@ public class TransactionModel extends Application implements Serializable {
         }
         return "";
     }
+    public String getPayerName(JSONObject payerDetail){
+        if(payerDetail.has("data")){
+            JSONArray array= (JSONArray) payerDetail.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                Log.d("payerDetail",payerDetail.toString());
+                return jsonObject.opt("username").toString();
 
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return "";
+    }
+
+    public String getMerchantAccountNumber() {
+        return merchantAccountNumber;
+    }
+
+    public void setMerchantAccountNumber(String merchantAccountNumber) {
+        this.merchantAccountNumber = merchantAccountNumber;
+    }
 }

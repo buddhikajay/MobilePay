@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+import com.google.zxing.integration.android.IntentIntegrator;
+
 public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
@@ -250,7 +252,14 @@ public class loginActivity extends AppCompatActivity {
                 payInnappPerchase();
             }
             else
-            moveToScanActivity();
+                if(!Api.isMerchant(getApplicationContext())){
+                    moveToScanActivity();
+                }
+                else{
+                    //moveToReportActivity();
+                    Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                }
+
 
         }
         else {
@@ -258,6 +267,10 @@ public class loginActivity extends AppCompatActivity {
         }
     }
 
+    private void moveToReportActivity() {
+        Intent intent = new Intent(this,TransactionReportActivity.class);
+        startActivity(intent);
+    }
 
 
     //ToDO reuseble component change architecture

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.buddhikajay.mobilepay.Model.TransactionModel;
 import com.example.buddhikajay.mobilepay.R;
+import com.example.buddhikajay.mobilepay.Services.Api;
 
 import java.util.ArrayList;
 
@@ -34,14 +35,21 @@ public class TransactionAdapter extends ArrayAdapter<TransactionModel> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.transaction_item, parent, false);
         }
         // Lookup view for data population
-        TextView AccountNumber = (TextView) convertView.findViewById(R.id.accountNumber);
+        TextView AccountNumber = (TextView) convertView.findViewById(R.id.userAccountNumber);
         TextView Amount = (TextView) convertView.findViewById(R.id.amount);
         TextView Date = (TextView) convertView.findViewById(R.id.date);
         // Populate the data into the template view using the data object
-        AccountNumber.setText(transactionModel.getAccountNumber());
+        if(Api.isMerchant(getContext())){
+            AccountNumber.setText(transactionModel.getMerchantAccountNumber());
+        }
+        else {
+            AccountNumber.setText(transactionModel.getUserAccountNumber());
+        }
+
         Amount.setText(transactionModel.getAmount());
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen
+
         return convertView;
     }
 }
