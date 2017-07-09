@@ -343,8 +343,10 @@ public class registerActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
                 Log.d("RegisterActivity:status","Succss");
                 Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
-                Log.d("RegisterActivity:role", jsonObject.opt("role").toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,jsonObject.opt("role").toString());
+
+                JSONArray roles = jsonObject.getJSONArray("role");
+                Log.d("RegisterActivity:role", roles.get(0).toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());

@@ -126,7 +126,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void staticAndDynamicQrHandle(PaymentModel paymentModel){
         Log.d("payment",paymentModel.toString());
 
-;
+        Log.d("payment is dynamic",paymentModel.isDynamic()+"");
         if (paymentModel.isDynamic()){
             Log.d("amout paymodel",paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
@@ -232,7 +232,7 @@ public class CheckoutActivity extends AppCompatActivity {
         JSONObject pay = new JSONObject();
         try {
             pay.put("merchantId",""+mechantId);
-            pay.put("amount",""+amount);
+            pay.put("amount",""+amount.replaceAll("[$, LKR]", ""));
             pay.put("accessToken",""+accessToken);
         } catch (JSONException e) {
             e.printStackTrace();

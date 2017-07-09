@@ -38,10 +38,6 @@ public class QrCodeSplite {
             if(params[1].equals("$") && params[2].equals("main")){
                 paymentModel.setDynamic(false);
             }
-            else {
-                paymentModel.setDynamic(true);
-                qrModel.setAmount(params[1]);
-            }
             qrModel.setTag(params[2]);
             if (params[2].equals("tip")){
                 paymentModel.setTip(true);

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -124,7 +123,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
     private void transactionList(){
 
-        Intent intent = new Intent(scanActivity.this, TransactionReportActivity.class);
+        Intent intent = new Intent(scanActivity.this, UserTransactionReportActivity.class);
         startActivity(intent);
     }
 

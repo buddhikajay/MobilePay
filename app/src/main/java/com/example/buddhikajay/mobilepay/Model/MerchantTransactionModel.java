@@ -1,6 +1,5 @@
 package com.example.buddhikajay.mobilepay.Model;
 
-import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
@@ -10,17 +9,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by supun on 29/05/17.
+ * Created by supun on 09/07/17.
  */
 
-public class TransactionModel extends Application implements Serializable {
+public class MerchantTransactionModel {
     private String userAccountNumber;
     private String merchantAccountNumber;
     private String amount;
@@ -29,7 +27,7 @@ public class TransactionModel extends Application implements Serializable {
     private String recieptNumber;
 
 
-    public TransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber,String merchantAccountNumber) {
+    public MerchantTransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber,String merchantAccountNumber) {
 
         this.userAccountNumber = userAccountNumber;
         this.merchantAccountNumber = merchantAccountNumber;
@@ -39,13 +37,13 @@ public class TransactionModel extends Application implements Serializable {
         this.recieptNumber = recieptNumber;
     }
 
-    public TransactionModel(JSONObject object) {
+    public MerchantTransactionModel(JSONObject object) {
 
         Log.d("transactionmodel",object.toString());
         try {
 
-            this.userAccountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
-            this.merchantAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
+            this.merchantAccountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
+            this.userAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
             this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
@@ -103,17 +101,17 @@ public class TransactionModel extends Application implements Serializable {
         this.date = date;
     }
 
-    public static ArrayList<TransactionModel> getTransaction() {
-        ArrayList<TransactionModel> transactions = new ArrayList<TransactionModel>();
+    public static ArrayList<MerchantTransactionModel> getTransaction() {
+        ArrayList<MerchantTransactionModel> transactions = new ArrayList<MerchantTransactionModel>();
 
         return transactions;
     }
 
-    public static ArrayList<TransactionModel> getTransaction(JSONArray transaction) {
-        ArrayList<TransactionModel> transactionModels = new ArrayList<TransactionModel>();
+    public static ArrayList<MerchantTransactionModel> getTransaction(JSONArray transaction) {
+        ArrayList<MerchantTransactionModel> transactionModels = new ArrayList<MerchantTransactionModel>();
         for (int i = 0; i < transaction.length(); i++) {
             try {
-                transactionModels.add(new TransactionModel(transaction.getJSONObject(i)));
+                transactionModels.add(new MerchantTransactionModel(transaction.getJSONObject(i)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -125,7 +123,7 @@ public class TransactionModel extends Application implements Serializable {
         String dateout="";
         try {
             Date datein = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").parse(date);
-           dateout = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datein);
+            dateout = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datein);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -135,8 +133,8 @@ public class TransactionModel extends Application implements Serializable {
 
     public void moveLogin(){
 
-        Intent myIntent = new Intent(this, loginActivity.class);
-        this.startActivity(myIntent);
+//        Intent myIntent = new Intent(this,loginActivity.class);
+////        this.startActivity(myIntent);
     }
 
 

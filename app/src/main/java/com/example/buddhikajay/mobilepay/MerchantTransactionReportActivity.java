@@ -4,95 +4,43 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView;
 
-import com.example.buddhikajay.mobilepay.Component.TransactionAdapter;
-import com.example.buddhikajay.mobilepay.Model.TransactionModel;
+import com.example.buddhikajay.mobilepay.Component.MerchantTransactionAdapter;
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+import com.example.buddhikajay.mobilepay.Model.MerchantTransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
-import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
-public class TransactionReportActivity extends AppCompatActivity {
+public class MerchantTransactionReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SecurityHandler.handleSSLHandshake();
-        setContentView(R.layout.activity_transaction_report);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTransaction);
-        //setSupportActionBar(toolbar);
-        //final ActionBar bar = getActionBar();
+        setContentView(R.layout.activity_merchant_report);
+
         if (getSupportActionBar() != null){
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getTransaction();
+            getMerchantTransaction();
         }
-
-
-
     }
 
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                moveScan();
-                break;
-        }
-        return true;
-    }
-
-    private void moveScan() {
-        Intent myIntent = new Intent(TransactionReportActivity.this, scanActivity.class);
-        TransactionReportActivity.this.startActivity(myIntent);
-        finish();
-    }
-
-    private void populateTransactionList(JSONArray transactions) {
-        Log.d("Transaction activity",transactions.toString());
-        // Construct the data source
-        final ArrayList<TransactionModel> arrayOfTrnsactions = TransactionModel.getTransaction(transactions);
-        // Create the adapter to convert the array to views
-        TransactionAdapter adapter = new TransactionAdapter(this, arrayOfTrnsactions);
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.transactionList);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(TransactionReportActivity.this,TransactionDetailActivity.class);
-                TransactionModel model = arrayOfTrnsactions.get(position);
-                intent.putExtra("receipt",model.getRecieptNumber());
-                intent.putExtra("name",model.getMerchant().getMerchantName());
-                intent.putExtra("amount",model.getAmount());
-                intent.putExtra("date",model.getDate());
-
-                startActivity(intent);
-
-            }
-        });
-
-
-    }
-    public void getTransaction(){
+    public void getMerchantTransaction() {
         JSONObject parameter = new JSONObject();
         try {
-            parameter.put("userId",""+Api.getRegisterId(getApplicationContext()));
+            parameter.put("userId",""+ Api.getRegisterId(getApplicationContext()));
             JSONObject fromdate = new JSONObject();
             fromdate.put("year",2017);
             fromdate.put("month",1);
@@ -130,7 +78,6 @@ public class TransactionReportActivity extends AppCompatActivity {
         }, Parameter.urlTransactionDetail,Api.getAccessToken(getApplicationContext()),parameter,getApplicationContext());
 
     }
-
     private void responseProcess(JSONObject result){
 
         if(result.has("data")){
@@ -169,15 +116,37 @@ public class TransactionReportActivity extends AppCompatActivity {
 
     public void moveLogin(){
 
-        Intent myIntent = new Intent(TransactionReportActivity.this, loginActivity.class);
-        TransactionReportActivity.this.startActivity(myIntent);
+        Intent myIntent = new Intent(this, loginActivity.class);
+        startActivity(myIntent);
         finish();
     }
-    @Override
-    public void onBackPressed() {
-        moveScan();
-        //moveLogin();
-        finish();
+    private void populateTransactionList(JSONArray transactions) {
+        Log.d("Transaction activity",transactions.toString());
+        // Construct the data source
+        final ArrayList<MerchantTransactionModel> arrayOfTrnsactions = MerchantTransactionModel.getTransaction(transactions);
+        // Create the adapter to convert the array to views
+        MerchantTransactionAdapter adapter = new MerchantTransactionAdapter(this, arrayOfTrnsactions);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.merchantTransactionList);
+        listView.setAdapter(adapter);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Merchant","click");
+                Intent intent = new Intent(MerchantTransactionReportActivity.this,MerchantTransactionDetailActivity.class);
+                MerchantTransactionModel model = arrayOfTrnsactions.get(position);
+                intent.putExtra("receipt",model.getRecieptNumber());
+                intent.putExtra("name",model.getUserAccountNumber());
+                intent.putExtra("amount",model.getAmount());
+                intent.putExtra("date",model.getDate());
+
+                startActivity(intent);
+
+            }
+        });
+
 
     }
 }

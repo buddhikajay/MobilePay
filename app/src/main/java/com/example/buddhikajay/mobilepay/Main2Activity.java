@@ -218,7 +218,7 @@ public class Main2Activity extends AppCompatActivity
     }
     private void transactionList(){
 
-        Intent intent = new Intent(Main2Activity.this, TransactionReportActivity.class);
+        Intent intent = new Intent(Main2Activity.this, UserTransactionReportActivity.class);
         startActivity(intent);
     }
 

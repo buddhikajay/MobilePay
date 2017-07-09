@@ -1,6 +1,5 @@
 package com.example.buddhikajay.mobilepay;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
-import com.google.zxing.integration.android.IntentIntegrator;
 
 public class loginActivity extends AppCompatActivity {
 
@@ -246,7 +244,7 @@ public class loginActivity extends AppCompatActivity {
             Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
             Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
             //login successs go totransaction
-            Log.d("loginActivity","user login success");
+            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
             if (innerApp){
                 payInnappPerchase();
@@ -257,7 +255,8 @@ public class loginActivity extends AppCompatActivity {
                 }
                 else{
                     //moveToReportActivity();
-                    Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                    moveToMerchantReport();
                 }
 
 
@@ -267,8 +266,14 @@ public class loginActivity extends AppCompatActivity {
         }
     }
 
+    private void moveToMerchantReport() {
+        finish();
+        Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
+        startActivity(intent);
+    }
+
     private void moveToReportActivity() {
-        Intent intent = new Intent(this,TransactionReportActivity.class);
+        Intent intent = new Intent(this,UserTransactionReportActivity.class);
         startActivity(intent);
     }
 
