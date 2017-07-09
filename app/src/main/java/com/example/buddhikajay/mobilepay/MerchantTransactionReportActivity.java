@@ -141,7 +141,7 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("name",model.getUserAccountNumber());
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
-
+                intent.putExtra("type",model.getType());
                 startActivity(intent);
 
             }

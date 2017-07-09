@@ -15,6 +15,7 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
     private String name;
     private String amount;
     private String date;
+    private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,16 +26,19 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         amount = intent.getStringExtra("amount");
         date = intent.getStringExtra("date");
+        type = intent.getStringExtra("type");
 
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.usr_name);
         TextView amountView = (TextView) findViewById(R.id.amount);
         TextView dateView = (TextView) findViewById(R.id.date);
+        TextView typeView = (TextView) findViewById(R.id.type);
 
         recieptView.setText(recieptNumber);
         nameView.setText(name);
         amountView.setText(amount);
         dateView.setText(date);
+        typeView.setText(type);
 
         if (getSupportActionBar() != null) {
 

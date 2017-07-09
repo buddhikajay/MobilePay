@@ -1,9 +1,6 @@
 package com.example.buddhikajay.mobilepay.Model;
 
-import android.content.Intent;
 import android.util.Log;
-
-import com.example.buddhikajay.mobilepay.loginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +22,8 @@ public class MerchantTransactionModel {
     private String date;
     private Merchant merchant;
     private String recieptNumber;
+    private String type;
+    private String status;
 
 
     public MerchantTransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber,String merchantAccountNumber) {
@@ -42,19 +41,40 @@ public class MerchantTransactionModel {
         Log.d("transactionmodel",object.toString());
         try {
 
-            this.merchantAccountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
-            this.userAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
             this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
-            this.date = dateTimeFilter(date.getString("date"));
             this.recieptNumber = object.getString("id");
-            JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
-            JSONArray data = payeeDetaildata.getJSONArray("data");
-            JSONObject payeeDetail = data.getJSONObject(0);
+            this.status = object.getString("status");
+            this.date = dateTimeFilter(date.getString("date"));
+            this.type =object.getString("type");
+            if(this.type.equals("merchantpay")){
+                this.merchantAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
+                this.userAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
+                JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+                JSONArray data = payeeDetaildata.getJSONArray("data");
+                JSONObject payeeDetail = data.getJSONObject(0);
 
-            Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
-            merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
-            this.merchant = merchantTemp;
+                Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
+                merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                this.merchant = merchantTemp;
+            }
+            else if(this.type.equals("refund")){
+
+                Log.d("psyerDetsil",object.getJSONObject("payerDetail").toString());
+                this.merchantAccountNumber = getMerchantName(object.getJSONObject("payerDetail")) ;
+                this.userAccountNumber =getPayerName(object.getJSONObject("payeeDetail")) ;
+                JSONObject payerDetaildata = object.getJSONObject("payerDetail");
+                JSONArray data = payerDetaildata.getJSONArray("data");
+                JSONObject payerDetail = data.getJSONObject(0);
+                Merchant merchantTemp = new Merchant(payerDetail.getString("merchantId"));
+                merchantTemp.setMerchantName(payerDetail.getString("merchantName"));
+                this.merchant = merchantTemp;
+            }
+
+
+
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -101,6 +121,22 @@ public class MerchantTransactionModel {
         this.date = date;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public static ArrayList<MerchantTransactionModel> getTransaction() {
         ArrayList<MerchantTransactionModel> transactions = new ArrayList<MerchantTransactionModel>();
 
@@ -138,7 +174,7 @@ public class MerchantTransactionModel {
     }
 
 
-    public String getPayeeName(JSONObject payeeDetail){
+    public String getMerchantName(JSONObject payeeDetail){
         if(payeeDetail.has("data")){
             JSONArray array= (JSONArray) payeeDetail.opt("data");
             try {

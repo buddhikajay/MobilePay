@@ -26,6 +26,7 @@ public class Parameter {
     public static String  urlMerchantDetail = apim+"/merchantpay/1.0.0/merchant/details";
     public static String  urlTransactionDetail = apim+"/merchantpay/1.0.0/transactions/agent/between";
     public static String  urlLogin = apim+"/merchantpay/1.0.0/login";
+    public static String  urlVoidTransaction = apim+"/merchantpay/1.0.0/transaction/void";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
 
