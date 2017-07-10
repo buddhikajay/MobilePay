@@ -49,7 +49,7 @@ public class MerchantTransactionModel {
             this.type =object.getString("type");
             if(this.type.equals("merchantpay")){
                 this.merchantAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
-                this.userAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
+                this.userAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
                 JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
                 JSONArray data = payeeDetaildata.getJSONArray("data");
                 JSONObject payeeDetail = data.getJSONObject(0);
@@ -62,7 +62,7 @@ public class MerchantTransactionModel {
 
                 Log.d("psyerDetsil",object.getJSONObject("payerDetail").toString());
                 this.merchantAccountNumber = getMerchantName(object.getJSONObject("payerDetail")) ;
-                this.userAccountNumber =getPayerName(object.getJSONObject("payeeDetail")) ;
+                this.userAccountNumber = getPayerAccountNumber(object.getJSONObject("payeeDetail")) ;
                 JSONObject payerDetaildata = object.getJSONObject("payerDetail");
                 JSONArray data = payerDetaildata.getJSONArray("data");
                 JSONObject payerDetail = data.getJSONObject(0);
@@ -191,13 +191,13 @@ public class MerchantTransactionModel {
         }
         return "";
     }
-    public String getPayerName(JSONObject payerDetail){
+    public String getPayerAccountNumber(JSONObject payerDetail){
         if(payerDetail.has("data")){
             JSONArray array= (JSONArray) payerDetail.opt("data");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("payerDetail",payerDetail.toString());
-                return jsonObject.opt("username").toString();
+                return jsonObject.opt("accountNumber").toString();
 
 
 

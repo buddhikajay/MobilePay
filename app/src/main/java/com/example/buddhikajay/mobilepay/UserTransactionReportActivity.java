@@ -81,6 +81,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("name",model.getMerchant().getMerchantName());
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
+                intent.putExtra("type",model.getType());
 
                 startActivity(intent);
 

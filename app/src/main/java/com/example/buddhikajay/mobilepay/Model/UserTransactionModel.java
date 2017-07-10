@@ -27,7 +27,8 @@ public class UserTransactionModel extends Application implements Serializable {
     private String date;
     private Merchant merchant;
     private String recieptNumber;
-
+    private String type;
+    private String status;
 
     public UserTransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber, String merchantAccountNumber) {
 
@@ -37,6 +38,7 @@ public class UserTransactionModel extends Application implements Serializable {
         this.date = date;
         this.merchant = merchant;
         this.recieptNumber = recieptNumber;
+
     }
 
     public UserTransactionModel(JSONObject object) {
@@ -44,19 +46,37 @@ public class UserTransactionModel extends Application implements Serializable {
         Log.d("transactionmodel",object.toString());
         try {
 
-            this.userAccountNumber = getPayerName(object.getJSONObject("payerDetail")) ;
-            this.merchantAccountNumber = getPayeeName(object.getJSONObject("payeeDetail")) ;
+
             this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
             this.date = dateTimeFilter(date.getString("date"));
             this.recieptNumber = object.getString("id");
-            JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
-            JSONArray data = payeeDetaildata.getJSONArray("data");
-            JSONObject payeeDetail = data.getJSONObject(0);
+            this.type =object.getString("type");
+            this.status = object.getString("status");
 
-            Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
-            merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
-            this.merchant = merchantTemp;
+            if(this.type.equals("merchantpay")){
+                this.userAccountNumber = getUserAccountNumber(object.getJSONObject("payerDetail")) ;
+                this.merchantAccountNumber =getPayeeName(object.getJSONObject("payeeDetail")) ;
+                JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+                JSONArray data = payeeDetaildata.getJSONArray("data");
+                JSONObject payeeDetail = data.getJSONObject(0);
+                Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
+                merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                this.merchant = merchantTemp;
+
+            }
+            else if(this.type.equals("refund")){
+                this.userAccountNumber = getUserAccountNumber(object.getJSONObject("payeeDetail")) ;
+                this.merchantAccountNumber =getPayeeName(object.getJSONObject("payerDetail")) ;
+                JSONObject payerDetaildata = object.getJSONObject("payerDetail");
+                JSONArray data = payerDetaildata.getJSONArray("data");
+                JSONObject payerDetail = data.getJSONObject(0);
+                Merchant merchantTemp = new Merchant(payerDetail.getString("merchantId"));
+                merchantTemp.setMerchantName(payerDetail.getString("merchantName"));
+                this.merchant = merchantTemp;
+            }
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -101,6 +121,22 @@ public class UserTransactionModel extends Application implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public static ArrayList<UserTransactionModel> getTransaction() {
@@ -157,13 +193,13 @@ public class UserTransactionModel extends Application implements Serializable {
         }
         return "";
     }
-    public String getPayerName(JSONObject payerDetail){
+    public String getUserAccountNumber(JSONObject payerDetail){
         if(payerDetail.has("data")){
             JSONArray array= (JSONArray) payerDetail.opt("data");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("payerDetail",payerDetail.toString());
-                return jsonObject.opt("username").toString();
+                return jsonObject.opt("accountNumber").toString();
 
 
 
