@@ -53,54 +53,18 @@ public class MerchantTransactionAdapter extends ArrayAdapter<MerchantTransaction
         TextView AccountNumber = (TextView) convertView.findViewById(R.id.userAccountNumber);
         TextView Amount = (TextView) convertView.findViewById(R.id.amount);
         TextView Date = (TextView) convertView.findViewById(R.id.date);
-        Button button_void = (Button) convertView.findViewById(R.id.button_void);
+
         // Populate the data into the template view using the data objec
         AccountNumber.setText(transactionModel.getUserAccountNumber());
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen
-        if(transactionModel.getType().equals("refund") || transactionModel.getStatus().equals("void")){
-            button_void.setVisibility(View.GONE);
-        }
-        button_void.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refundTransaction(transactionModel.getMerchant().getId(),transactionModel.getRecieptNumber());
-                Intent intent = new Intent(getContext(),MerchantTransactionReportActivity.class);
-                getContext().startActivity(intent);
 
-            }
-        });
+
         return convertView;
     }
 
-    public void refundTransaction(String mechantId,String transactionId){
 
-        JSONObject payload = new JSONObject();
-        try {
-            payload.put("merchantId",""+mechantId);
-            payload.put("transactionId",""+transactionId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        VolleyRequestHandlerApi.api(new VolleyCallback() {
-            @Override
-            public void onSuccess(JSONObject result) {
-                    Log.d("transactionAdapt",result.toString());
-            }
-
-            @Override
-            public void login() {
-                moveLogin();
-            }
-
-            @Override
-            public void enableButton() {
-
-            }
-        }, Parameter.urlVoidTransaction, Api.getAccessToken(getContext()),payload,getContext());
-    }
     public void moveLogin(){
 
         Intent myIntent = new Intent(getContext(), loginActivity.class);

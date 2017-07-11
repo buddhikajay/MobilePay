@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +15,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Model.MerchantTransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
+import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 
 import org.json.JSONArray;
@@ -134,19 +136,41 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Log.d("Merchant","click");
+
                 Intent intent = new Intent(MerchantTransactionReportActivity.this,MerchantTransactionDetailActivity.class);
                 MerchantTransactionModel model = arrayOfTrnsactions.get(position);
+                Log.d("Merchant",""+model.getRecieptNumber()+"");
+                Log.d("Merchant",""+model.getUserAccountNumber()+"");
+                Log.d("Merchant",""+model.getAmount()+"");
+                Log.d("Merchant",""+model.getDate()+"");
+                Log.d("Merchant",""+model.getType()+"");
+                Log.d("Merchant",""+model.getStatus()+"");
+                Log.d("Merchant",""+model.getMerchant().getId()+"");
                 intent.putExtra("receipt",model.getRecieptNumber());
                 intent.putExtra("name",model.getUserAccountNumber());
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
+                intent.putExtra("status",model.getStatus());
+                intent.putExtra("merchantId",model.getMerchant().getId());
                 startActivity(intent);
 
             }
         });
 
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                    moveLogin();
+
+                break;
+        }
+        return true;
     }
 }

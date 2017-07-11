@@ -80,7 +80,7 @@
         android:src="@android:drawable/ic_dialog_info" /-->
 
 
-    <LinearLayout
+    <!--LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -96,6 +96,6 @@
             android:text="void"
             android:layout_gravity="right"/>
 
-    </LinearLayout>
+    </LinearLayout-->
     </LinearLayout>
 </RelativeLayout>

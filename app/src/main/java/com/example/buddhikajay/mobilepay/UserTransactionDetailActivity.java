@@ -26,7 +26,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         amount = intent.getStringExtra("amount");
         date = intent.getStringExtra("date");
-        type = intent.getStringExtra("date");
+        type = intent.getStringExtra("type");
 
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.merchant_name);
