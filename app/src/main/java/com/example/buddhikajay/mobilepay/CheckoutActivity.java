@@ -66,15 +66,15 @@ public class CheckoutActivity extends AppCompatActivity {
 
         //if direct pay to person
         if(!scannerType){
-            TextView merchantIdLabel = (TextView) findViewById(R.id.merchantIdLable);
-            TextView merchantNameLabel = (TextView) findViewById(R.id.merchantNameLable);
-            TextView merchantAddressLabel = (TextView) findViewById(R.id.merchantAddressLable);
+            //TextView merchantIdLabel = (TextView) findViewById(R.id.merchantIdLable);
+            //TextView merchantNameLabel = (TextView) findViewById(R.id.merchantNameLable);
+            //TextView merchantAddressLabel = (TextView) findViewById(R.id.merchantAddressLable);
 
-            merchantIdLabel.setText("Payee ID");
-            merchantNameLabel.setText("Payee Name");
+            //merchantIdLabel.setText("Payee ID");
+            //merchantNameLabel.setText("Payee Name");
 
             //hide address
-            merchantAddressLabel.setVisibility(View.INVISIBLE);
+            //merchantAddressLabel.setVisibility(View.INVISIBLE);
             addressTextView.setVisibility(View.INVISIBLE);
             tipTextView.setVisibility(View.INVISIBLE);
         }
@@ -83,7 +83,7 @@ public class CheckoutActivity extends AppCompatActivity {
         idTextView.setText(Formate.idSplite(intent.getStringExtra("id")));
         nameTextView.setText(intent.getStringExtra("name"));
         addressTextView.setText(intent.getStringExtra("address"));
-
+        Log.d("address",intent.getStringExtra("address"));
         amountTextView = (EditText) findViewById(R.id.amountEditText);
         tipTextView = (EditText) findViewById(R.id.tipEdit);
         payButton = (Button) findViewById(R.id.buttonPay);

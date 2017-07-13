@@ -9,186 +9,219 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".finishActivity"
     android:background="#ffffff">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        >
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Merchant ID "
-                android:id="@+id/merchantIdLable"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Merchant Name "
-                android:id="@+id/merchantNameLable"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Merchant Address "
-                android:id="@+id/merchantAddressLable"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" : "
-
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" : "
-
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" : "
-
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0097"
-                android:id="@+id/merchantIdTextView"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"
-
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="Cargills Foodcity Bambalabitiya"
-                android:id="@+id/merchantNameTextView"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"
-
-                android:textStyle="bold"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="123 Galle Road, Colombo 04"
-                android:id="@+id/addressTextView"
-                android:layout_marginTop="16dp"
-                android:textSize="12dp"
-
-                android:textStyle="bold"
-                />
-
-        </LinearLayout>
-
-
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-
-
-    </LinearLayout>
-
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal">
-
-
-
-
-   </LinearLayout>
-
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/amountEditText"
-        android:hint="Amount"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:cursorVisible="true"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:textCursorDrawable="@color/colorPrimary"
-        android:textColor="@color/colorAccent"
-        android:focusable="true"
-       />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
-        <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/tipEdit"
-            android:ems="10"
-            android:hint="Tip"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:cursorVisible="true"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:textCursorDrawable="@color/colorPrimary"
-            android:textColor="@color/colorAccent"
-            android:focusable="true"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <!--LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Merchant ID "
+                    android:id="@+id/merchantIdLable"
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Merchant Name "
+                    android:id="@+id/merchantNameLable"
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Merchant Address "
+                    android:id="@+id/merchantAddressLable"
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pay"
-        android:id="@+id/buttonPay"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/white"
-        android:background="@color/colorPrimary"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
-    </RelativeLayout>
+            </LinearLayout-->
+            <!--LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+
+                    android:layout_marginTop="16dp"
+                    android:textSize="12dp"/>
+
+            </LinearLayout!-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0097"
+                    android:id="@+id/merchantIdTextView"
+                    android:layout_marginTop="16dp"
+                    android:textSize="25dp"
+
+                    android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="80dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:text="Cargills Foodcity Bambalabitiya"
+                        android:id="@+id/merchantNameTextView"
+                        android:layout_marginTop="16dp"
+                        android:textSize="25dp"
+
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="123 Galle Road, Colombo 04"
+                        android:id="@+id/addressTextView"
+                        android:layout_marginTop="16dp"
+                        android:textSize="15dp"
+
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/amountEditText"
+                    android:hint="Amount"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:cursorVisible="true"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:textCursorDrawable="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
+                    android:focusable="true"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/tipEdit"
+                    android:ems="10"
+                    android:hint="Tip"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:cursorVisible="true"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:textCursorDrawable="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
+                    android:focusable="true"/>
+            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="PAY NOW"
+                        android:id="@+id/buttonPay"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/white"
+                        android:background="@color/mediumseagreen"
+                        android:layout_margin="8dp"
+
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BILL SPLIT"
+                        android:id="@+id/buttonSpilite"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/white"
+                        android:background="@color/blueviolet"
+                        android:layout_margin="8dp" />
+                </RelativeLayout>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+</RelativeLayout>

@@ -12,5 +12,8 @@
     <color name="button_pressed">#0277BD</color>
     <color name="button_focused">#03A9F4</color>
     <color name="button_default">#81D4FA</color>
+    <color name="blueviolet">#8A2BE2</color>
+    <color name="mediumseagreen">#3CB371</color>
+
 
 </resources>
