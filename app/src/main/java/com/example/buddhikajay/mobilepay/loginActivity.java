@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.design.widget.TextInputLayout;
 
 import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
@@ -40,6 +42,8 @@ public class loginActivity extends AppCompatActivity {
     //private String username;
     private String password;
 
+    private TextInputLayout passLayout;
+
      Button btn;
 
 
@@ -55,7 +59,15 @@ public class loginActivity extends AppCompatActivity {
          setSupportActionBar(toolbar);
 
          passField = (EditText) findViewById(R.id.login_pin);
+        passLayout = (TextInputLayout) findViewById(R.id.pinErr);
          //accountField = (EditText)findViewById(R.id.accountNo);
+        passField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                passLayout.setError(null);
+                return false;
+            }
+        });
 
         btn=(Button)findViewById(R.id.log_button);
 
@@ -99,7 +111,7 @@ public class loginActivity extends AppCompatActivity {
         }
         else {
 
-            showError(passField);
+            showError(passLayout);
         }
         return false;
     }
@@ -177,10 +189,10 @@ public class loginActivity extends AppCompatActivity {
 
 
     }
-    private void showError(EditText passField) {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        passField.startAnimation(shake);
-        passField.setError("wrong pinActivity");
+    private void showError(TextInputLayout passField) {
+       // Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        //passField.startAnimation(shake);
+        passField.setError("empty password");
     }
 
     @Override

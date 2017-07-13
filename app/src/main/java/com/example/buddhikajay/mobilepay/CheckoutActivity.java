@@ -48,6 +48,9 @@ public class CheckoutActivity extends AppCompatActivity {
     private PaymentModel paymentModel;
     private  String tipperId;
     boolean[] changeAmount ;
+
+    TextView test_bill_amount;
+    TextView test_bill_amount_amount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,8 @@ public class CheckoutActivity extends AppCompatActivity {
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
 
+        test_bill_amount = (TextView) findViewById(R.id.text_bill_amount);
+        test_bill_amount_amount = (TextView)findViewById(R.id.text_bill_amount_value);
         //if direct pay to person
         if(!scannerType){
             //TextView merchantIdLabel = (TextView) findViewById(R.id.merchantIdLable);
@@ -131,9 +136,11 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.d("amout paymodel",paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setEnabled(false);
+            amountTextView.setVisibility(View.GONE);
 
         }else{
-
+            test_bill_amount.setVisibility(View.GONE);
+            test_bill_amount_amount.setVisibility(View.GONE);
         }
 
         if(paymentModel.isTip()){
