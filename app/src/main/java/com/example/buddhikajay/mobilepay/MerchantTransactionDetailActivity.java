@@ -42,6 +42,14 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
         status = intent.getStringExtra("status");
         merchantId = intent.getStringExtra("merchantId");
 
+        Log.d("recieptNumber",recieptNumber);
+        Log.d("name",name);
+        Log.d("amount",amount);
+        Log.d("date",date);
+        Log.d("type",type);
+        Log.d("status",status);
+        Log.d("merchantId",merchantId);
+
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.usr_name);
         TextView amountView = (TextView) findViewById(R.id.amount);
@@ -73,6 +81,7 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
                     refundTransaction(merchantId,recieptNumber);
                     Intent intent = new Intent(MerchantTransactionDetailActivity.this,MerchantTransactionReportActivity.class);
                     startActivity(intent);
+                    finish();
 
                 }
             });

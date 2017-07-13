@@ -170,6 +170,9 @@ public class loginActivity extends AppCompatActivity {
            },Parameter.loginUrl,"",detailLogin,getApplicationContext());*/
         }
 
+            else{
+            btn.setEnabled(true);
+        }
 
 
 

@@ -352,8 +352,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(!tip){
                     Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
-                    //Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
                     moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
                 else {
@@ -423,8 +423,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            //Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                            //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();

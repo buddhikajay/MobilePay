@@ -141,13 +141,13 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MerchantTransactionReportActivity.this,MerchantTransactionDetailActivity.class);
                 MerchantTransactionModel model = arrayOfTrnsactions.get(position);
-                Log.d("Merchant",""+model.getRecieptNumber()+"");
-                Log.d("Merchant",""+model.getUserAccountNumber()+"");
-                Log.d("Merchant",""+model.getAmount()+"");
-                Log.d("Merchant",""+model.getDate()+"");
-                Log.d("Merchant",""+model.getType()+"");
-                Log.d("Merchant",""+model.getStatus()+"");
-                Log.d("Merchant",""+model.getMerchant().getId()+"");
+//                Log.d("Merchant",""+model.getRecieptNumber()+"");
+//                Log.d("Merchant",""+model.getUserAccountNumber()+"");
+//                Log.d("Merchant",""+model.getAmount()+"");
+//                Log.d("Merchant",""+model.getDate()+"");
+//                Log.d("Merchant",""+model.getType()+"");
+//                Log.d("Merchant",""+model.getStatus()+"");
+//                Log.d("Merchant",""+model.getMerchant().getId()+"");
                 intent.putExtra("receipt",model.getRecieptNumber());
                 intent.putExtra("name",model.getUserAccountNumber());
                 intent.putExtra("amount",model.getAmount());

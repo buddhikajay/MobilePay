@@ -9,11 +9,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="201dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -150,13 +152,17 @@
         </LinearLayout>
 
     </LinearLayout>
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Void"
-            android:id="@+id/button_void"/>
+            android:id="@+id/button_void"
+            android:background="@drawable/button_background_selector"
+            android:textColor="@color/white"
+            android:focusable="true"/>
+
 
     </LinearLayout>
+
 
 </RelativeLayout>

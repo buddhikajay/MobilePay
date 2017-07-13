@@ -34,7 +34,8 @@
             android:text="AccountNumber: "
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:gravity="right"
+            android:gravity="left"
+            android:width="100dp"
 
             />
         <View
@@ -51,6 +52,7 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:gravity="center"
+            android:width="100dp"
             />
         <View
             android:layout_width="0dp"
