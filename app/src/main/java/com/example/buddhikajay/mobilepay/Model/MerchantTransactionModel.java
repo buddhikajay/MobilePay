@@ -16,8 +16,8 @@ import java.util.Date;
  */
 
 public class MerchantTransactionModel {
-    private String userAccountNumber;
-    private String merchantAccountNumber;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     private String amount;
     private String date;
     private Merchant merchant;
@@ -25,18 +25,20 @@ public class MerchantTransactionModel {
     private String type;
     private String status;
 
+    private boolean appUserAccount_isFromAccountNuber;
 
-    public MerchantTransactionModel(String userAccountNumber, String amount, String date, Merchant merchant, String recieptNumber,String merchantAccountNumber) {
 
-        this.userAccountNumber = userAccountNumber;
-        this.merchantAccountNumber = merchantAccountNumber;
+    public MerchantTransactionModel(String fromAccountNumber, String amount, String date, Merchant merchant, String recieptNumber, String toAccountNumber) {
+
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
         this.amount = amount;
         this.date = date;
         this.merchant = merchant;
         this.recieptNumber = recieptNumber;
     }
 
-    public MerchantTransactionModel(JSONObject object) {
+    public MerchantTransactionModel(JSONObject object,String appUserId) {
 
         Log.d("transactionmodel",object.toString());
         try {
@@ -47,30 +49,81 @@ public class MerchantTransactionModel {
             this.status = object.getString("status");
             this.date = dateTimeFilter(date.getString("date"));
             this.type =object.getString("type");
-            if(this.type.equals("merchantpay")){
-                this.merchantAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
-                this.userAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
-                JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
-                JSONArray data = payeeDetaildata.getJSONArray("data");
-                JSONObject payeeDetail = data.getJSONObject(0);
 
-                Merchant merchantTemp = new Merchant(payeeDetail.getString("merchantId"));
-                merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
-                this.merchant = merchantTemp;
-            }
-            else if(this.type.equals("refund")){
+                this.toAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
+                //this.toAccountRole = getRole(object.getJSONObject("payeeDetail"));
+                this.fromAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
+                this.appUserAccount_isFromAccountNuber = checkAppAccountIsFromAccountNumber(object.getJSONObject("payerDetail"),appUserId);
+                //this.fromAccountRole = getRole(object.getJSONObject("payerDetail"));
+                if(this.appUserAccount_isFromAccountNuber){
+                    JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+                    JSONArray data = payeeDetaildata.getJSONArray("data");
+                    JSONObject payeeDetail = data.getJSONObject(0);
 
-                Log.d("psyerDetsil",object.getJSONObject("payerDetail").toString());
-                this.merchantAccountNumber = getMerchantName(object.getJSONObject("payerDetail")) ;
-                this.userAccountNumber = getPayerAccountNumber(object.getJSONObject("payeeDetail")) ;
-                JSONObject payerDetaildata = object.getJSONObject("payerDetail");
-                JSONArray data = payerDetaildata.getJSONArray("data");
-                JSONObject payerDetail = data.getJSONObject(0);
-                Merchant merchantTemp = new Merchant(payerDetail.getString("merchantId"));
-                merchantTemp.setMerchantName(payerDetail.getString("merchantName"));
-                this.merchant = merchantTemp;
-            }
+                    Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                    if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                        merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                    }
+                    else{
+                        merchantTemp.setMerchantName(payeeDetail.getString("username"));
+                    }
+                    this.merchant = merchantTemp;
+                }
+                else{
+                    JSONObject payeeDetaildata = object.getJSONObject("payerDetail");
+                    JSONArray data = payeeDetaildata.getJSONArray("data");
+                    JSONObject payeeDetail = data.getJSONObject(0);
 
+                    Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                    if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                        merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                    }
+                    else{
+                        merchantTemp.setMerchantName(payeeDetail.getString("username"));
+                    }
+                    this.merchant = merchantTemp;
+                }
+
+//
+//            else if(this.type.equals("refund")){
+//
+//                Log.d("psyerDetsil",object.getJSONObject("payerDetail").toString());
+//                this.toAccountNumber = getMerchantName(object.getJSONObject("payerDetail")) ;
+//                //this.toAccountRole = getRole(object.getJSONObject("payerDetail"));
+//                this.fromAccountNumber = getPayerAccountNumber(object.getJSONObject("payeeDetail")) ;
+//                this.appUserAccount_isFromAccountNuber = checkAppAccountIsFromAccountNumber(object.getJSONObject("payeeDetail"),appUserId);
+//
+//                //this.fromAccountRole = getRole(object.getJSONObject("payeeDetail"));
+//                JSONObject payerDetaildata = object.getJSONObject("payerDetail");
+//                JSONArray data = payerDetaildata.getJSONArray("data");
+//                JSONObject payerDetail = data.getJSONObject(0);
+//                Merchant merchantTemp = new Merchant(payerDetail.getString("merchantId"));
+//                merchantTemp.setMerchantName(payerDetail.getString("username"));
+//                this.merchant = merchantTemp;
+//            }
+//            else if(this.type.equals("Fund_Transfer")){
+//
+//                this.toAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
+//                //this.toAccountRole = getRole(object.getJSONObject("payeeDetail"));
+//                this.fromAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
+//                //this.fromAccountRole = getRole(object.getJSONObject("payerDetail"));
+//                JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+//                JSONArray data = payeeDetaildata.getJSONArray("data");
+//                JSONObject payeeDetail = data.getJSONObject(0);
+//
+//                Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+//                merchantTemp.setMerchantName(payeeDetail.getString("username"));
+//                this.merchant = merchantTemp;
+//            }
+
+//            this.fromAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
+//            this.toAccountNumber =getMerchantName(object.getJSONObject("payeeDetail")) ;
+//            JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
+//            JSONArray data = payeeDetaildata.getJSONArray("data");
+//            JSONObject payeeDetail = data.getJSONObject(0);
+//            Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+//            merchantTemp.setMerchantName(payeeDetail.getString("username"));
+//            this.merchant = merchantTemp;
 
 
 
@@ -97,12 +150,12 @@ public class MerchantTransactionModel {
         this.recieptNumber = recieptNumber;
     }
 
-    public String getUserAccountNumber() {
-        return userAccountNumber;
+    public String getFromAccountNumber() {
+        return fromAccountNumber;
     }
 
-    public void setUserAccountNumber(String userAccountNumber) {
-        this.userAccountNumber = userAccountNumber;
+    public void setFromAccountNumber(String fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
     }
 
     public String getAmount() {
@@ -143,11 +196,11 @@ public class MerchantTransactionModel {
         return transactions;
     }
 
-    public static ArrayList<MerchantTransactionModel> getTransaction(JSONArray transaction) {
+    public static ArrayList<MerchantTransactionModel> getTransaction(JSONArray transaction,String appUserId) {
         ArrayList<MerchantTransactionModel> transactionModels = new ArrayList<MerchantTransactionModel>();
         for (int i = 0; i < transaction.length(); i++) {
             try {
-                transactionModels.add(new MerchantTransactionModel(transaction.getJSONObject(i)));
+                transactionModels.add(new MerchantTransactionModel(transaction.getJSONObject(i),appUserId));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -179,7 +232,7 @@ public class MerchantTransactionModel {
             JSONArray array= (JSONArray) payeeDetail.opt("data");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
-                return jsonObject.opt("merchantName").toString();
+                return jsonObject.opt("username").toString();
 
 
 
@@ -190,6 +243,25 @@ public class MerchantTransactionModel {
 
         }
         return "";
+    }
+    public String getRole(JSONObject detail){
+        if(detail.has("data")){
+            JSONArray array= (JSONArray) detail.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                JSONArray roles = jsonObject.getJSONArray("roles");
+                return  roles.get(0).toString();
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return "";
+
     }
     public String getPayerAccountNumber(JSONObject payerDetail){
         if(payerDetail.has("data")){
@@ -210,11 +282,42 @@ public class MerchantTransactionModel {
         return "";
     }
 
-    public String getMerchantAccountNumber() {
-        return merchantAccountNumber;
+    public String getToAccountNumber() {
+        return toAccountNumber;
     }
 
-    public void setMerchantAccountNumber(String merchantAccountNumber) {
-        this.merchantAccountNumber = merchantAccountNumber;
+    public void setToAccountNumber(String toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
+    }
+
+    public boolean checkAppAccountIsFromAccountNumber(JSONObject payerDetail,String id){
+
+        if(payerDetail.has("data")){
+            JSONArray array= (JSONArray) payerDetail.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                Log.d("payerDetail",payerDetail.toString());
+                if(jsonObject.opt("id").toString().equals(id)){
+                    return true;
+
+                }
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return false;
+    }
+
+    public boolean isAppUserAccount_isFromAccountNuber() {
+        return appUserAccount_isFromAccountNuber;
+    }
+
+    public void setAppUserAccount_isFromAccountNuber(boolean appUserAccount_isFromAccountNuber) {
+        this.appUserAccount_isFromAccountNuber = appUserAccount_isFromAccountNuber;
     }
 }

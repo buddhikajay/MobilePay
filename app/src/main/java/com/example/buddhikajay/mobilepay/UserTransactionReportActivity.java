@@ -66,7 +66,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private void populateTransactionList(JSONArray transactions) {
         Log.d("Transaction activity",transactions.toString());
         // Construct the data source
-        final ArrayList<UserTransactionModel> arrayOfTrnsactions = UserTransactionModel.getTransaction(transactions);
+        final ArrayList<UserTransactionModel> arrayOfTrnsactions = UserTransactionModel.getTransaction(transactions,Api.getRegisterId(getApplicationContext()));
         // Create the adapter to convert the array to views
         UserTransactionAdapter adapter = new UserTransactionAdapter(this, arrayOfTrnsactions);
         // Attach the adapter to a ListView

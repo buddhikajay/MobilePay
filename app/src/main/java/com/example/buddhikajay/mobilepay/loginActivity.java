@@ -262,15 +262,19 @@ public class loginActivity extends AppCompatActivity {
             Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
             if (innerApp){
+                Log.d("...innerApp...","");
                 payInnappPerchase();
             }
             else
                 if(!Api.isMerchant(getApplicationContext())){
+                    Log.d("...start scan...","");
                     moveToScanActivity();
+
                 }
                 else{
                     //moveToReportActivity();
                     //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                    Log.d("...start merchant repor","");
                     moveToMerchantReport();
                 }
 
@@ -282,9 +286,10 @@ public class loginActivity extends AppCompatActivity {
     }
 
     private void moveToMerchantReport() {
-        finish();
+
         Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void moveToReportActivity() {

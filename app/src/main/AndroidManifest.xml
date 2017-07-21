@@ -55,7 +55,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UserTransactionDetailActivity" />
         <activity android:name=".MerchantTransactionReportActivity" />
-        <activity android:name=".MerchantTransactionDetailActivity"></activity>
+        <activity android:name=".MerchantTransactionDetailActivity" />
+        <activity android:name=".BillSpliteActivity"></activity>
     </application>
 
 </manifest>

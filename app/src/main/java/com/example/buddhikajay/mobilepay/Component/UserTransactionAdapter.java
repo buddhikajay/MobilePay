@@ -1,6 +1,7 @@
 package com.example.buddhikajay.mobilepay.Component;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,13 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
         TextView Amount = (TextView) convertView.findViewById(R.id.amount);
         TextView Date = (TextView) convertView.findViewById(R.id.date);
         // Populate the data into the template view using the data object
-        AccountNumber.setText(transactionModel.getMerchantAccountNumber());
+        if(transactionModel.isAppUserAccount_isFromAccountNuber()){
+            Log.d("acc",transactionModel.getToAccountNumber());
+            AccountNumber.setText(transactionModel.getToAccountNumber());
+        }
+        else {
+            AccountNumber.setText(transactionModel.getFromAccountNumber());
+        }
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen

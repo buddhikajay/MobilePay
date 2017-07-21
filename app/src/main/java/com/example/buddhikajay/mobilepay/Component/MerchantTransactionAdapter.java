@@ -6,21 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.util.Log;
 
-import com.example.buddhikajay.mobilepay.CheckoutActivity;
-import com.example.buddhikajay.mobilepay.MerchantTransactionReportActivity;
 import com.example.buddhikajay.mobilepay.Model.MerchantTransactionModel;
 import com.example.buddhikajay.mobilepay.R;
-import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.loginActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -55,7 +45,19 @@ public class MerchantTransactionAdapter extends ArrayAdapter<MerchantTransaction
         TextView Date = (TextView) convertView.findViewById(R.id.date);
 
         // Populate the data into the template view using the data objec
-        AccountNumber.setText(transactionModel.getUserAccountNumber());
+//        if(transactionModel.getToAccountRole().equals("merchant")){
+//            AccountNumber.setText(transactionModel.getFromAccountNumber());
+//        }
+//        else if(transactionModel.getToAccountRole().equals("merchant")){
+//            AccountNumber.setText(transactionModel.getFromAccountNumber());
+//        }
+        if(!transactionModel.isAppUserAccount_isFromAccountNuber()){
+            AccountNumber.setText(transactionModel.getFromAccountNumber());
+        }
+        else {
+            AccountNumber.setText(transactionModel.getToAccountNumber());
+        }
+
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen

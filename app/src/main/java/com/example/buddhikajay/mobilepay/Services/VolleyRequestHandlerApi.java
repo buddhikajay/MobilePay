@@ -26,7 +26,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import com.android.volley.*;
 /**
  * Created by supun on 01/06/17.
  */
@@ -101,6 +101,10 @@ public class VolleyRequestHandlerApi {
             }
 
         };
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                15000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleyComponent.getInstance(context).addToRequestQueue(jsObjRequest);
 

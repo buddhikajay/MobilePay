@@ -123,7 +123,25 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
     private void transactionList(){
 
+        if(!Api.isMerchant(getApplicationContext())){
+            moveToUserReport();
+        }
+        else{
+            //moveToReportActivity();
+            //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+            moveToMerchantReport();
+        }
+
+
+    }
+    private void moveToUserReport(){
+        finish();;
         Intent intent = new Intent(scanActivity.this, UserTransactionReportActivity.class);
+        startActivity(intent);
+    }
+    private void moveToMerchantReport() {
+        finish();
+        Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
     }
 
@@ -140,9 +158,16 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 PaymentModel paymentModel = QrCodeSplite.getInstance().spliteQrCode(rawResult.getText());
                 Log.d("code",paymentModel.toString());
                 //QrCodeDecode
+                if(scannerType){
 
-               Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
-                getMerchantDetail(merchant,paymentModel);
+                    Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
+                    getMerchantDetail(merchant,paymentModel);
+                }
+                else {
+
+                    getUserDetail(paymentModel);
+                }
+
 
 
     }
@@ -340,5 +365,91 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         }
         return true;
     }
+
+    private void getUserDetail(final PaymentModel paymentModel){
+
+        JSONObject detail = new JSONObject();
+        try {
+            detail.put("id",""+paymentModel.getQrModels().get(0).getId());
+
+            VolleyRequestHandlerApi.api(new VolleyCallback() {
+                @Override
+                public void onSuccess(JSONObject result) {
+
+                    userDetailResponseProcess(result,paymentModel);
+
+                }
+
+                @Override
+                public void login() {
+                    moveLogin();
+                }
+
+                @Override
+                public void enableButton() {
+
+                }
+            }, Parameter.urlUserRole,Api.getAccessToken(getApplicationContext()),detail,getApplicationContext());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void userDetailResponseProcess(JSONObject result,PaymentModel paymentModel){
+
+        Log.d("userRoele",result.toString());
+
+
+        if(result.has("data")){
+            JSONArray array= (JSONArray) result.opt("data");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                JSONArray roles = jsonObject.getJSONArray("roles");
+
+                if(roles.get(0).equals("user")){
+                    Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
+                    myIntent.putExtra("id",jsonObject.getString("id"));
+                    myIntent.putExtra("name",jsonObject.getString("username"));
+                    myIntent.putExtra("accountNumber",jsonObject.getString("accountNumber"));
+                    myIntent.putExtra("scannerType", this.scannerType);
+                    myIntent.putExtra("phoneNumber", jsonObject.getString("phoneNumber"));
+                    myIntent.putExtra("Paymodel",paymentModel);
+                    scanActivity.this.startActivity(myIntent);
+                }
+                else  if(roles.get(0).equals("merchant")){
+                        //TODO
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else if(result.has("errors")){
+            JSONArray array= (JSONArray) result.opt("errors");
+            try {
+                JSONObject jsonObject = array.getJSONObject(0);
+                if(jsonObject.opt("status").toString().equals("5000")){
+                    //setContentView(R.layout.activity_scan);
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    startActivity(intent);
+
+                    Log.d("error","5000");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+
 
 }

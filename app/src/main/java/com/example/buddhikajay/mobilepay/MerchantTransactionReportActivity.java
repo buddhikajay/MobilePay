@@ -15,7 +15,6 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Model.MerchantTransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 
 import org.json.JSONArray;
@@ -35,6 +34,7 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            Log.d("MerchantTransactionRept","");
             getMerchantTransaction();
         }
     }
@@ -125,7 +125,7 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
     private void populateTransactionList(JSONArray transactions) {
         Log.d("Transaction activity",transactions.toString());
         // Construct the data source
-        final ArrayList<MerchantTransactionModel> arrayOfTrnsactions = MerchantTransactionModel.getTransaction(transactions);
+        final ArrayList<MerchantTransactionModel> arrayOfTrnsactions = MerchantTransactionModel.getTransaction(transactions,Api.getRegisterId(getApplicationContext()));
         // Create the adapter to convert the array to views
         MerchantTransactionAdapter adapter = new MerchantTransactionAdapter(this, arrayOfTrnsactions);
         // Attach the adapter to a ListView
@@ -142,14 +142,14 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(MerchantTransactionReportActivity.this,MerchantTransactionDetailActivity.class);
                 MerchantTransactionModel model = arrayOfTrnsactions.get(position);
 //                Log.d("Merchant",""+model.getRecieptNumber()+"");
-//                Log.d("Merchant",""+model.getUserAccountNumber()+"");
+//                Log.d("Merchant",""+model.getFromAccountNumber()+"");
 //                Log.d("Merchant",""+model.getAmount()+"");
 //                Log.d("Merchant",""+model.getDate()+"");
 //                Log.d("Merchant",""+model.getType()+"");
 //                Log.d("Merchant",""+model.getStatus()+"");
 //                Log.d("Merchant",""+model.getMerchant().getId()+"");
                 intent.putExtra("receipt",model.getRecieptNumber());
-                intent.putExtra("name",model.getUserAccountNumber());
+                intent.putExtra("name",model.getFromAccountNumber());
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
