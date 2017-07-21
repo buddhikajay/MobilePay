@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.buddhikajay.mobilepay.TransactionReportActivity"
+    tools:context="com.example.buddhikajay.mobilepay.UserTransactionReportActivity"
     tools:showIn="@layout/activity_transaction_report"
     android:background="#ffffff">
 

@@ -122,7 +122,7 @@ public class registerActivity extends AppCompatActivity {
 
                 }
                 else if(s.length()==10){
-                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X'){
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
 
                     }
                     else {
@@ -343,7 +343,10 @@ public class registerActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
                 Log.d("RegisterActivity:status","Succss");
                 Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo);
+
+                JSONArray roles = jsonObject.getJSONArray("role");
+                Log.d("RegisterActivity:role", roles.get(0).toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());

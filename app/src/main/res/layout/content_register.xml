@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/logo"
-        android:src="@drawable/logo_wide"
+        android:src="@drawable/logo_wide1"
         android:layout_alignRight="@+id/login_pin"
         android:layout_alignEnd="@+id/login_pin"
         android:layout_marginTop="10dp"/>

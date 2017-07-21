@@ -48,6 +48,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private PaymentModel paymentModel;
     private  String tipperId;
     boolean[] changeAmount ;
+
+    TextView test_bill_amount;
+    TextView test_bill_amount_amount;
+
+    private String merchantId;
+
+    private String paymentType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,29 +71,45 @@ public class CheckoutActivity extends AppCompatActivity {
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
 
-        //if direct pay to person
-        if(!scannerType){
-            TextView merchantIdLabel = (TextView) findViewById(R.id.merchantIdLable);
-            TextView merchantNameLabel = (TextView) findViewById(R.id.merchantNameLable);
-            TextView merchantAddressLabel = (TextView) findViewById(R.id.merchantAddressLable);
-
-            merchantIdLabel.setText("Payee ID");
-            merchantNameLabel.setText("Payee Name");
-
-            //hide address
-            merchantAddressLabel.setVisibility(View.INVISIBLE);
-            addressTextView.setVisibility(View.INVISIBLE);
-            tipTextView.setVisibility(View.INVISIBLE);
-        }
-
-
-        idTextView.setText(Formate.idSplite(intent.getStringExtra("id")));
-        nameTextView.setText(intent.getStringExtra("name"));
-        addressTextView.setText(intent.getStringExtra("address"));
 
         amountTextView = (EditText) findViewById(R.id.amountEditText);
         tipTextView = (EditText) findViewById(R.id.tipEdit);
         payButton = (Button) findViewById(R.id.buttonPay);
+        Button spitter = (Button) findViewById(R.id.buttonSpilite);
+
+       // test_bill_amount = (TextView) findViewById(R.id.text_bill_amount);
+        //test_bill_amount_amount = (TextView)findViewById(R.id.text_bill_amount_value);
+        //if direct pay to person
+        if(!scannerType){
+            //TextView merchantIdLabel = (TextView) findViewById(R.id.merchantIdLable);
+            //TextView merchantNameLabel = (TextView) findViewById(R.id.merchantNameLable);
+            //TextView merchantAddressLabel = (TextView) findViewById(R.id.merchantAddressLable);
+
+            //merchantIdLabel.setText("Payee ID");
+            //merchantNameLabel.setText("Payee Name");
+
+            //hide address
+            //merchantAddressLabel.setVisibility(View.INVISIBLE);
+            addressTextView.setVisibility(View.GONE);
+            tipTextView.setVisibility(View.GONE);
+            spitter.setVisibility(View.GONE);
+            nameTextView.setText(intent.getStringExtra("accountNumber"));
+            paymentType = "Fund_Transfer";
+
+
+        }
+        else {
+            addressTextView.setText(intent.getStringExtra("address"));
+            Log.d("address",intent.getStringExtra("address"));
+            nameTextView.setText(intent.getStringExtra("name"));
+            paymentType = "Merchant_Pay";
+        }
+
+        merchantId = intent.getStringExtra("id");
+        idTextView.setText(Formate.idSplite(merchantId));
+
+
+
         if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,8 +133,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
                     Log.d("total",total.toString());
                 }
-                    showmessgebox(total+ " LKR",amount, intent.getStringExtra("name"), intent);
 
+                showmessgebox(paymentType,total+ " LKR",amount, intent.getStringExtra("name"), intent);
 
 
             }
@@ -122,18 +145,53 @@ public class CheckoutActivity extends AppCompatActivity {
         amountFormat(tipTextView,1);
 
         staticAndDynamicQrHandle(paymentModel);
+
+        //splite
+
+
+        spitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spilteTransaction();
+
+
+            }
+        });
+
     }
+
+    private void spilteTransaction() {
+        String amountText = amountTextView.getText().toString();
+       amountText = amountText.toString().replaceAll("[$, LKR]","");
+        Log.d("amont",amountText);
+        if (!amountText.equals("") ){
+            double amountValue = Double.parseDouble(amountText);
+            Intent intent = new Intent(CheckoutActivity.this,BillSpliteActivity.class);
+            intent.putExtra("merchantName",username);
+            intent.putExtra("merchantId",merchantId);
+            intent.putExtra("amount",amountValue);
+            intent.putExtra("phoneNumber",phoneNumber);
+
+            startActivity(intent);
+            finish();
+        }
+
+
+    }
+
     private void staticAndDynamicQrHandle(PaymentModel paymentModel){
         Log.d("payment",paymentModel.toString());
 
-;
+        Log.d("payment is dynamic",paymentModel.isDynamic()+"");
         if (paymentModel.isDynamic()){
             Log.d("amout paymodel",paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setText(paymentModel.getQrModels().get(0).getAmount());
             amountTextView.setEnabled(false);
+            //amountTextView.setVisibility(View.GONE);
 
         }else{
-
+           /// test_bill_amount.setVisibility(View.GONE);
+            //test_bill_amount_amount.setVisibility(View.GONE);
         }
 
         if(paymentModel.isTip()){
@@ -227,13 +285,14 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
     }
-    private void payTrasaction(String mechantId, final String amount, String accessToken, final Intent intent, final boolean tip){
+    private void payTrasaction(String paymentType,String mechantId, final String amount, String accessToken, final Intent intent, final boolean tip){
 
         JSONObject pay = new JSONObject();
         try {
             pay.put("merchantId",""+mechantId);
-            pay.put("amount",""+amount);
+            pay.put("amount",""+amount.replaceAll("[$, LKR]", ""));
             pay.put("accessToken",""+accessToken);
+            pay.put("paymentType",paymentType);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -268,7 +327,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
 
-    private void showmessgebox(final String total, final String amount, String username, final Intent intent){
+    private void showmessgebox(final String paymentType,final String total, final String amount, String username, final Intent intent){
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog.setCanceledOnTouchOutside(false);
@@ -283,12 +342,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        payTrasaction(intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
+                        payTrasaction(paymentType,intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
                         Log.d("merchantId",intent.getStringExtra("id"));
                         if(paymentModel.isTip() ){
                             String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
                             if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
-                                payTrasaction(tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
+                                payTrasaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
                                 Log.d("tipperid",tipperId);
                             }
 
@@ -322,9 +381,9 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        if(!complete){
-            moveLogin();
-        }
+//        if(!complete){
+//            moveLogin();
+//        }
         //
         //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
         //CheckoutActivity.this.startActivity(myIntent);
@@ -352,8 +411,8 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(!tip){
                     Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
-                    //Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
                     moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
                 else {
@@ -423,8 +482,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            //Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                            //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();

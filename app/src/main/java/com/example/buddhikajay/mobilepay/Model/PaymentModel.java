@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PaymentModel  implements Serializable {
     private ArrayList<QrModel> qrModels;
-    private boolean dynamic;
+    private boolean dynamic = true;
     private boolean tip;
     private boolean innerApp;
 

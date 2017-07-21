@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/number_of_spliters"
+            android:ems="10"
+            android:hint="Number of people want share payment"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:cursorVisible="true"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
+            android:focusable="true"
+            android:text=""
+            android:textColorHint="@color/colorPrimary"/>
+    </android.support.design.widget.TextInputLayout>
+    <!--android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/number_of_spliters"
+            android:hint="Number of people want share payment"
+            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
+            />
+
+    </android.support.design.widget.TextInputLayout-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GENERATE QRCODE"
+        android:id="@+id/button_generate_qrcode"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:background="@color/blueviolet"
+        android:layout_marginTop="8dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_qrcode"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_collected"
+        android:text="Your bill amount is collected"
+
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAYNOW"
+            android:id="@+id/button_paynow"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:background="@color/mediumseagreen"
+
+            />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

@@ -4,13 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.buddhikajay.mobilepay.UserTransactionDetailActivity"
+    tools:context="com.example.buddhikajay.mobilepay.MerchantTransactionDetailActivity"
     android:padding="16dp">
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Merchant"
+                android:text="UserAccount"
                 android:textSize="12dp"
                 android:layout_marginTop="12dp"/>
             <TextView
@@ -47,12 +52,24 @@
                 android:text="Type"
                 android:textSize="12dp"
                 android:layout_marginTop="12dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textSize="12dp"
+                android:layout_marginTop="12dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : "
+                android:textSize="12dp"
+                android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Merchant"
-                android:id="@+id/merchant_name"
+                android:id="@+id/usr_name"
                 android:textSize="12dp"
                 android:layout_marginTop="12dp"/>
             <TextView
@@ -125,7 +142,27 @@
                 android:id="@+id/type"
                 android:textSize="12dp"
                 android:layout_marginTop="12dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:id="@+id/status"
+                android:textSize="12dp"
+                android:layout_marginTop="12dp"/>
         </LinearLayout>
 
     </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Void"
+            android:id="@+id/button_void"
+            android:background="@drawable/button_background_selector"
+            android:textColor="@color/white"
+            android:focusable="true"/>
+
+
+    </LinearLayout>
+
+
 </RelativeLayout>

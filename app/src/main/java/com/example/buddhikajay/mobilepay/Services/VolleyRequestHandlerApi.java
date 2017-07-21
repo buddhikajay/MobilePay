@@ -26,7 +26,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import com.android.volley.*;
 /**
  * Created by supun on 01/06/17.
  */
@@ -101,6 +101,10 @@ public class VolleyRequestHandlerApi {
             }
 
         };
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                15000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         VolleyComponent.getInstance(context).addToRequestQueue(jsObjRequest);
 
@@ -150,6 +154,7 @@ public class VolleyRequestHandlerApi {
 
                         }  else if (error instanceof ServerError || networkResponse.statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                             //TODO
+                            callback.enableButton();
                             Toast.makeText(context,"Server Error",Toast.LENGTH_LONG).show();
                         }  else if (error instanceof ParseError) {
                             //TODO

@@ -1,6 +1,5 @@
 package com.example.buddhikajay.mobilepay;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.design.widget.TextInputLayout;
 
 import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+
 public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
@@ -39,6 +41,8 @@ public class loginActivity extends AppCompatActivity {
 
     //private String username;
     private String password;
+
+    private TextInputLayout passLayout;
 
      Button btn;
 
@@ -55,7 +59,15 @@ public class loginActivity extends AppCompatActivity {
          setSupportActionBar(toolbar);
 
          passField = (EditText) findViewById(R.id.login_pin);
+        passLayout = (TextInputLayout) findViewById(R.id.pinErr);
          //accountField = (EditText)findViewById(R.id.accountNo);
+        passField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                passLayout.setError(null);
+                return false;
+            }
+        });
 
         btn=(Button)findViewById(R.id.log_button);
 
@@ -99,7 +111,7 @@ public class loginActivity extends AppCompatActivity {
         }
         else {
 
-            showError(passField);
+            showError(passLayout);
         }
         return false;
     }
@@ -170,14 +182,17 @@ public class loginActivity extends AppCompatActivity {
            },Parameter.loginUrl,"",detailLogin,getApplicationContext());*/
         }
 
+            else{
+            btn.setEnabled(true);
+        }
 
 
 
     }
-    private void showError(EditText passField) {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        passField.startAnimation(shake);
-        passField.setError("wrong pinActivity");
+    private void showError(TextInputLayout passField) {
+       // Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        //passField.startAnimation(shake);
+        passField.setError("empty password");
     }
 
     @Override
@@ -244,13 +259,25 @@ public class loginActivity extends AppCompatActivity {
             Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
             Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
             //login successs go totransaction
-            Log.d("loginActivity","user login success");
+            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
             if (innerApp){
+                Log.d("...innerApp...","");
                 payInnappPerchase();
             }
             else
-            moveToScanActivity();
+                if(!Api.isMerchant(getApplicationContext())){
+                    Log.d("...start scan...","");
+                    moveToScanActivity();
+
+                }
+                else{
+                    //moveToReportActivity();
+                    //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                    Log.d("...start merchant repor","");
+                    moveToMerchantReport();
+                }
+
 
         }
         else {
@@ -258,6 +285,17 @@ public class loginActivity extends AppCompatActivity {
         }
     }
 
+    private void moveToMerchantReport() {
+
+        Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void moveToReportActivity() {
+        Intent intent = new Intent(this,UserTransactionReportActivity.class);
+        startActivity(intent);
+    }
 
 
     //ToDO reuseble component change architecture

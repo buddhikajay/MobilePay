@@ -14,20 +14,21 @@
         android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/accountNumber"
+        android:layout_below="@+id/fromAccountNumber"
         android:layout_marginTop="5dp"
         android:text="amount"
         android:textColor="@android:color/black" /-->
 
 
     <TextView
-        android:id="@+id/accountNumber"
+        android:id="@+id/userAccountNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="AccountNumber: "
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:gravity="right"
+        android:gravity="left"
+        android:width="100dp"
 
         />
     <View
@@ -43,7 +44,9 @@
         android:textAppearance="?android:attr/textAppearanceButton"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:gravity="center"
+        android:gravity="left"
+        android:width="100dp"
+        android:layout_marginLeft="10dp"
         />
     <View
         android:layout_width="0dp"
@@ -58,7 +61,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black"
         android:gravity="right"
-        android:textSize="10dp"/>
+        android:textSize="10dp"
+        android:width="100dp"/>
 </LinearLayout>
 
     <!--ImageView
