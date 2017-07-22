@@ -102,7 +102,7 @@ public class VolleyRequestHandlerApi {
 
         };
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                15000,
+                60000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
@@ -183,6 +183,10 @@ public class VolleyRequestHandlerApi {
             }
 
         };
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleyComponent.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 

@@ -234,12 +234,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     Log.d("start",start+"");
                     value.removeTextChangedListener(this);
 
-                    String cleanString = s.toString().replaceAll("[$,. LKR]", "");
+                    String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     double parsed = Double.parseDouble(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
 
-                    formatted=formatted.replaceAll("[$]", "")+" LKR";
+                    formatted=formatted.replaceAll("[^0-9.,]", "")+" LKR";
                     current = formatted;
                     value.setText(formatted);
 

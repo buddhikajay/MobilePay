@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,8 @@ public class BillSpliteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_splite);
+
+
 
         Intent intent = getIntent();
         amount = intent.getDoubleExtra("amount",0.00);
@@ -89,7 +92,7 @@ public class BillSpliteActivity extends AppCompatActivity {
         AlertDialog alertDialog=new AlertDialog.Builder(BillSpliteActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog .setMessage("Pay "+ amount+" to "+merchantName+"?");
+        alertDialog .setMessage("Pay "+ amount+" LKR to "+merchantName+"?");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
