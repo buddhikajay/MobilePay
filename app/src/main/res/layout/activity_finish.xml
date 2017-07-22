@@ -108,20 +108,21 @@
 
 
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/ic_checked"
-            android:layout_marginTop="40dp"
-            android:layout_below="@+id/transaction_amount"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            />
+            android:layout_marginTop="50dp"
+            android:text="SUCCESS!"
+            android:gravity="center"
+
+            android:textSize="54sp"
+            android:textColor="@color/succss_msg"/>
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="BACK TO HOME"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:id="@+id/finish_btn"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/imageView"
