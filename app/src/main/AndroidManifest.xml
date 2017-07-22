@@ -20,7 +20,7 @@
         android:icon="@mipmap/logo_mini"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/DirectPayTheme">
         <activity
             android:name=".MainActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">

@@ -2,7 +2,7 @@
     <string name="app_name">Direct Pay</string>
     <string name="action_settings">Settings</string>
 
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
 
 
     <string name="qrscan_button">OK</string>
@@ -30,13 +30,13 @@
     <string name="register">2</string>
 
     //login Screen
-    <string name="login_hint">Please Enter Password</string>
+    <string name="login_hint">Password</string>
     <string name="title_activity_main2">Main2Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="forget_password"> <u>forgot password?</u></string>
+    <string name="forget_password"> <u>Forgot password?</u></string>
 
 
 </resources>
