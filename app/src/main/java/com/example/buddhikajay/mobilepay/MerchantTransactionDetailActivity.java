@@ -132,4 +132,24 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
         startActivity(myIntent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        //moveLogin();
+        moveScan();
+        finish();
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
+
+    }
+    private void moveScan() {
+        Intent myIntent = new Intent(this, scanActivity.class);
+        this.startActivity(myIntent);
+        finish();
+    }
+
 }
