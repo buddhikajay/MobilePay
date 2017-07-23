@@ -55,6 +55,11 @@ public class CheckoutActivity extends AppCompatActivity {
     private String merchantId;
 
     private String paymentType;
+
+    boolean scannerType;
+
+    boolean back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +78,7 @@ public class CheckoutActivity extends AppCompatActivity {
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
         username = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
-        final boolean scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
+        scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
         TextView idTextView = (TextView) findViewById(R.id.merchantIdTextView);
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
@@ -377,8 +382,10 @@ public class CheckoutActivity extends AppCompatActivity {
     public void onBackPressed() {
 //        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
 //       CheckoutActivity.this.startActivity(myIntent);
-        moveLogin();
+        this.back = true;
         finish();
+        moveHome();
+
 
     }
     public User getSellerDetail(String sellerId){
@@ -398,6 +405,15 @@ public class CheckoutActivity extends AppCompatActivity {
         //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
+
+        if(!back){
+            finish();
+            //moveLogin();
+        }
+
+
+
+
     }
 
     public void moveLogin(){
@@ -545,8 +561,9 @@ public class CheckoutActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this,scanActivity.class);
-                startActivity(intent);
+                this.back = true;
+                finish();
+                moveHome();
                 break;
         }
         return true;

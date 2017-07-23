@@ -52,6 +52,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -184,11 +185,13 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
         Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = true; // merchant pay
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         QrScanner();
     }
     private void fundTransfer(){
         Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = false; // merchant pay
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         QrScanner();
     }
     private void transactionList(){
@@ -394,7 +397,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 //            SecurityHandler.handleSSLHandshake();
 //            setContentView(R.layout.activity_scan);
 //            populateScanList();
-
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
         }
         else {
             moveLogin();

@@ -241,7 +241,6 @@ public class loginActivity extends AppCompatActivity {
 
     }
     public void moveToScanActivity(){
-        finish();
         Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
         loginActivity.this.startActivity(myIntent);
 
@@ -289,7 +288,7 @@ public class loginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
-        finish();
+
     }
 
     private void moveToReportActivity() {
