@@ -37,7 +37,7 @@
             android:background="@drawable/btn_merchant_pay"
             android:id="@+id/btn_merchant_pay"
 
-
+            android:layout_marginRight="8dp"
             />
             <View
                 android:layout_width="0dp"
@@ -47,7 +47,7 @@
         <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
-
+            android:layout_marginLeft="8dp"
             android:layout_gravity="right"
             android:background="@drawable/btn_fund_transfer"
             android:id="@+id/btn_fund_transfer"
@@ -64,7 +64,7 @@
         <Button
             android:layout_width="100dp"
             android:layout_height="100dp"
-
+            android:layout_marginRight="8dp"
             android:layout_gravity="left"
             android:background="@drawable/btn_my_qr"
             android:id="@+id/btn_my_qr"/>
@@ -79,6 +79,7 @@
 
             android:layout_gravity="right"
             android:background="@drawable/btn_transaction_reports"
+            android:layout_marginLeft="8dp"
             android:id="@+id/btn_transaction_report"/>
 
     </LinearLayout>

@@ -1,9 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,7 @@ import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import android.widget.LinearLayout.LayoutParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import android.util.DisplayMetrics;
 
 public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
@@ -55,16 +60,47 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
 
+
+
+
         if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.manubutton);
+            //getSupportActionBar().setIcon(R.drawable.menubutton);
+
             //populateScanList();
         }
         Button button_merchant_pay = (Button) findViewById(R.id.btn_merchant_pay);
         Button button_fund_transfer = (Button) findViewById(R.id.btn_fund_transfer);
         Button button_my_qr = (Button) findViewById(R.id.btn_my_qr);
         Button button_transaction_report = (Button) findViewById(R.id.btn_transaction_report);
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        int width_dp = (width_px/pixeldpi)*160;
+        int height_dp = (height_px/pixeldpi)*160;
+
+
+        Log.d("widthdp",""+width_dp);
+        Log.d("height_dp",""+height_dp);
+
+        int button_width = (width_dp-48)/2;
+
+        int btn_size = (int) (button_width*pixeldp);
+        button_merchant_pay.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_fund_transfer.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_my_qr.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_transaction_report.setLayoutParams (new LayoutParams(btn_size, btn_size));
+
 
         button_merchant_pay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -487,6 +523,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         }
 
     }
+    public int pxToDp(int px) {
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
 
 
 }

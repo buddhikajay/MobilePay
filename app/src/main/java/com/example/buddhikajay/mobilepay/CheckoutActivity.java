@@ -60,6 +60,14 @@ public class CheckoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            //populateScanList();
+
+        }
+
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
@@ -95,6 +103,7 @@ public class CheckoutActivity extends AppCompatActivity {
             spitter.setVisibility(View.GONE);
             nameTextView.setText(intent.getStringExtra("accountNumber"));
             paymentType = "Fund_Transfer";
+            getSupportActionBar().setTitle("FundTransfer");
 
 
         }
@@ -103,6 +112,7 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.d("address",intent.getStringExtra("address"));
             nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Merchant_Pay";
+            getSupportActionBar().setTitle("MerchantPay");
         }
 
         merchantId = intent.getStringExtra("id");

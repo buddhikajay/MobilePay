@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
 
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -25,6 +26,9 @@
 
     </style>
 
-    <style name="DirectPayTheme" parent="AppTheme" />
+    <style name="DirectPayTheme" parent="AppTheme" >
+
+    </style>
+
 
 </resources>
