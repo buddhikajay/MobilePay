@@ -260,6 +260,9 @@ public class loginActivity extends AppCompatActivity {
             //login successs go totransaction
             Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
+
+            btn.setEnabled(true);
+            passField.setText(null);
             if (innerApp){
                 Log.d("...innerApp...","");
                 payInnappPerchase();
