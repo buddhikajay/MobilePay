@@ -279,14 +279,24 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
+
+
                 JSONObject jsonObject = array.getJSONObject(0);
-                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
-                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
-                merchantDetailResponseHandler(merchant, jsonObject);
-                //merchantList.add(merchant);
+                JSONArray roles = jsonObject.getJSONArray("role");
+                if(roles.get(0).equals("user")){
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                    //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                    merchantDetailResponseHandler(merchant, jsonObject);
+                    //merchantList.add(merchant);
 
-                moveToCheckoutActivity(merchant, paymentModel);
-
+                    moveToCheckoutActivity(merchant, paymentModel);
+                }
 
                 // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
