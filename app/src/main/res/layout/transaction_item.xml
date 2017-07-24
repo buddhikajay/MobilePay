@@ -28,8 +28,7 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:gravity="left"
-        android:width="70dp"
-        android:textSize="10sp"
+        android:textSize="14sp"
 
         />
     <View
@@ -46,9 +45,8 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:gravity="left"
-        android:width="100dp"
-        android:textSize="10sp"
-        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+
         />
     <View
         android:layout_width="0dp"

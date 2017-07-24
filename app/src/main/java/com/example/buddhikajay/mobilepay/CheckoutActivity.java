@@ -60,6 +60,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
     boolean back;
 
+    boolean inApp =false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +122,9 @@ public class CheckoutActivity extends AppCompatActivity {
             nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Merchant_Pay";
             getSupportActionBar().setTitle("MerchantPay");
+            if(intent.getStringExtra("type")!=null && intent.getStringExtra("type").equals("inApp")){
+                inApp = true;
+            }
         }
 
         merchantId = intent.getStringExtra("id");
@@ -486,6 +491,7 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("amount",amount);
         myIntent.putExtra("payee",name);
         myIntent.putExtra("recept",reciptNumber);
+        myIntent.putExtra("inApp",inApp);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
 

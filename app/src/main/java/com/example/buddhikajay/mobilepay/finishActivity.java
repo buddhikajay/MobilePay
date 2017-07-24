@@ -12,6 +12,7 @@ public class finishActivity extends AppCompatActivity {
     private String amount;
     private String payee;
     private String recept;
+    private boolean inApp;
 
     private boolean back;
     @Override
@@ -33,6 +34,7 @@ public class finishActivity extends AppCompatActivity {
         amount = intent.getStringExtra("amount");
         payee = intent.getStringExtra("payee");
         recept = intent.getStringExtra("recept");
+        inApp = intent.getBooleanExtra("inApp",false);
         //Log.d("Amount",amount);
         TextView amountText = (TextView) findViewById(R.id.transaction_amount);
         amountText.setText(amount);
@@ -49,8 +51,15 @@ public class finishActivity extends AppCompatActivity {
             {
 
                 finish();
-                Intent myIntent = new Intent(finishActivity.this, scanActivity.class);
-                finishActivity.this.startActivity(myIntent);
+                if(inApp){
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.supun.molly");
+                    startActivity(launchIntent);
+                }
+                else {
+                    Intent myIntent = new Intent(finishActivity.this, scanActivity.class);
+                    finishActivity.this.startActivity(myIntent);
+                }
+
 
 
 

@@ -226,6 +226,9 @@ public class BillSpliteActivity extends AppCompatActivity {
 
         int width_dp = (width_px/pixeldpi)*160;
         int height_dp = (height_px/pixeldpi)*160;
+        int qr_width = (width_dp-32);
+
+        int btn_size = (int) (qr_width*pixeldp);
 
 
         String splitters = numberOfSplitter.getText().toString();
@@ -236,7 +239,7 @@ public class BillSpliteActivity extends AppCompatActivity {
 
             String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" main";
             Log.d("code",code);
-            Bitmap myBitmap = QRCode.from(""+ code).withSize(width_px,width_px).bitmap();
+            Bitmap myBitmap = QRCode.from(""+ code).withSize(btn_size,btn_size).bitmap();
             myImage.setImageBitmap(myBitmap);
         }
         else {

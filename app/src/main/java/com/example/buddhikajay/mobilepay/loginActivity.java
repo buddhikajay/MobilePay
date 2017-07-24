@@ -389,6 +389,7 @@ public class loginActivity extends AppCompatActivity {
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", true);
+        myIntent.putExtra("type", "inApp");
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         startActivity(myIntent);
