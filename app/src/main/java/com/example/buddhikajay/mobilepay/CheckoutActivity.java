@@ -81,6 +81,7 @@ public class CheckoutActivity extends AppCompatActivity {
         scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
         TextView idTextView = (TextView) findViewById(R.id.merchantIdTextView);
+        TextView merchantidTextView = (TextView) findViewById(R.id.merchantTextView);
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
 
@@ -106,9 +107,10 @@ public class CheckoutActivity extends AppCompatActivity {
             addressTextView.setVisibility(View.GONE);
             tipTextView.setVisibility(View.GONE);
             spitter.setVisibility(View.GONE);
-            nameTextView.setText(intent.getStringExtra("accountNumber"));
+            nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Fund_Transfer";
             getSupportActionBar().setTitle("FundTransfer");
+            merchantidTextView.setText("UserId :");
 
 
         }

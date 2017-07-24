@@ -2,11 +2,13 @@ package com.example.buddhikajay.mobilepay;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -214,14 +216,27 @@ public class BillSpliteActivity extends AppCompatActivity {
 
     private void generateQrCodeForSplitter() {
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        int width_dp = (width_px/pixeldpi)*160;
+        int height_dp = (height_px/pixeldpi)*160;
+
+
         String splitters = numberOfSplitter.getText().toString();
         Log.d("number of splitters",splitters);
         if( !(splitters.equals("0") || splitters.equals(""))){
             Double amountValue = Double.parseDouble(amount.toString().replaceAll("[$, LKR]",""));
             int spliteNumber = Integer.parseInt(splitters);
 
-            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+amountValue/spliteNumber+" main";
-            Bitmap myBitmap = QRCode.from(""+ code).withSize(400,400).bitmap();
+            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" main";
+            Log.d("code",code);
+            Bitmap myBitmap = QRCode.from(""+ code).withSize(width_px,width_px).bitmap();
             myImage.setImageBitmap(myBitmap);
         }
         else {

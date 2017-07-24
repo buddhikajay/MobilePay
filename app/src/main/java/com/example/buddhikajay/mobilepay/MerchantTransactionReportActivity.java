@@ -37,6 +37,8 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
             Log.d("MerchantTransactionRept","");
             getMerchantTransaction();
         }
+
+
     }
 
     public void getMerchantTransaction() {
@@ -167,8 +169,8 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
 
-                moveScan();
-
+                //moveScan();
+                    finish();
                 break;
         }
         return true;
@@ -177,7 +179,7 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //moveLogin();
-        moveScan();
+        //moveScan();
         finish();
 
     }

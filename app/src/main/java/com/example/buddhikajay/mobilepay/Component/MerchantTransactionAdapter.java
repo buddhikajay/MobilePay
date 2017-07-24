@@ -51,6 +51,8 @@ public class MerchantTransactionAdapter extends ArrayAdapter<MerchantTransaction
 //        else if(transactionModel.getToAccountRole().equals("merchant")){
 //            AccountNumber.setText(transactionModel.getFromAccountNumber());
 //        }
+
+
         if(!transactionModel.isAppUserAccount_isFromAccountNuber()){
             AccountNumber.setText(transactionModel.getFromAccountNumber());
         }

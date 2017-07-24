@@ -35,7 +35,8 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:gravity="left"
-            android:width="100dp"
+            android:width="70dp"
+            android:textSize="10sp"
 
             />
         <View
@@ -51,8 +52,10 @@
             android:textAppearance="?android:attr/textAppearanceButton"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:gravity="center"
+            android:gravity="left"
             android:width="100dp"
+            android:textSize="10sp"
+
             />
         <View
             android:layout_width="0dp"
@@ -66,8 +69,8 @@
             android:text="Date"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black"
-            android:gravity="right"
-            android:textSize="10dp"
+            android:gravity="left"
+            android:textSize="10sp"
             />
 
     </LinearLayout>

@@ -1,8 +1,10 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,10 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
     private String type;
     private String status;
     private String merchantId;
+
+    int width_dp;
+    int height_dp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +93,17 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
             });
         }
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        width_dp = (width_px/pixeldpi)*160;
+        height_dp = (height_px/pixeldpi)*160;
+
 
     }
     @Override
@@ -136,7 +153,7 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //moveLogin();
-        moveScan();
+        moveMerchantTransactionReport();
         finish();
 
     }
@@ -146,8 +163,8 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
         finish();
 
     }
-    private void moveScan() {
-        Intent myIntent = new Intent(this, scanActivity.class);
+    private void moveMerchantTransactionReport() {
+        Intent myIntent = new Intent(this, MerchantTransactionReportActivity.class);
         this.startActivity(myIntent);
         finish();
     }
