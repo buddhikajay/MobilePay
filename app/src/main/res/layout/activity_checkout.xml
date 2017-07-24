@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".finishActivity"
     android:background="#ffffff">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
             <!--LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,20 +74,38 @@
                     android:textSize="12dp"/>
 
             </LinearLayout!-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/splash_screen_bg"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="MerchantId:"
+                    android:id="@+id/merchantTextView"
+                    android:layout_marginTop="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="0097"
                     android:id="@+id/merchantIdTextView"
                     android:layout_marginTop="16dp"
-                    android:textSize="25dp"
-
-                    android:textStyle="bold"/>
+                    android:textSize="30sp"
+                    android:textColor="@color/white"
+                    />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -101,13 +116,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
+                        android:textColor="@color/white"
                         android:text="Cargills Foodcity Bambalabitiya"
                         android:id="@+id/merchantNameTextView"
                         android:layout_marginTop="16dp"
-                        android:textSize="25dp"
+                        android:textSize="34sp"
 
-                        android:textStyle="bold"
+
                         />
                     <TextView
                         android:layout_width="match_parent"
@@ -115,9 +130,10 @@
                         android:text="123 Galle Road, Colombo 04"
                         android:id="@+id/addressTextView"
                         android:layout_marginTop="16dp"
-                        android:textSize="15dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
 
-                        android:textStyle="bold"
+
                         />
                 </LinearLayout>
 
@@ -125,14 +141,16 @@
             </LinearLayout>
 
 
-
+            </RelativeLayout>
 
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <!--TextView
                 android:layout_width="wrap_content"
@@ -206,7 +224,7 @@
                         android:id="@+id/buttonPay"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
-                        android:background="@color/mediumseagreen"
+                        android:background="@drawable/button_background_selector"
                         android:layout_margin="8dp"
 
                         />
@@ -214,7 +232,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    >
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -222,7 +241,7 @@
                         android:id="@+id/buttonSpilite"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@color/white"
-                        android:background="@color/blueviolet"
+                        android:background="@color/colorPrimaryDark"
                         android:layout_margin="8dp" />
                 </RelativeLayout>
 

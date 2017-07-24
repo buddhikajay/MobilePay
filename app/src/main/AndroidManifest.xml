@@ -20,7 +20,7 @@
         android:icon="@mipmap/logo_mini"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/DirectPayTheme">
         <activity
             android:name=".MainActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
@@ -35,7 +35,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".registerActivity" />
-        <activity android:name=".scanActivity" />
+        <activity android:name=".scanActivity"
+            android:label="@string/app_name"
+
+            />
         <activity android:name=".qrscanActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".finishActivity" />

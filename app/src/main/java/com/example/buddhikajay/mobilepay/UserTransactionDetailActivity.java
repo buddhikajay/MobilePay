@@ -58,4 +58,24 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        //moveLogin();
+        moveTransactionReport();
+        finish();
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        finish();
+
+    }
+
+    public void moveTransactionReport(){
+
+        Intent intent = new Intent(this,UserTransactionReportActivity.class);
+        startActivity(intent);
+    }
 }

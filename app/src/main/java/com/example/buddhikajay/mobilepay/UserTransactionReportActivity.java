@@ -176,9 +176,17 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        moveScan();
         //moveLogin();
+        moveScan();
         finish();
 
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+            finish();
+
+    }
+
+
 }

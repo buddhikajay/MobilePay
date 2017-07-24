@@ -73,7 +73,7 @@ public class registerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signup.setEnabled(false);
-                Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
+                //Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
                 if(isValideRgisterData()){
                     userRegister(v);
                 }

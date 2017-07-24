@@ -55,19 +55,35 @@ public class CheckoutActivity extends AppCompatActivity {
     private String merchantId;
 
     private String paymentType;
+
+    boolean scannerType;
+
+    boolean back;
+
+    boolean inApp =false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            //populateScanList();
+
+        }
 
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
         username = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
-        final boolean scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
+        scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
         TextView idTextView = (TextView) findViewById(R.id.merchantIdTextView);
+        TextView merchantidTextView = (TextView) findViewById(R.id.merchantTextView);
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
 
@@ -93,8 +109,10 @@ public class CheckoutActivity extends AppCompatActivity {
             addressTextView.setVisibility(View.GONE);
             tipTextView.setVisibility(View.GONE);
             spitter.setVisibility(View.GONE);
-            nameTextView.setText(intent.getStringExtra("accountNumber"));
+            nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Fund_Transfer";
+            getSupportActionBar().setTitle("FundTransfer");
+            merchantidTextView.setText("UserId :");
 
 
         }
@@ -103,6 +121,10 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.d("address",intent.getStringExtra("address"));
             nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Merchant_Pay";
+            getSupportActionBar().setTitle("MerchantPay");
+            if(intent.getStringExtra("type")!=null && intent.getStringExtra("type").equals("inApp")){
+                inApp = true;
+            }
         }
 
         merchantId = intent.getStringExtra("id");
@@ -234,12 +256,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     Log.d("start",start+"");
                     value.removeTextChangedListener(this);
 
-                    String cleanString = s.toString().replaceAll("[$,. LKR]", "");
+                    String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     double parsed = Double.parseDouble(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
 
-                    formatted=formatted.replaceAll("[$]", "")+" LKR";
+                    formatted=formatted.replaceAll("[^0-9.,]", "")+" LKR";
                     current = formatted;
                     value.setText(formatted);
 
@@ -367,8 +389,10 @@ public class CheckoutActivity extends AppCompatActivity {
     public void onBackPressed() {
 //        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
 //       CheckoutActivity.this.startActivity(myIntent);
-        moveLogin();
+        this.back = true;
         finish();
+        moveHome();
+
 
     }
     public User getSellerDetail(String sellerId){
@@ -388,6 +412,15 @@ public class CheckoutActivity extends AppCompatActivity {
         //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
+
+        if(!back){
+            finish();
+            //moveLogin();
+        }
+
+
+
+
     }
 
     public void moveLogin(){
@@ -458,6 +491,7 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("amount",amount);
         myIntent.putExtra("payee",name);
         myIntent.putExtra("recept",reciptNumber);
+        myIntent.putExtra("inApp",inApp);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
 
@@ -535,8 +569,9 @@ public class CheckoutActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this,scanActivity.class);
-                startActivity(intent);
+                this.back = true;
+                finish();
+                moveHome();
                 break;
         }
         return true;

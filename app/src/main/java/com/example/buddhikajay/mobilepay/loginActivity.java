@@ -241,7 +241,6 @@ public class loginActivity extends AppCompatActivity {
 
     }
     public void moveToScanActivity(){
-        finish();
         Intent myIntent = new Intent(loginActivity.this, scanActivity.class);
         loginActivity.this.startActivity(myIntent);
 
@@ -261,6 +260,9 @@ public class loginActivity extends AppCompatActivity {
             //login successs go totransaction
             Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
             Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
+
+            btn.setEnabled(true);
+            passField.setText(null);
             if (innerApp){
                 Log.d("...innerApp...","");
                 payInnappPerchase();
@@ -289,7 +291,7 @@ public class loginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
-        finish();
+
     }
 
     private void moveToReportActivity() {
@@ -387,6 +389,7 @@ public class loginActivity extends AppCompatActivity {
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", true);
+        myIntent.putExtra("type", "inApp");
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         startActivity(myIntent);

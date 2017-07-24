@@ -2,11 +2,15 @@ package com.example.buddhikajay.mobilepay;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,11 +43,20 @@ public class BillSpliteActivity extends AppCompatActivity {
     private String phoneNumber;
 
 
+    private boolean back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_splite);
+
+        if (getSupportActionBar() != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            //populateScanList();
+
+        }
 
         Intent intent = getIntent();
         amount = intent.getDoubleExtra("amount",0.00);
@@ -89,7 +102,7 @@ public class BillSpliteActivity extends AppCompatActivity {
         AlertDialog alertDialog=new AlertDialog.Builder(BillSpliteActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog .setMessage("Pay "+ amount+" to "+merchantName+"?");
+        alertDialog .setMessage("Pay "+ amount+" LKR to "+merchantName+"?");
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -203,14 +216,30 @@ public class BillSpliteActivity extends AppCompatActivity {
 
     private void generateQrCodeForSplitter() {
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        int width_dp = (width_px/pixeldpi)*160;
+        int height_dp = (height_px/pixeldpi)*160;
+        int qr_width = (width_dp-32);
+
+        int btn_size = (int) (qr_width*pixeldp);
+
+
         String splitters = numberOfSplitter.getText().toString();
         Log.d("number of splitters",splitters);
         if( !(splitters.equals("0") || splitters.equals(""))){
             Double amountValue = Double.parseDouble(amount.toString().replaceAll("[$, LKR]",""));
             int spliteNumber = Integer.parseInt(splitters);
 
-            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+amountValue/spliteNumber+" main";
-            Bitmap myBitmap = QRCode.from(""+ code).withSize(400,400).bitmap();
+            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" main";
+            Log.d("code",code);
+            Bitmap myBitmap = QRCode.from(""+ code).withSize(btn_size,btn_size).bitmap();
             myImage.setImageBitmap(myBitmap);
         }
         else {
@@ -220,6 +249,54 @@ public class BillSpliteActivity extends AppCompatActivity {
 
         }
 
+
+    }
+    @Override
+    public void onBackPressed() {
+//        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
+//       CheckoutActivity.this.startActivity(myIntent);
+        this.back = true;
+        finish();
+        moveHome();
+
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+//        if(!complete){
+//            moveLogin();
+//        }
+        //
+        //Intent myIntent = new Intent(CheckoutActivity.this, loginActivity.class);
+        //CheckoutActivity.this.startActivity(myIntent);
+        //finish();
+
+        if(!back){
+            finish();
+            //moveLogin();
+        }
+
+
+
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.back = true;
+                finish();
+                moveHome();
+                break;
+        }
+        return true;
+    }
+
+    public void moveHome(){
+        Intent myIntent = new Intent(this, scanActivity.class);
+        this.startActivity(myIntent);
+        finish();
 
     }
 }

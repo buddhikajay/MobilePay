@@ -40,6 +40,7 @@ public class QrCodeSplite {
             }
             if(!params[1].equals("$") && params[2].equals("main")){
                 qrModel.setAmount(params[1]);
+
             }
 
             qrModel.setTag(params[2]);

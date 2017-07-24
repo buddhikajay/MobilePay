@@ -21,31 +21,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="receipt"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Merchant"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Amount"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Type"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
         </LinearLayout>
         <LinearLayout
@@ -57,31 +57,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
         </LinearLayout>
         <LinearLayout
@@ -95,35 +95,35 @@
                 android:layout_height="wrap_content"
                 android:text="receipt"
                 android:id="@+id/receipt_number"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Merchant"
                 android:id="@+id/merchant_name"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Amount"
                 android:id="@+id/amount"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:id="@+id/date"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Type"
                 android:id="@+id/type"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:layout_marginTop="12dp"/>
         </LinearLayout>
 

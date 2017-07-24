@@ -1,13 +1,17 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import android.widget.LinearLayout.LayoutParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import android.util.DisplayMetrics;
 
 public class scanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     //static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
@@ -46,6 +52,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,58 +61,121 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
 
+
+
+
         if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            populateScanList();
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.manubutton);
+            //getSupportActionBar().setIcon(R.drawable.menubutton);
+
+            //populateScanList();
         }
-
-    }
-
-    private void populateScanList() {
-        Log.d("Transaction activity","trnsaction list populating");
-        // Construct the data source
-        ArrayList<ScanListModel> arrayOfTrnsactions = ScanListModel.getModel();
-        // Create the adapter to convert the array to views
-        ScanAdapter adapter = new ScanAdapter(this, arrayOfTrnsactions);
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.sacanList);
+        Button button_merchant_pay = (Button) findViewById(R.id.btn_merchant_pay);
+        Button button_fund_transfer = (Button) findViewById(R.id.btn_fund_transfer);
+        Button button_my_qr = (Button) findViewById(R.id.btn_my_qr);
+        Button button_transaction_report = (Button) findViewById(R.id.btn_transaction_report);
 
 
-        listView.setAdapter(adapter);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // When clicked, show a toast with the TextView text
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        int width_dp = (width_px/pixeldpi)*160;
+        int height_dp = (height_px/pixeldpi)*160;
 
 
-                switch (position){
+        Log.d("widthdp",""+width_dp);
+        Log.d("height_dp",""+height_dp);
+
+        int button_width = (width_dp-48)/2;
+
+        int btn_size = (int) (button_width*pixeldp);
+        button_merchant_pay.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_fund_transfer.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_my_qr.setLayoutParams (new LayoutParams(btn_size, btn_size));
+        button_transaction_report.setLayoutParams (new LayoutParams(btn_size, btn_size));
 
 
-                    case 0 :
-                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
-                            merchantPay();
+        button_merchant_pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                merchantPay();
+            }
+        });
 
-                        break;
-                    case 1 :
-                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
-                            fundTransfer();
-                        break;
-                    case 2 : myQrCode();
-                        break;
-                    case 3 : transactionList();
-                        break;
-                    default:
-                        break;
+        button_fund_transfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fundTransfer();
+            }
+        });
 
-                }
+        button_my_qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myQrCode();
+            }
+        });
 
+        button_transaction_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transactionList();
             }
         });
 
     }
+
+//    private void populateScanList() {
+//        Log.d("Transaction activity","trnsaction list populating");
+//        // Construct the data source
+//        ArrayList<ScanListModel> arrayOfTrnsactions = ScanListModel.getModel();
+//        // Create the adapter to convert the array to views
+//        ScanAdapter adapter = new ScanAdapter(this, arrayOfTrnsactions);
+//        // Attach the adapter to a ListView
+//        ListView listView = (ListView) findViewById(R.id.sacanList);
+//
+//
+//        listView.setAdapter(adapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//                // When clicked, show a toast with the TextView text
+//
+//
+//                switch (position){
+//
+//
+//                    case 0 :
+//                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
+//                            merchantPay();
+//
+//                        break;
+//                    case 1 :
+//                            Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
+//                            fundTransfer();
+//                        break;
+//                    case 2 : myQrCode();
+//                        break;
+//                    case 3 : transactionList();
+//                        break;
+//                    default:
+//                        break;
+//
+//                }
+//
+//            }
+//        });
+//
+//    }
     private void myQrCode(){
         Intent intent = new Intent(scanActivity.this, MyQRActivity.class);
         startActivity(intent);
@@ -113,12 +183,15 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
     private void merchantPay(){
 
+        Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = true; // merchant pay
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         QrScanner();
     }
     private void fundTransfer(){
-
+        Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = false; // merchant pay
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         QrScanner();
     }
     private void transactionList(){
@@ -206,14 +279,24 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
+
+
                 JSONObject jsonObject = array.getJSONObject(0);
-                //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
-                //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
-                merchantDetailResponseHandler(merchant, jsonObject);
-                //merchantList.add(merchant);
+                JSONArray roles = jsonObject.getJSONArray("role");
+                if(roles.get(0).equals("user")){
+                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+                    Intent intent = getIntent();
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
+                    //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
+                    merchantDetailResponseHandler(merchant, jsonObject);
+                    //merchantList.add(merchant);
 
-                moveToCheckoutActivity(merchant, paymentModel);
-
+                    moveToCheckoutActivity(merchant, paymentModel);
+                }
 
                 // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
@@ -324,7 +407,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 //            SecurityHandler.handleSSLHandshake();
 //            setContentView(R.layout.activity_scan);
 //            populateScanList();
-
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
         }
         else {
             moveLogin();
@@ -350,12 +435,15 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         switch (item.getItemId()) {
             case android.R.id.home:
                 if(mScannerView!=null){
-                    mScannerView.stopCamera();   // Stop camera on pause<br />
-                    mScannerView.setVisibility(View.GONE);
-                    mScannerView = null;
-                    SecurityHandler.handleSSLHandshake();
-                    setContentView(R.layout.activity_scan);
-                    populateScanList();
+//                    mScannerView.stopCamera();   // Stop camera on pause<br />
+//                    mScannerView.setVisibility(View.GONE);
+//                    mScannerView = null;
+//                    SecurityHandler.handleSSLHandshake();
+//                    setContentView(R.layout.activity_scan);
+                    //populateScanList();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
 
                 }
                 else {
@@ -450,6 +538,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         }
 
     }
+    public int pxToDp(int px) {
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
 
 
 }

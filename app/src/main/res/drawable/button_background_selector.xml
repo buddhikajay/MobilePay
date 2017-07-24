@@ -3,9 +3,14 @@
     <!-- pressed -->
     <!-- focused -->
     <!-- default -->
-    <item android:state_pressed="true" android:drawable="@color/button_pressed" />
-    <item android:state_focused="true" android:drawable="@color/button_focused" />
-    <item android:state_enabled="false" android:drawable="@color/btn_back"  />
-    <item android:state_enabled="true" android:drawable="@color/button_default"  />
-    <item android:drawable="@color/button_default" />
+    <item android:state_pressed="true" android:drawable="@color/colorAccent" />
+    <item android:state_focused="true" android:drawable="@color/colorPrimary" />
+    <item android:state_enabled="false" android:drawable="@color/colorPrimaryDark"  />
+    <item android:state_enabled="true" android:drawable="@color/colorPrimary" >
+
+
+    </item>
+
+
+
 </selector>
