@@ -25,6 +25,8 @@ public class MerchantTransactionModel {
     private String type;
     private String status;
 
+    public boolean merchantTo;
+
     private boolean appUserAccount_isFromAccountNuber;
 
 
@@ -50,7 +52,7 @@ public class MerchantTransactionModel {
             this.date = dateTimeFilter(date.getString("date"));
             this.type =object.getString("type");
 
-                this.toAccountNumber = getMerchantName(object.getJSONObject("payeeDetail")) ;
+                this.toAccountNumber = getPayerAccountNumber(object.getJSONObject("payeeDetail")) ;
                 //this.toAccountRole = getRole(object.getJSONObject("payeeDetail"));
                 this.fromAccountNumber = getPayerAccountNumber(object.getJSONObject("payerDetail")) ;
                 this.appUserAccount_isFromAccountNuber = checkAppAccountIsFromAccountNumber(object.getJSONObject("payerDetail"),appUserId);

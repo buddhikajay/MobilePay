@@ -226,7 +226,7 @@ public class BillSpliteActivity extends AppCompatActivity {
 
         int width_dp = (width_px/pixeldpi)*160;
         int height_dp = (height_px/pixeldpi)*160;
-        int qr_width = (width_dp-32);
+        int qr_width = (width_dp-52);
 
         int btn_size = (int) (qr_width*pixeldp);
 
