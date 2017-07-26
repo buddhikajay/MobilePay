@@ -151,7 +151,14 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
 //                Log.d("Merchant",""+model.getStatus()+"");
 //                Log.d("Merchant",""+model.getMerchant().getId()+"");
                 intent.putExtra("receipt",model.getRecieptNumber());
-                intent.putExtra("name",model.getFromAccountNumber());
+                if(model.isAppUserAccount_isFromAccountNuber()){
+                    intent.putExtra("name",model.getToAccountNumber());
+                }
+                else{
+                    intent.putExtra("name",model.getFromAccountNumber());
+
+                }
+
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
