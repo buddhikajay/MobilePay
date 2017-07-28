@@ -74,10 +74,17 @@ public class Api {
         return true;
     }
 
-    public static boolean setRegisterVerify(Context context,String id){
+    public static boolean setRegisterVerify(Context context){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
         editor.putString("register_verify", "true");
+        editor.apply();
+        return true;
+    }
+    public static boolean reSetPin(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+
+        editor.putString("register_verify", "false");
         editor.apply();
         return true;
     }

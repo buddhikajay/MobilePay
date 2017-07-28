@@ -6,7 +6,6 @@ import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Model.QrModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by supun on 29/06/17.
@@ -35,13 +34,23 @@ public class QrCodeSplite {
             QrModel qrModel = new QrModel();
 
             qrModel.setId(params[0]);
+            qrModel.setPaymentCategory(params[2]);
             if(params[1].equals("$") && params[2].equals("main")){
                 paymentModel.setDynamic(false);
             }
-            if(!params[1].equals("$") && params[2].equals("main")){
+            else if(!params[1].equals("$") && (params[2].equals("main"))){
                 qrModel.setAmount(params[1]);
 
             }
+            else if(!params[2].equals("tip") && !params[1].equals("$")){
+                qrModel.setAmount(params[1]);
+            }
+            else if(!params[2].equals("tip") && params[1].equals("$")){
+                paymentModel.setDynamic(false);
+            }
+
+
+
 
             qrModel.setTag(params[2]);
             if (params[2].equals("tip")){

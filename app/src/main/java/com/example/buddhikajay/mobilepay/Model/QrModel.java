@@ -1,8 +1,5 @@
 package com.example.buddhikajay.mobilepay.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -16,6 +13,7 @@ public class QrModel  implements Serializable {
     private String tag;
     private ArrayList<String> customTypes;
     private boolean haveCustomTypes;
+    private String paymentCategory;
 
     public QrModel() {
         this.customTypes = new ArrayList<>();
@@ -77,5 +75,11 @@ public class QrModel  implements Serializable {
         return id+" "+amount+" "+tag+" "+typesCus;
     }
 
+    public String getPaymentCategory() {
+        return paymentCategory;
+    }
 
+    public void setPaymentCategory(String paymentCategory) {
+        this.paymentCategory = paymentCategory;
+    }
 }

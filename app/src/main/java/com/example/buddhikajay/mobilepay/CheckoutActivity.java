@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Model.User;
@@ -28,15 +26,12 @@ import org.json.JSONObject;
 
 import com.example.buddhikajay.mobilepay.Services.Formate;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
@@ -53,14 +48,11 @@ public class CheckoutActivity extends AppCompatActivity {
     TextView test_bill_amount_amount;
 
     private String merchantId;
-
     private String paymentType;
-
     boolean scannerType;
-
     boolean back;
-
     boolean inApp =false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +104,7 @@ public class CheckoutActivity extends AppCompatActivity {
             nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Fund_Transfer";
             getSupportActionBar().setTitle("FundTransfer");
-            merchantidTextView.setText("UserId :");
+            merchantidTextView.setText("User ID :");
 
 
         }
@@ -307,14 +299,20 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
     }
-    private void payTrasaction(String paymentType,String mechantId, final String amount, String accessToken, final Intent intent, final boolean tip){
+    private void payTransaction(String paymentType, String merchantId, final String amount, String accessToken, final Intent intent, final boolean tip){
 
         JSONObject pay = new JSONObject();
         try {
-            pay.put("merchantId",""+mechantId);
+            pay.put("merchantId",""+merchantId);
             pay.put("amount",""+amount.replaceAll("[$, LKR]", ""));
             pay.put("accessToken",""+accessToken);
             pay.put("paymentType",paymentType);
+            if(tip){
+                pay.put("paymentCategory",paymentModel.getQrModels().get(1).getPaymentCategory());
+            }
+            else {
+                pay.put("paymentCategory", paymentModel.getQrModels().get(0).getPaymentCategory());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -364,12 +362,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        payTrasaction(paymentType,intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
+                        payTransaction(paymentType,intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
                         Log.d("merchantId",intent.getStringExtra("id"));
                         if(paymentModel.isTip() ){
                             String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
                             if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
-                                payTrasaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
+                                payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
                                 Log.d("tipperid",tipperId);
                             }
 

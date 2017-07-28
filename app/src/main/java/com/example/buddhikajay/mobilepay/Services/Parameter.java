@@ -7,15 +7,15 @@ package com.example.buddhikajay.mobilepay.Services;
 public class Parameter {
 
     //prod
-    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
-    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
-    public static String identityServer = "https://13.58.144.197:9446";
-    public static String apim = "https://13.58.144.197:8243";
+//    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
+//    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
+//    public static String identityServer = "https://13.58.144.197:9446";
+//    public static String apim = "https://13.58.144.197:8243";
     //dev
-//    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
-//    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
-//    public static String identityServer = "https://192.168.8.103:9446";
-//    public static String apim = "https://192.168.8.103:8243";
+    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
+    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
+    public static String identityServer = "https://192.168.8.103:9446";
+    public static String apim = "https://192.168.8.103:8243";
 
 
 
@@ -28,6 +28,8 @@ public class Parameter {
     public static String  urlLogin = apim+"/merchantpay/1.0.0/login";
     public static String  urlVoidTransaction = apim+"/merchantpay/1.0.0/transaction/void";
     public static String  urlUserRole = apim+"/merchantpay/1.0.0/default/user/role";
+    public static String  urlResendPin = apim+"/merchantpay/1.0.0/resend/pin";
+    public static String  urlForgotPassword = apim+"/merchantpay/1.0.0/forgot/password";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
 

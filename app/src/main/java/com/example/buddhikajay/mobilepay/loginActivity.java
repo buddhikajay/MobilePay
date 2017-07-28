@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.TextInputLayout;
@@ -57,9 +58,10 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
          setSupportActionBar(toolbar);
-
+        //Api.setRegisterVerify(getApplicationContext(),"false");
          passField = (EditText) findViewById(R.id.login_pin);
         passLayout = (TextInputLayout) findViewById(R.id.pinErr);
+
          //accountField = (EditText)findViewById(R.id.accountNo);
         passField.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -81,12 +83,7 @@ public class loginActivity extends AppCompatActivity {
             }
         });
 
-        final Intent intent = getIntent();
-        innerApp = intent.getBooleanExtra("innerApp",false);
-        if(innerApp){
-            paymentModel =  (PaymentModel)intent.getSerializableExtra("Paymodel");
-
-        }
+        innerAppOpen();
 
         TextView foreget_p = (TextView) findViewById(R.id.foreget_p);
 
@@ -97,6 +94,14 @@ public class loginActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void innerAppOpen(){
+        final Intent intent = getIntent();
+        innerApp = intent.getBooleanExtra("innerApp",false);
+        if(innerApp){
+            paymentModel =  (PaymentModel)intent.getSerializableExtra("Paymodel");
+
+        }
     }
     private void payInnappPerchase(){
         Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
@@ -259,7 +264,7 @@ public class loginActivity extends AppCompatActivity {
             Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
             //login successs go totransaction
             Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
-            Toast.makeText(getApplicationContext(),"login",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"logged in",Toast.LENGTH_LONG).show();
 
             btn.setEnabled(true);
             passField.setText(null);
@@ -397,11 +402,11 @@ public class loginActivity extends AppCompatActivity {
     }
 
     private void forgetPassword(){
-        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(String.valueOf(R.string.register), getApplicationContext().MODE_PRIVATE).edit();
-        editor.putString("register", "false");
-        editor.apply();
+        //SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences(String.valueOf(R.string.register), getApplicationContext().MODE_PRIVATE).edit();
+        //editor.putString("register", "false");
+        //editor.apply();
         Log.d("forget","click");
-        Intent intent = new Intent(this,registerActivity.class);
+        Intent intent = new Intent(this,ForgetPassword.class);
         startActivity(intent);
     }
 
