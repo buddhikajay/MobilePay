@@ -20,15 +20,22 @@ import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Model.User;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.buddhikajay.mobilepay.Services.Formate;
+import com.example.buddhikajay.mobilepay.Services.MQTTClient;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -52,6 +59,8 @@ public class CheckoutActivity extends AppCompatActivity {
     boolean scannerType;
     boolean back;
     boolean inApp =false;
+
+    boolean web_purchase = false;
 
 
     @Override
@@ -117,6 +126,14 @@ public class CheckoutActivity extends AppCompatActivity {
             if(intent.getStringExtra("type")!=null && intent.getStringExtra("type").equals("inApp")){
                 inApp = true;
             }
+            if (paymentModel.getQrModels().get(0).getPaymentCategory().contains("main_web")){
+                Log.d("web_purchase","main_web");
+
+                web_purchase = true;
+                //MQTTClient.publish();
+
+            }
+
         }
 
         merchantId = intent.getStringExtra("id");
@@ -147,7 +164,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
                     Log.d("total",total.toString());
                 }
-
                 showmessgebox(paymentType,total+ " LKR",amount, intent.getStringExtra("name"), intent);
 
 
@@ -457,6 +473,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
 
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -492,6 +509,10 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("inApp",inApp);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
+
+        if(web_purchase){
+            sendMsg();
+        }
 
 
 
@@ -574,7 +595,33 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         return true;
     }
+    private void sendMsg(){
 
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially  time consuming task
+                MQTTClient mqttClient = new MQTTClient();
+
+                try {
+                    mqttClient.initializeMQTTClient(getBaseContext(), "directpay_"+System.currentTimeMillis(), false, false, null, null);
+                    String payload = "scan";
+                    byte[] encodedPayload = new byte[0];
+                    encodedPayload = payload.getBytes("UTF-8");
+                    mqttClient.publish("Supun",2,encodedPayload);
+                    mqttClient.disconnect();
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }).start();
+
+
+    }
 
 
 }
