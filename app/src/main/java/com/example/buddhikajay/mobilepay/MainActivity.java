@@ -54,16 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private void appState(){
         boolean register = Api.isRegister(getApplication());
         boolean verify = Api.isRegisterVerify(getApplicationContext());
-        if( register&& verify){
+
+        if(register && !verify){
+            moveToPinActivity();
+        }
+        else {
             //signupLink.setVisibility(View.GONE);
             moveToLoginActivity();
         }
-        else if(register && !verify){
-            moveToPinActivity();
-        }
-        else{
-            moveToRegisterActivity();
-        }
+
 
     }
     public void moveToPinActivity(){

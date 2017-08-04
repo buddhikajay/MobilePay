@@ -145,7 +145,7 @@ public class pinActivity extends AppCompatActivity {
     }
     private void reSendPin(){
         Log.d("ResendPin:","");
-        Toast.makeText(getApplicationContext(),"Resend Pin Success",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"pin send",Toast.LENGTH_LONG).show();
         JSONObject payload = new JSONObject();
         try {
             payload.put("id",Api.getRegisterId(getApplicationContext()));
