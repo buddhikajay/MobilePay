@@ -6,11 +6,28 @@ package com.example.buddhikajay.mobilepay.Model;
 
 public class Merchant {
     private String id;
+    private String registedId;
     private String merchantName;
     private String merchantAddress;
     private String phoneNumber;
+    private String brNumber;
 
 
+    public String getBrNumber() {
+        return brNumber;
+    }
+
+    public void setBrNumber(String brNumber) {
+        this.brNumber = brNumber;
+    }
+
+    public String getRegistedId() {
+        return registedId;
+    }
+
+    public void setRegistedId(String registedId) {
+        this.registedId = registedId;
+    }
 
     public Merchant(String id) {
         this.id = id;

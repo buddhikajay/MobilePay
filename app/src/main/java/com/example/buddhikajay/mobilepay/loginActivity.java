@@ -2,9 +2,13 @@ package com.example.buddhikajay.mobilepay;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,12 +35,16 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
+    private EditText nicField;
     //private EditText accountField;
     private TextView signupLink;
 
@@ -44,8 +52,10 @@ public class loginActivity extends AppCompatActivity {
     private String password;
 
     private TextInputLayout passLayout;
+    private TextInputLayout nicLayout;
 
      Button btn;
+    Button reg_btn;
 
 
     private boolean innerApp;
@@ -61,8 +71,12 @@ public class loginActivity extends AppCompatActivity {
         //Api.setRegisterVerify(getApplicationContext(),"false");
          passField = (EditText) findViewById(R.id.login_pin);
         passLayout = (TextInputLayout) findViewById(R.id.pinErr);
+        nicField = (EditText) findViewById(R.id.login_nic);
+        nicLayout = (TextInputLayout) findViewById(R.id.nic_error);
 
-         //accountField = (EditText)findViewById(R.id.accountNo);
+        ImageView logo = (ImageView) findViewById(R.id.logo);
+
+        //accountField = (EditText)findViewById(R.id.accountNo);
         passField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -72,6 +86,7 @@ public class loginActivity extends AppCompatActivity {
         });
 
         btn=(Button)findViewById(R.id.log_button);
+        reg_btn = (Button) findViewById(R.id.register_button);
 
         btn.setOnClickListener(new View.OnClickListener()
         {
@@ -82,6 +97,23 @@ public class loginActivity extends AppCompatActivity {
 
             }
         });
+        reg_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(loginActivity.this,registerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        if(Api.isRegister(getApplication()) && Api.isRegisterVerify(getApplicationContext()) || !Api.isFirstTimeLogin(getApplicationContext())){
+            nicField.setVisibility(View.GONE);
+            reg_btn.setVisibility(View.GONE);
+            nicLayout.setVisibility(View.GONE);
+            int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+
+            logo.getLayoutParams().height = pixeldpi*150/160;
+        }
+
 
         innerAppOpen();
 
@@ -93,6 +125,16 @@ public class loginActivity extends AppCompatActivity {
                 forgetPassword();
             }
         });
+
+        if(Api.isFirstTimeLogin(getApplicationContext())){
+
+        }
+        else {
+            reg_btn.setVisibility(View.GONE);
+            nicField.setVisibility(View.GONE);
+            nicLayout.setVisibility(View.GONE);
+        }
+        nicValidation(nicField);
 
     }
     private void innerAppOpen(){
@@ -124,7 +166,13 @@ public class loginActivity extends AppCompatActivity {
     private Map<String,String> getLoginCredential(){
         Map<String,String> params=new HashMap<String,String>();
         params.put("grant_type","password");
-        params.put("username",""+ Api.getNic(getApplicationContext()));
+        if(Api.isFirstTimeLogin(getApplicationContext())){
+            params.put("username",""+ nicField.getText().toString());
+        }
+        else {
+            params.put("username",""+ Api.getNic(getApplicationContext()));
+        }
+
         params.put("password",""+password);
         params.put("scope","openid");
         return params;
@@ -133,9 +181,19 @@ public class loginActivity extends AppCompatActivity {
         JSONObject params=new JSONObject();
         try {
             params.put("grant_type","password");
-            params.put("username",""+ Api.getNic(getApplicationContext()));
+
+            if(Api.isFirstTimeLogin(getApplicationContext())){
+                params.put("username",""+ nicField.getText().toString());
+                Log.d("username",""+nicField.getText().toString());
+            }
+            else {
+                params.put("username",""+ Api.getNic(getApplicationContext()));
+
+            }
+
             params.put("password",""+password);
             params.put("scope","openid");
+            params.put("firstLogin",Api.isFirstTimeLogin(getApplicationContext()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -143,11 +201,12 @@ public class loginActivity extends AppCompatActivity {
         return params;
     }
     private void login(final View v){
-        Log.d("login data",""+Api.getNic(getApplicationContext()));
+       // Log.d("login data",""+Api.getNic(getApplicationContext()));
         if(isEnterdValideLoginData()){
-            Map<String,String> params = getLoginCredential();
+            Log.d("...login data validate.","");
+            JSONObject params = getLoginDetail();
 
-            VolleyRequestHandlerApi.authenticateUser(new VolleyCallback(){
+            VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
                 public void onSuccess(JSONObject result){
                     responseProcess(result);
@@ -165,7 +224,7 @@ public class loginActivity extends AppCompatActivity {
                     btn.setEnabled(true);
                     //v.setVisibility(View.VISIBLE);
                 }
-            },params,getApplicationContext());
+            }, Parameter.urlDirectpayLogin,"",params,getApplicationContext());
 
            /*JSONObject detailLogin = getLoginDetail();
 
@@ -187,7 +246,7 @@ public class loginActivity extends AppCompatActivity {
            },Parameter.loginUrl,"",detailLogin,getApplicationContext());*/
         }
 
-            else{
+        else{
             btn.setEnabled(true);
         }
 
@@ -260,36 +319,84 @@ public class loginActivity extends AppCompatActivity {
 
     private void responseProcess(JSONObject result){
 
-        if(result.has("access_token")){
-            Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
-            Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
-            //login successs go totransaction
-            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
-            Toast.makeText(getApplicationContext(),"logged in",Toast.LENGTH_LONG).show();
+//        if(result.has("access_token")){
+//            Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
+//            Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
+//            //login successs go totransaction
+//            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
+//            Toast.makeText(getApplicationContext(),"logged in",Toast.LENGTH_LONG).show();
+//
+//            btn.setEnabled(true);
+//            passField.setText(null);
+//            if (innerApp){
+//                Log.d("...innerApp...","");
+//                payInnappPerchase();
+//            }
+//            else {
+//                if (!Api.isMerchant(getApplicationContext())) {
+//                    Log.d("...start scan...", "");
+//                    moveToScanActivity();
+//
+//                } else {
+//                    //moveToReportActivity();
+//                    //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+//                    Log.d("...start merchant repor", "");
+//                    moveToMerchantReport();
+//                }
+//
+//            }
+//
+//            if(Api.isFirstTimeLogin(getApplicationContext())){
+//                Api.setFirstTimeLogin(getApplicationContext(),nicField.getText().toString());
+//                Api.setRegisterId(getApplicationContext(),jsonObject.getString("id").toString());
+//            }
+//        }
+//        else {
+//            Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
+//        }
 
-            btn.setEnabled(true);
-            passField.setText(null);
-            if (innerApp){
-                Log.d("...innerApp...","");
-                payInnappPerchase();
+        if(result.has("data")) {
+            JSONArray array = (JSONArray) result.opt("data");
+            try {
+                if (array.length() != 0) {
+                    JSONObject jsonObject = array.getJSONObject(0);
+                    Api.setAccessToken(getApplicationContext(), jsonObject.getString("accessToken").toString());
+
+                    btn.setEnabled(true);
+                    passField.setText(null);
+                    if (innerApp){
+                        Log.d("...innerApp...","");
+                        payInnappPerchase();
+                    }
+                    else {
+                        if (!Api.isMerchant(getApplicationContext())) {
+                            Log.d("...start scan...", "");
+                            moveToScanActivity();
+
+                        } else {
+                            //moveToReportActivity();
+                            //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
+                            Log.d("...start merchant repor", "");
+                            moveToMerchantReport();
+                        }
+
+                    }
+
+                    //TODO success login
+
+
+                    if (Api.isFirstTimeLogin(getApplicationContext())) {
+                        Api.setRegisterId(getApplicationContext(),jsonObject.getString("userId"),jsonObject.getString("phoneNumber"),nicField.getText().toString());
+                        Log.d("first time login","true");
+                    }
+
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            else
-                if(!Api.isMerchant(getApplicationContext())){
-                    Log.d("...start scan...","");
-                    moveToScanActivity();
-
-                }
-                else{
-                    //moveToReportActivity();
-                    //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
-                    Log.d("...start merchant repor","");
-                    moveToMerchantReport();
-                }
-
-
-        }
-        else {
-            Toast.makeText(getApplicationContext(),"No Access Token in Response",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -409,6 +516,61 @@ public class loginActivity extends AppCompatActivity {
         Log.d("forget","click");
         Intent intent = new Intent(this,ForgetPassword.class);
         startActivity(intent);
+    }
+
+    private void nicValidation(final EditText nic){
+
+        nic.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String regex;
+                Pattern p;
+                Matcher m;
+                nic.removeTextChangedListener(this);
+                if (s.length()<=9){
+                    Log.d("change","9");
+                    regex = "[^\\d]";
+                    p = Pattern.compile(regex);
+                    m = p.matcher(s.toString());
+                    nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    if(m.matches()){
+                        String cleanString = s.toString().replaceAll(regex, "");
+                        nic.setText(cleanString);
+
+                        nic.setSelection(cleanString.length());
+                    }
+                    if(s.length()==9){
+                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+                    }
+
+
+                }
+                else if(s.length()==10){
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
+
+                    }
+                    else {
+                        String cleanString = s.toString().replaceAll("[^\\d]", "");
+                        nic.setText(cleanString);
+                        nic.setSelection(9);
+                    }
+                }
+                nic.addTextChangedListener(this);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
 
 

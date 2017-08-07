@@ -23,7 +23,7 @@
         >
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:id="@+id/logo"
         android:src="@drawable/logo_login_screen"
         android:layout_gravity="center_horizontal"
@@ -42,7 +42,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberPassword"
+                    android:inputType="number"
                     android:ems="10"
                     android:id="@+id/login_nic"
                     android:text=""
@@ -56,6 +56,7 @@
                     android:hint="nic"
                     android:layout_marginTop="10dp"
                     android:textColorHint="@color/colorPrimary"
+                    android:maxLength="10"
                     />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout

@@ -32,6 +32,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.view.*;
 
 public class registerActivity extends AppCompatActivity {
 
@@ -87,6 +88,7 @@ public class registerActivity extends AppCompatActivity {
         mobileValidate(mobileNoField);
         nicValidation(nicField);
         //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+
     }
     private void nicValidation(final EditText nic){
 
@@ -347,6 +349,7 @@ public class registerActivity extends AppCompatActivity {
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
                 Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
+                Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
@@ -380,5 +383,6 @@ public class registerActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

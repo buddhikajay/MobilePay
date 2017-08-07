@@ -56,6 +56,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private String merchantId;
     private String paymentType;
+    private String registedId;
     boolean scannerType;
     boolean back;
     boolean inApp =false;
@@ -81,6 +82,7 @@ public class CheckoutActivity extends AppCompatActivity {
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
         username = intent.getStringExtra("name");
         phoneNumber = intent.getStringExtra("phoneNumber");
+        registedId = intent.getStringExtra("registedId");
         scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
 
         TextView idTextView = (TextView) findViewById(R.id.merchantIdTextView);
@@ -114,6 +116,7 @@ public class CheckoutActivity extends AppCompatActivity {
             paymentType = "Fund_Transfer";
             getSupportActionBar().setTitle("FundTransfer");
             merchantidTextView.setText("User ID :");
+            payButton.setText("FundTransfer");
 
 
         }
@@ -137,7 +140,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         merchantId = intent.getStringExtra("id");
-        idTextView.setText(Formate.idSplite(merchantId));
+        idTextView.setText(registedId);
 
 
 
@@ -458,8 +461,19 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(!tip){
                     Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
-                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                    String msg_to_payee = "payment on your account ending with ";
+                    Log.d("phonenumb1",phoneNumber);
+                    Log.d("phonenumb2",Api.getPhoneNumber(getApplicationContext()));
+                    if(scannerType){
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                        Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+
+                    }
+                    else {
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
+                        Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
+
+                    }
                     moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
                 else {

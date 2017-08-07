@@ -1,41 +1,24 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.QrCodeSplite;
 
-public class MainActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
+
     boolean innerApp;
     PaymentModel paymentModel;
-
-
+    private Handler mHandler ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
-       /* Bundle b = getIntent().getExtras();
-        if(b!=null){
-            //String myString = b.getString("KEY_DATA_EXTRA_FROM_ACTV_B");
-            // and any other data that the other app sent
-            paymentModel = (PaymentModel) b.getSerializable("Paymodel");
-            if(paymentModel!=null) {
-                Log.d("paymodel", paymentModel.toString());
-            }
-        }*/
-        /*try {
-            paymentModel =  (PaymentModel)getIntent().getSerializableExtra("Paymodel");
-            if(paymentModel!=null) {
-                Log.d("paymodel", paymentModel.toString());
-            }
-        }
-        catch(RuntimeException e){
-            Log.d("exception run",e.toString());
-        }*/
+        setContentView(R.layout.activity_welcome);
         String test =  getIntent().getStringExtra("Paymodel");
         if(test !=null){
             innerApp = true;
@@ -45,10 +28,19 @@ public class MainActivity extends AppCompatActivity {
         else {
             innerApp = false;
         }
+        Toast.makeText(this, "......Welcome.....", Toast.LENGTH_SHORT).show();
+        mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                doStuff();
+            }
+        }, 5000);
 
 
+    }
+    private void doStuff() {
 
-        //appState();
+        appState();
         finish();
     }
     private void appState(){
@@ -56,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         boolean verify = Api.isRegisterVerify(getApplicationContext());
         boolean firstLigon = Api.isFirstTimeLogin(getApplicationContext());
         boolean regisiter = Api.isRegister(getApplicationContext());
-        if(!verify && firstLigon && regisiter){
+        if(!verify && regisiter){
             moveToPinActivity();
         }
         else {
