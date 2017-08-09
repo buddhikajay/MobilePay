@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView;
@@ -55,7 +56,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private UserTransactionAdapter adapter;
     private ListView listView;
     private boolean loadDate;
-
+    private RelativeLayout loadingbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,9 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         text_to_date = (TextView) findViewById(R.id.txt_todate);
 
         btn_load = (Button) findViewById(R.id.btn_load);
+        loadingbar = (RelativeLayout) findViewById(R.id.loadingPanel);
+        loadingbar.setVisibility(View.GONE);
+
 
         date_header.setWidth(headersize);
         detail_header.setWidth(headersize);
@@ -122,6 +126,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 listView.setAdapter(null);
+                loadingbar.setVisibility(View.VISIBLE);
                 getTransaction();
 
 
@@ -263,9 +268,11 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                     Log.d("Transaction:Transaction",jsonObject.toString());
                     populateTransactionList(array);
                     loadDate=true;
+                    loadingbar.setVisibility(View.GONE);
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"No Any Transaction",Toast.LENGTH_LONG).show();
+                    loadingbar.setVisibility(View.GONE);
                 }
 
 

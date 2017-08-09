@@ -21,7 +21,7 @@
     <string name="signup">SignUp</string>
     <string name="password_hint">Password</string>
     <string name="mobile_hint">Mobile Number</string>
-    <string name="nic_hint">Nic Number or brNumber</string>
+    <string name="nic_hint">Nic Number</string>
     <string name="Account_hint">Account Number</string>
     <string name="retype_password_hint">Retype Password</string>
 

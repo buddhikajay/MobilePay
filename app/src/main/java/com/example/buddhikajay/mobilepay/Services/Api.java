@@ -69,6 +69,7 @@ public class Api {
         editor.putString("role", role);
         editor.putBoolean("register", true);
         editor.putBoolean("register_verify", false);
+        editor.putBoolean("first_login", false);
         editor.apply();
 
         return true;

@@ -28,7 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
         else {
             innerApp = false;
         }
-        Toast.makeText(this, "......Welcome.....", Toast.LENGTH_SHORT).show();
+
         mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             public void run() {

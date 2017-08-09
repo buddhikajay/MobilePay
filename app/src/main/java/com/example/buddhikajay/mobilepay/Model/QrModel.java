@@ -14,7 +14,6 @@ public class QrModel  implements Serializable {
     private ArrayList<String> customTypes;
     private boolean haveCustomTypes;
     private String paymentCategory;
-
     public QrModel() {
         this.customTypes = new ArrayList<>();
     }

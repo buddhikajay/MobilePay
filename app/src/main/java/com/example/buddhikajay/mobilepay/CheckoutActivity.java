@@ -326,11 +326,23 @@ public class CheckoutActivity extends AppCompatActivity {
             pay.put("amount",""+amount.replaceAll("[$, LKR]", ""));
             pay.put("accessToken",""+accessToken);
             pay.put("paymentType",paymentType);
+
             if(tip){
                 pay.put("paymentCategory",paymentModel.getQrModels().get(1).getPaymentCategory());
             }
             else {
                 pay.put("paymentCategory", paymentModel.getQrModels().get(0).getPaymentCategory());
+                String customType = "";
+                for (String type:
+                paymentModel.getQrModels().get(0).getCustomTypes()) {
+                    customType = customType+""+type+":";
+                }
+                if (customType.equals("")){
+
+                }
+                else {
+                    pay.put("customParam",customType);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
