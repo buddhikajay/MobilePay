@@ -86,7 +86,7 @@
                 CircleProgressView:cpv_maxValue="100"
                 CircleProgressView:cpv_rimColor="@color/colorPrimaryDark"
                 CircleProgressView:cpv_rimWidth="50dp"
-                CircleProgressView:cpv_seekMode="true"
+                CircleProgressView:cpv_seekMode="false"
                 CircleProgressView:cpv_spinColor="@color/colorPrimary"
                 android:layout_gravity="center"
 

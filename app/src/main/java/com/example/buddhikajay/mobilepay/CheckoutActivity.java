@@ -496,12 +496,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     mainTransactionId = jsonObject.optString("transactionId").toString();
                     mainAmount = amount;
                     if (scannerType) {
-                        //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
-                        // Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                         Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
 
                     } else {
-                        // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
-                        // Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
+                         Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
                         FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");
                     }
                     if (paymentModel.isTip()) {
@@ -530,7 +530,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //                        }
 
 
-                    //sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
+                    sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
 
                 }
 
@@ -579,7 +579,7 @@ public class CheckoutActivity extends AppCompatActivity {
         this.complete = true;
 
         if(web_purchase){
-            sendMsg();
+            sendMsg(reciptNumber,name);
         }
 
 
@@ -600,7 +600,7 @@ public class CheckoutActivity extends AppCompatActivity {
         this.complete = true;
 
         if(web_purchase){
-            sendMsg();
+            sendMsg(mainTransactionId,name);
         }
 
 
@@ -624,8 +624,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                           // Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                           // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -684,7 +684,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         return true;
     }
-    private void sendMsg(){
+    private void sendMsg(final String transactionId, final String merchantName){
 
         new Thread(new Runnable() {
             public void run() {
@@ -693,7 +693,15 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 try {
                     mqttClient.initializeMQTTClient(getBaseContext(), "directpay_"+System.currentTimeMillis(), false, false, null, null);
-                    String payload = "scan";
+                    JSONArray payloadArray = new JSONArray();
+
+
+                    //String payload = '{"id":'"+transactionId+"','name':'"+merchantName+"','success':'true'}'';
+                    JSONObject obj = new JSONObject();
+                    obj.put("id", transactionId);
+                    obj.put("name", merchantName);
+                    obj.put("success", true);
+                    String payload = obj.toString();
                     byte[] encodedPayload = new byte[0];
                     encodedPayload = payload.getBytes("UTF-8");
                     mqttClient.publish("Supun",2,encodedPayload);

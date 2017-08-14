@@ -28,13 +28,17 @@ public class WelcomeActivity extends AppCompatActivity {
         else {
             innerApp = false;
         }
-
+        int time = 1;
+        if(Api.isFirstTimeLogin(getApplicationContext())){
+            time =5000;
+        }
         mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
+
             public void run() {
                 doStuff();
             }
-        }, 5000);
+        }, time);
 
 
     }
