@@ -63,6 +63,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
     boolean web_purchase = false;
 
+    private String mainTransactionId;
+    private String tipTransactionId;
+
+    private String mainAmount ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,6 +334,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
             if(tip){
                 pay.put("paymentCategory",paymentModel.getQrModels().get(1).getPaymentCategory());
+                String customType = "";
+                for (String type:
+                        paymentModel.getQrModels().get(1).getCustomTypes()) {
+                    customType = customType+""+type+":";
+                }
+                if (customType.equals("")){
+
+                }
+                else {
+                    pay.put("customParam",customType);
+                }
+
             }
             else {
                 pay.put("paymentCategory", paymentModel.getQrModels().get(0).getPaymentCategory());
@@ -395,14 +412,14 @@ public class CheckoutActivity extends AppCompatActivity {
 
                         payTransaction(paymentType,intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
                         Log.d("merchantId",intent.getStringExtra("id"));
-                        if(paymentModel.isTip() ){
-                            String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
-                            if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
-                                payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
-                                Log.d("tipperid",tipperId);
-                            }
-
-                        }
+//                        if(paymentModel.isTip() ){
+//                            String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
+//                            if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
+//                                payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
+//                                Log.d("tipperid",tipperId);
+//                            }
+//
+//                        }
 
                         //Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_LONG).show();
 
@@ -470,29 +487,50 @@ public class CheckoutActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
-                if(!tip){
-                    Log.d("No tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
-                    Log.d("No tip","LKR "+amount+" has been payed to "+intent.getStringExtra("name").toString());
+                if(!tip) {
+                    Log.d("No tip", "" + amount + " has been reciveded from " + Api.getNic(getApplicationContext()));
+                    Log.d("No tip", "LKR " + amount + " has been payed to " + intent.getStringExtra("name").toString());
                     String msg_to_payee = "payment on your account ending with ";
-                    Log.d("phonenumb1",phoneNumber);
-                    Log.d("phonenumb2",Api.getPhoneNumber(getApplicationContext()));
-                    if(scannerType){
+                    Log.d("phonenumb1", phoneNumber);
+                    Log.d("phonenumb2", Api.getPhoneNumber(getApplicationContext()));
+                    mainTransactionId = jsonObject.optString("transactionId").toString();
+                    mainAmount = amount;
+                    if (scannerType) {
                         //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
-                       // Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        // Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+
+                    } else {
+                        // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
+                        // Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");
+                    }
+                    if (paymentModel.isTip()) {
+
+                        String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
+                            if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
+                                payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
+                                Log.d("tipperid",tipperId);
+                            }
+
+                    } else {
+                        moveToFinishActivity(amount, intent.getStringExtra("name"), jsonObject.optString("transactionId").toString());
 
                     }
-                    else {
-                       // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
-                       // Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                        FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(),"split");
-                    }
-                    moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
                 else {
                     Log.d("tip",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("tip","LKR "+amount+" has been payed to "+jsonObject.optString("toAccount").toString());
 
-                   sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
+                    tipTransactionId = jsonObject.optString("transactionId").toString();
+                    moveToFinishActivity(amount, intent.getStringExtra("name"), mainTransactionId,tipTransactionId,tipTextView.getText().toString());
+//                        String tipamount = tipTextView.getText().toString().replaceAll("[$, LKR]", "");;
+//                        if(!tipamount.equals("")&& Double.parseDouble(tipamount)>0.0){
+//                            payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,false);
+//                            Log.d("tipperid",tipperId);
+//                        }
+
+
+                    //sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
 
                 }
 
@@ -535,6 +573,28 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("amount",amount);
         myIntent.putExtra("payee",name);
         myIntent.putExtra("recept",reciptNumber);
+        myIntent.putExtra("inApp",inApp);
+        myIntent.putExtra("tip",false);
+        CheckoutActivity.this.startActivity(myIntent);
+        this.complete = true;
+
+        if(web_purchase){
+            sendMsg();
+        }
+
+
+
+    }
+    private void moveToFinishActivity(String amount,String name,String mainTransactionId,String tipTransactionId,String tipamount){
+
+        Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        myIntent.putExtra("amount",mainAmount);
+        myIntent.putExtra("payee",name);
+        myIntent.putExtra("recept",mainTransactionId);
+        myIntent.putExtra("tipId",tipTransactionId);
+        myIntent.putExtra("tipAmount",tipamount);
+        myIntent.putExtra("tip",true);
         myIntent.putExtra("inApp",inApp);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
