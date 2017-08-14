@@ -88,10 +88,10 @@ public class finishActivity extends AppCompatActivity {
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
 
-        if(!back){
-            finish();
-            //moveLogin();
-        }
+//        if(!back){
+//            finish();
+//            //moveLogin();
+//        }
 
 
 

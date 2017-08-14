@@ -1,9 +1,13 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,18 +19,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.MQTTClient;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 
 import net.glxn.qrgen.android.QRCode;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Random;
+
+import at.grabner.circleprogress.CircleProgressView;
 
 public class BillSpliteActivity extends AppCompatActivity {
 
@@ -35,9 +52,9 @@ public class BillSpliteActivity extends AppCompatActivity {
     private Button button_qrcodeGenerate;
     private ImageView myImage;
     private Button button_pay;
+    private TextView billColectedTest;
 
-
-    private Double amount;
+    private double amount;
     private String merchantId;
     private String merchantName;
     private String phoneNumber;
@@ -45,6 +62,15 @@ public class BillSpliteActivity extends AppCompatActivity {
 
     private boolean back;
 
+    private int spliteNumber;
+    private int fundTransfers = 1;
+
+    private CircleProgressView mCircleView;
+
+    int btn_size;
+    double collectedMoney;
+    double moneyOfUnit;
+    double payedMoney;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +94,8 @@ public class BillSpliteActivity extends AppCompatActivity {
         button_qrcodeGenerate = (Button) findViewById(R.id.button_generate_qrcode);
         myImage = (ImageView) findViewById(R.id.image_qrcode);
         button_pay = (Button)findViewById(R.id.button_paynow);
+        mCircleView = (CircleProgressView) findViewById(R.id.circleView);
+        billColectedTest = (TextView) findViewById(R.id.text_collected);
 
 
 
@@ -91,6 +119,29 @@ public class BillSpliteActivity extends AppCompatActivity {
                 pay();
             }
         });
+
+        BroadcastReceiver receiver = new MyBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("bill_spit");
+        this.registerReceiver(receiver, filter);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+
+        int width_dp = (width_px/pixeldpi)*160;
+        int height_dp = (height_px/pixeldpi)*160;
+        int qr_width = (width_dp-52);
+
+         btn_size = (int) (qr_width*pixeldp);
+
+        billColectedTest.setVisibility(View.GONE);
+
+        mCircleView.setVisibility(View.GONE);
 
     }
 
@@ -129,9 +180,10 @@ public class BillSpliteActivity extends AppCompatActivity {
         JSONObject pay = new JSONObject();
         try {
             pay.put("merchantId",""+merchantId);
-            pay.put("amount",""+amount.toString().replaceAll("[$, LKR]", ""));
+            pay.put("amount",""+amount);
             pay.put("accessToken",""+Api.getAccessToken(getApplicationContext()));
-            pay.put("paymentType","Bill_Splite");
+            pay.put("paymentType","Merchant_Pay");
+            pay.put("paymentCategory","Bill_Splite");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -165,8 +217,8 @@ public class BillSpliteActivity extends AppCompatActivity {
 
                     Log.d("",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
                     Log.d("","LKR "+amount+" has been payed to "+merchantName);
-                    Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+merchantName,getApplicationContext());
+                    //Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                    //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+merchantName,getApplicationContext());
                     moveToFinishActivity(jsonObject.optString("transactionId").toString());
 
             } catch (JSONException e) {
@@ -198,7 +250,8 @@ public class BillSpliteActivity extends AppCompatActivity {
 
         Intent myIntent = new Intent(this, finishActivity.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        myIntent.putExtra("amount",amount.toString());
+        myIntent.putExtra("amount",""+amount);
+        Log.d("amount to finish",amount+"");
         myIntent.putExtra("payee",merchantName);
         myIntent.putExtra("recept",reciptNumber);
         this.startActivity(myIntent);
@@ -217,30 +270,37 @@ public class BillSpliteActivity extends AppCompatActivity {
     private void generateQrCodeForSplitter() {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
-        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
-
-        int width_dp = (width_px/pixeldpi)*160;
-        int height_dp = (height_px/pixeldpi)*160;
-        int qr_width = (width_dp-52);
-
-        int btn_size = (int) (qr_width*pixeldp);
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        int width_px = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        int height_px = Resources.getSystem().getDisplayMetrics().heightPixels;
+//
+//        int pixeldpi = Resources.getSystem().getDisplayMetrics().densityDpi;
+//        float pixeldp = Resources.getSystem().getDisplayMetrics().density;
+//
+//        int width_dp = (width_px/pixeldpi)*160;
+//        int height_dp = (height_px/pixeldpi)*160;
+//        int qr_width = (width_dp-52);
+//
+//        int btn_size = (int) (qr_width*pixeldp);
 
 
         String splitters = numberOfSplitter.getText().toString();
         Log.d("number of splitters",splitters);
         if( !(splitters.equals("0") || splitters.equals(""))){
-            Double amountValue = Double.parseDouble(amount.toString().replaceAll("[$, LKR]",""));
-            int spliteNumber = Integer.parseInt(splitters);
-
-            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" main";
+            Double amountValue = Double.parseDouble(String.valueOf(amount));
+            spliteNumber = Integer.parseInt(splitters);
+            Random r = new Random();
+            int rNumber = r.nextInt(100000000);
+            String topic = "main_split_"+rNumber;
+            moneyOfUnit = amountValue/spliteNumber;
+            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" "+topic;
             Log.d("code",code);
-            Bitmap myBitmap = QRCode.from(""+ code).withSize(btn_size,btn_size).bitmap();
+            Bitmap myBitmap = QRCode.from(""+ code).withSize(btn_size/2,btn_size/2).bitmap();
             myImage.setImageBitmap(myBitmap);
+            mqttOpenChanel(topic);
+            mCircleView.setVisibility(View.VISIBLE);
+            mCircleView.setValue(fundTransfers*100/spliteNumber);
+
         }
         else {
 
@@ -250,7 +310,35 @@ public class BillSpliteActivity extends AppCompatActivity {
         }
 
 
+
     }
+
+    private void mqttOpenChanel(final String topic) {
+
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially  time consuming task
+                MQTTClient mqttClient = new MQTTClient();
+
+                try {
+                    mqttClient.initializeMQTTClient(getBaseContext(), "directpay_"+System.currentTimeMillis(), false, false, null, null);
+                    String payload = "scan";
+                    byte[] encodedPayload = new byte[0];
+                    encodedPayload = payload.getBytes("UTF-8");
+                    mqttClient.subscribe(topic,2);
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+
     @Override
     public void onBackPressed() {
 //        Intent myIntent = new Intent(CheckoutActivity.this, scanActivity.class);
@@ -272,11 +360,10 @@ public class BillSpliteActivity extends AppCompatActivity {
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
 
-        if(!back){
-            finish();
-            //moveLogin();
-        }
-
+//        if(!back){
+//            finish();
+//            //moveLogin();
+//        }
 
 
 
@@ -299,4 +386,38 @@ public class BillSpliteActivity extends AppCompatActivity {
         finish();
 
     }
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+
+        private static final String TAG = "MyBroadcastReceiver";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Action: " + intent.getAction() + "\n");
+            sb.append("URI: " + intent.toUri(Intent.URI_INTENT_SCHEME).toString() + "\n");
+            String log = sb.toString();
+//            Log.d(TAG, log);
+//            Toast.makeText(context, log, Toast.LENGTH_LONG).show();
+            String response_bill_split = intent.getStringExtra("data");
+            Log.d("brodacast",""+intent.getStringExtra("data"));
+
+            if(!response_bill_split.equals("")){
+                fundTransfers++;
+                float value = (fundTransfers*100/spliteNumber);
+                Log.d("vaalue",value+"");
+                mCircleView.setValue(value);
+                collectedMoney += moneyOfUnit;
+                if(fundTransfers == spliteNumber){
+                    billColectedTest.setVisibility(View.VISIBLE);
+                    collectedMoney = amount;
+                }
+
+            }
+
+
+            Log.d("transafers",fundTransfers+"");
+        }
+    }
+
+
 }

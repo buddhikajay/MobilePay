@@ -313,7 +313,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-            finish();
+            //finish();
 
     }
 

@@ -442,10 +442,10 @@ public class CheckoutActivity extends AppCompatActivity {
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
 
-        if(!back){
-            finish();
-            //moveLogin();
-        }
+//        if(!back){
+//            finish();
+//            //moveLogin();
+//        }
 
 
 
@@ -477,14 +477,14 @@ public class CheckoutActivity extends AppCompatActivity {
                     Log.d("phonenumb1",phoneNumber);
                     Log.d("phonenumb2",Api.getPhoneNumber(getApplicationContext()));
                     if(scannerType){
-                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
-                        Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
+                       // Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
 
                     }
                     else {
-                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
-                        Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
-
+                       // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
+                       // Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(),"split");
                     }
                     moveToFinishActivity(amount,intent.getStringExtra("name"),jsonObject.optString("transactionId").toString());
                 }
@@ -525,6 +525,9 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
     }
+
+
+
     private void moveToFinishActivity(String amount,String name,String reciptNumber){
 
         Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
@@ -561,8 +564,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                           // Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                           // Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -647,6 +650,30 @@ public class CheckoutActivity extends AppCompatActivity {
         }).start();
 
 
+    }
+    private void FundTransaferMsg(final String topic, final String payload) {
+
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially  time consuming task
+                MQTTClient mqttClient = new MQTTClient();
+
+                try {
+                    mqttClient.initializeMQTTClient(getBaseContext(), "directpay_"+System.currentTimeMillis(), false, false, null, null);
+                    byte[] encodedPayload = new byte[0];
+                    encodedPayload = payload.getBytes("UTF-8");
+                    mqttClient.publish(topic,2,encodedPayload);
+                    mqttClient.disconnect();
+
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 

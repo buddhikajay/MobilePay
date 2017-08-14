@@ -65,8 +65,8 @@ public class MyQRActivity extends AppCompatActivity {
 
         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         //scanActivity.this.startActivity(myIntent);
-        if(!back)
-        finish();
+//        if(!back)
+//        finish();
     }
     public void moveLogin(){
 

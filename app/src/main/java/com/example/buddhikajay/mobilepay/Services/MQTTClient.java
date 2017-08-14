@@ -238,7 +238,7 @@ public class MQTTClient implements MqttCallback {
      * @param qos the maximum quality of service to receive messages at for this subscription
      * @throws MqttException
      */
-    public void subscribe(String topicName, String topic2, int qos) throws Throwable {
+    public void subscribe(String topicName, int qos) throws Throwable {
         // Use a state machine to decide which step to do next. State change occurs
         // when a notification is received that an MQTT action has completed
         log("Subscribing.. state :"+state+" topic:"+topicName);
@@ -253,7 +253,7 @@ public class MQTTClient implements MqttCallback {
                     // Subscribe using a non-blocking subscribe
                     Subscriber sub = new Subscriber();
                     sub.doSubscribe(topicName, qos);
-                    sub.doSubscribe(topic2, qos);
+                    //sub.doSubscribe(topic2, qos);
                     break;
                 case SUBSCRIBED:
                     // Block until Enter is pressed allowing messages to arrive
@@ -364,7 +364,10 @@ public class MQTTClient implements MqttCallback {
                 "  Topic:\t" + topic +
                 "  Message:\t" + new String(message.getPayload()) +
                 "  QoS:\t" + message.getQos());
-
+        Intent intent = new Intent();
+        intent.setAction("bill_spit");
+        intent.putExtra("data",new String(message.getPayload()));
+        context.sendBroadcast(intent);
 
 //            orderWindow.addOrder(new String(message.getPayload()));
 //            Intent intent = new Intent();
