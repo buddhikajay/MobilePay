@@ -398,6 +398,12 @@ public class loginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        else if(result.has("errors")){
+
+            Toast.makeText(getApplicationContext(),"Username or Password wrong",Toast.LENGTH_LONG).show();
+            btn.setEnabled(true);
+        }
+        btn.setEnabled(true);
     }
 
     private void moveToMerchantReport() {
