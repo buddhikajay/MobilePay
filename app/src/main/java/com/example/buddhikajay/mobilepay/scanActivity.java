@@ -295,6 +295,9 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                     if(jsonObject.getBoolean("active")){
                         merchantDetailResponseHandler(merchant, jsonObject);
                         //merchantList.add(merchant);
+                        if(paymentModel.isTip()){
+                            paymentModel.setTip(jsonObject.getBoolean("tip"));
+                        }
 
                         moveToCheckoutActivity(merchant, paymentModel);
                     }

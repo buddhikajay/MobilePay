@@ -700,6 +700,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject();
                     obj.put("id", transactionId);
                     obj.put("name", merchantName);
+                    obj.put("amount", amountTextView.getText().toString());
                     obj.put("success", true);
                     String payload = obj.toString();
                     byte[] encodedPayload = new byte[0];
