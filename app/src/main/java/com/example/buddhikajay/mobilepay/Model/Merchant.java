@@ -11,6 +11,7 @@ public class Merchant {
     private String merchantAddress;
     private String phoneNumber;
     private String brNumber;
+    private String accountNumber;
 
 
     public String getBrNumber() {
@@ -63,5 +64,13 @@ public class Merchant {
 
     public void setPhoneNumber(String phoneNumbers) {
         this.phoneNumber = phoneNumbers;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

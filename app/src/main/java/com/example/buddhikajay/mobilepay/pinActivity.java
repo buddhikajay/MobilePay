@@ -57,7 +57,7 @@ public class pinActivity extends AppCompatActivity {
         Log.d("user id",""+ Api.getRegisterId(getApplicationContext()));
         JSONObject payload = new JSONObject();
         try {
-            payload.put("userId",Api.getRegisterId(getApplicationContext()));
+            payload.put("userId",Api.getId(getApplicationContext()));
             //payload.put("userId","1234");
             payload.put("verificationCode",pintext);
 
@@ -148,7 +148,7 @@ public class pinActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),"pin send",Toast.LENGTH_LONG).show();
         JSONObject payload = new JSONObject();
         try {
-            payload.put("id",Api.getRegisterId(getApplicationContext()));
+            payload.put("id",Api.getId(getApplicationContext()));
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -386,7 +386,7 @@ public class loginActivity extends AppCompatActivity {
 
 
                     if (Api.isFirstTimeLogin(getApplicationContext())) {
-                        Api.setRegisterId(getApplicationContext(),jsonObject.getString("userId"),jsonObject.getString("phoneNumber"),nicField.getText().toString());
+                        Api.setRegisterId(getApplicationContext(),jsonObject.getString("userId"),jsonObject.getString("registedId"),jsonObject.getString("phoneNumber"),nicField.getText().toString(),jsonObject.getString("accountNumber"));
                         Log.d("first time login","true");
                     }
 

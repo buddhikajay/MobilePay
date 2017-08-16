@@ -189,7 +189,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private void populateTransactionList(JSONArray transactions) {
         Log.d("Transaction activity",transactions.toString());
         // Construct the data source
-        final ArrayList<UserTransactionModel> arrayOfTrnsactions = UserTransactionModel.getTransaction(transactions,Api.getRegisterId(getApplicationContext()));
+        final ArrayList<UserTransactionModel> arrayOfTrnsactions = UserTransactionModel.getTransaction(transactions,Api.getId(getApplicationContext()));
         // Create the adapter to convert the array to views
         adapter = new UserTransactionAdapter(this, arrayOfTrnsactions);
         // Attach the adapter to a ListView
@@ -216,7 +216,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     public void getTransaction(){
         JSONObject parameter = new JSONObject();
         try {
-            parameter.put("userId",""+ Api.getRegisterId(getApplicationContext()));
+            parameter.put("userId",""+ Api.getId(getApplicationContext()));
             JSONObject fromdate = new JSONObject();
             fromdate.put("year",fYear);
             fromdate.put("month",fMonth);

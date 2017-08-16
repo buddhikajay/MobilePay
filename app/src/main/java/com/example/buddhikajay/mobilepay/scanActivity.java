@@ -348,6 +348,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
                 merchant.setPhoneNumber(result.opt("phoneNumber").toString());
                 merchant.setRegistedId(result.opt("registedId").toString());
+                merchant.setAccountNumber(result.opt("merchantAccountNumber").toString());
                 Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
@@ -360,6 +361,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         myIntent.putExtra("registedId",merchant.getRegistedId());
         myIntent.putExtra("scannerType", this.scannerType);
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
+        myIntent.putExtra("accountNumber", merchant.getAccountNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         scanActivity.this.startActivity(myIntent);
 

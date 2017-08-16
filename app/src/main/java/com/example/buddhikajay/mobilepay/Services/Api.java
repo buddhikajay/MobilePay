@@ -48,6 +48,18 @@ public class Api {
 
         return nic;
     }
+    public static String getAccountNumber(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String accountNumber =sharedPref.getString("accountNumber",null);
+
+        return accountNumber;
+    }
+    public static void setAccountNumber(Context context,String accountNumber){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
+        editor.putString("accountNumber", accountNumber);
+        editor.apply();
+
+    }
     public static String getPhoneNumber(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String nic =sharedPref.getString("phoneNumber",null);
@@ -60,12 +72,14 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String nic,String phone,String role){
+    public static boolean setRegisterId(Context context,String id,String registedId,String nic,String phone,String role,String accountNumber){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         Log.d("Apirole",role);
-        editor.putString("register_id", id);
+        editor.putString("id", id);
+        editor.putString("registedId", registedId);
         editor.putString("nic", nic);
         editor.putString("phoneNumber", phone);
+        editor.putString("accountNumber", accountNumber);
         editor.putString("role", role);
         editor.putBoolean("register", true);
         editor.putBoolean("register_verify", false);
@@ -74,13 +88,15 @@ public class Api {
 
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String phone,String nic){
+    public static boolean setRegisterId(Context context,String id,String registedId,String phone,String nic,String accountNumber){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
-        editor.putString("register_id", id);
+        editor.putString("id", id);
+        editor.putString("registedId", registedId);
         editor.putBoolean("register", true);
         editor.putBoolean("register_verify", true);
         editor.putString("phoneNumber", phone);
         editor.putBoolean("first_login", false);
+        editor.putString("accountNumber", accountNumber);
         editor.putString("nic", nic);
         editor.apply();
 
@@ -101,9 +117,15 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static String getRegisterId(Context context){
+    public static String getId(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String token =sharedPref.getString("register_id",null);
+        String token =sharedPref.getString("id",null);
+
+        return token;
+    }
+    public static String getRegisterId(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String token =sharedPref.getString("registedId",null);
 
         return token;
     }
@@ -164,4 +186,6 @@ public class Api {
 
 
     }
+
+
 }

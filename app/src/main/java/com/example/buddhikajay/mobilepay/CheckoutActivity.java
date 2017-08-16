@@ -36,13 +36,19 @@ import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
     String username;
+    String accountNumber;
+    String address;
+
     Button payButton;
     EditText amountTextView;
     EditText tipTextView;
@@ -127,9 +133,11 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         else {
             addressTextView.setText(intent.getStringExtra("address"));
+            address = intent.getStringExtra("address");
             Log.d("address",intent.getStringExtra("address"));
             nameTextView.setText(intent.getStringExtra("name"));
             paymentType = "Merchant_Pay";
+            accountNumber = intent.getStringExtra("accountNumber");
             getSupportActionBar().setTitle("MerchantPay");
             if(intent.getStringExtra("type")!=null && intent.getStringExtra("type").equals("inApp")){
                 inApp = true;
@@ -487,6 +495,7 @@ public class CheckoutActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 if(!tip) {
                     Log.d("No tip", "" + amount + " has been reciveded from " + Api.getNic(getApplicationContext()));
                     Log.d("No tip", "LKR " + amount + " has been payed to " + intent.getStringExtra("name").toString());
@@ -496,8 +505,12 @@ public class CheckoutActivity extends AppCompatActivity {
                     mainTransactionId = jsonObject.optString("transactionId").toString();
                     mainAmount = amount;
                     if (scannerType) {
-                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+intent.getStringExtra("name"),getApplicationContext());
-                         Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        String payerMsg = Api.getNic(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+address+" bearring "+registedId+","+ "is approved and Dr from your account.";
+                        String payerAccount = Api.getAccountNumber(getApplicationContext());
+                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getNic(getApplicationContext())+" bearring "+Api.getRegisterId(getApplicationContext())+".You have recieved a payment including the tip amount which is successfully Cr to your account.";
+
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
+                        Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
 
                     } else {
                          Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());

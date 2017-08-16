@@ -348,7 +348,7 @@ public class registerActivity extends AppCompatActivity {
 
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo);
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());

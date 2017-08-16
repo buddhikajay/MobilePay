@@ -76,7 +76,7 @@ public class ForgetPassword extends AppCompatActivity {
             JSONObject payload = new JSONObject();
             try {
                 payload.put("password",password);
-                payload.put("id", Api.getRegisterId(getApplicationContext()));
+                payload.put("id", Api.getId(getApplicationContext()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
