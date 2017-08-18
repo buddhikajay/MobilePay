@@ -18,6 +18,7 @@ public class finishActivity extends AppCompatActivity {
     private boolean tip;
 
     private boolean back;
+    private boolean gotoInapp=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class finishActivity extends AppCompatActivity {
                 if(inApp){
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.supun.molly");
                     startActivity(launchIntent);
+                    finish();
                 }
                 else {
                     Intent myIntent = new Intent(finishActivity.this, scanActivity.class);

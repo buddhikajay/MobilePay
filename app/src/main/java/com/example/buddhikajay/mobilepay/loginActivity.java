@@ -102,6 +102,7 @@ public class loginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(loginActivity.this,registerActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -410,6 +411,7 @@ public class loginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
+        finish();
 
     }
 
@@ -498,6 +500,8 @@ public class loginActivity extends AppCompatActivity {
         Log.d("address",address.toString());
         merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
         merchant.setPhoneNumber(result.opt("phoneNumber").toString());
+        merchant.setAccountNumber(result.opt("merchantAccountNumber").toString());
+        merchant.setRegistedId(result.opt("registedId").toString());
         Log.d("scanActivity:mDetail", merchant.getMerchantName() );
         Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
@@ -505,11 +509,13 @@ public class loginActivity extends AppCompatActivity {
     private void moveToCheckoutActivity(Merchant merchant, PaymentModel paymentModel) {
         Intent myIntent = new Intent(this, CheckoutActivity.class);
         myIntent.putExtra("id",  merchant.getId());
+        myIntent.putExtra("registedId",merchant.getRegistedId());
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
         myIntent.putExtra("scannerType", true);
         myIntent.putExtra("type", "inApp");
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
+        myIntent.putExtra("accountNumber", merchant.getAccountNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         startActivity(myIntent);
 

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -52,6 +53,10 @@ public class CheckoutActivity extends AppCompatActivity {
     Button payButton;
     EditText amountTextView;
     EditText tipTextView;
+
+    TextInputLayout amountErr;
+    TextInputLayout tipErr;
+
     boolean complete = false;
     private PaymentModel paymentModel;
     private  String tipperId;
@@ -101,11 +106,20 @@ public class CheckoutActivity extends AppCompatActivity {
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
 
+        amountErr = (TextInputLayout) findViewById(R.id.amountEditText_err);
+        tipErr = (TextInputLayout) findViewById(R.id.tipEdit_err);
 
         amountTextView = (EditText) findViewById(R.id.amountEditText);
         tipTextView = (EditText) findViewById(R.id.tipEdit);
         payButton = (Button) findViewById(R.id.buttonPay);
         Button spitter = (Button) findViewById(R.id.buttonSpilite);
+
+        amountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                amountErr.setError(null);
+            }
+        });
 
        // test_bill_amount = (TextView) findViewById(R.id.text_bill_amount);
         //test_bill_amount_amount = (TextView)findViewById(R.id.text_bill_amount_value);
@@ -168,21 +182,23 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 payButton.setEnabled(false);
 
-                String amount = amountTextView.getText().toString();
+                if(checkError()) {
+                    String amount = amountTextView.getText().toString();
 
-                //Log.d("CheckoutActivity:number",phoneNumber);
+                    //Log.d("CheckoutActivity:number",phoneNumber);
 
-                //pay transaction
+                    //pay transaction
 
-                Double total = Double.parseDouble(amount.toString().replaceAll("[$, LKR]", ""));
-                Log.d("total",total.toString());
-                if(paymentModel.isTip() && !tipTextView.getText().toString().equals("") ){
-                    total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
-                    Log.d("total",total.toString());
+                    Double total = Double.parseDouble(amount.toString().replaceAll("[$, LKR]", ""));
+                    Log.d("total", total.toString());
+                    if (paymentModel.isTip() && !tipTextView.getText().toString().equals("")) {
+                        total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
+                        Log.d("total", total.toString());
+                    }
+                    showmessgebox(paymentType, total + " LKR", amount, intent.getStringExtra("name"), intent);
+
                 }
-                showmessgebox(paymentType,total+ " LKR",amount, intent.getStringExtra("name"), intent);
-
-
+                payButton.setEnabled(true);
             }
         });
 
@@ -206,8 +222,22 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkError(){
+
+        if(amountTextView.getText().toString().replaceAll("[$, LKR]", "").equals("")){
+            amountErr.setError("Enter Amount");
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
     private void spilteTransaction() {
         String amountText = amountTextView.getText().toString();
+
        amountText = amountText.toString().replaceAll("[$, LKR]","");
         Log.d("amont",amountText);
         if (!amountText.equals("") ){
@@ -524,10 +554,13 @@ public class CheckoutActivity extends AppCompatActivity {
                                 payTransaction(paymentType,tipperId,tipTextView.getText().toString(), Api.getAccessToken(getApplicationContext()),intent,true);
                                 Log.d("tipperid",tipperId);
                             }
+                            else {
+                                moveToFinishActivity(amount, intent.getStringExtra("name"), jsonObject.optString("transactionId").toString());
+                            }
 
                     } else {
-                        moveToFinishActivity(amount, intent.getStringExtra("name"), jsonObject.optString("transactionId").toString());
 
+                        moveToFinishActivity(amount, intent.getStringExtra("name"), jsonObject.optString("transactionId").toString());
                     }
                 }
                 else {

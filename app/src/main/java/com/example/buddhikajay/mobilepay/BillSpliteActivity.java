@@ -53,6 +53,7 @@ public class BillSpliteActivity extends AppCompatActivity {
     private ImageView myImage;
     private Button button_pay;
     private TextView billColectedTest;
+    private TextView amount_per_person;
 
     private double amount;
     private String merchantId;
@@ -96,6 +97,7 @@ public class BillSpliteActivity extends AppCompatActivity {
         button_pay = (Button)findViewById(R.id.button_paynow);
         mCircleView = (CircleProgressView) findViewById(R.id.circleView);
         billColectedTest = (TextView) findViewById(R.id.text_collected);
+        amount_per_person = (TextView) findViewById(R.id.txt_amount_per_person);
 
 
 
@@ -300,6 +302,7 @@ public class BillSpliteActivity extends AppCompatActivity {
             mqttOpenChanel(topic);
             mCircleView.setVisibility(View.VISIBLE);
             mCircleView.setValue(fundTransfers*100/spliteNumber);
+            amount_per_person.setText(String.format( "bill for per person : %.2f", amountValue/spliteNumber )+" LKR");
 
         }
         else {
