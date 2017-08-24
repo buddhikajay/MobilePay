@@ -28,7 +28,7 @@ public class MyQRActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            String code = ""+Api.getRegisterId(getApplicationContext())+" $ user";
+            String code = ""+Api.getId(getApplicationContext())+" $ user";
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

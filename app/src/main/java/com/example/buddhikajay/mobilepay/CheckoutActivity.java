@@ -142,6 +142,7 @@ public class CheckoutActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("FundTransfer");
             merchantidTextView.setText("User ID :");
             payButton.setText("FundTransfer");
+            accountNumber = intent.getStringExtra("accountNumber");
 
 
         }
@@ -535,14 +536,20 @@ public class CheckoutActivity extends AppCompatActivity {
                     mainTransactionId = jsonObject.optString("transactionId").toString();
                     mainAmount = amount;
                     if (scannerType) {
-                        String payerMsg = Api.getNic(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+address+" bearring "+registedId+","+ "is approved and Dr from your account.";
+
+                        String addresssplite[] = address.split(",");
+                        Log.d("username",Api.getUsername(getApplicationContext()));
+
+                        String payerMsg = Api.getUsername(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
                         String payerAccount = Api.getAccountNumber(getApplicationContext());
-                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getNic(getApplicationContext())+" bearring "+Api.getRegisterId(getApplicationContext())+".You have recieved a payment including the tip amount which is successfully Cr to your account.";
+                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getUsername(getApplicationContext())+".";
 
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
 
                     } else {
+
+                        String payerMsg = Api.getUsername(getApplicationContext())+" a fund transfer has been made by your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+" for "+amount+" on " +dateFormat.format(new Date())+" ,Your fund transfer has been successfully Dr by your account.";
                          Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
                          Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
                         FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");

@@ -295,7 +295,7 @@ public class BillSpliteActivity extends AppCompatActivity {
             int rNumber = r.nextInt(100000000);
             String topic = "main_split_"+rNumber;
             moneyOfUnit = amountValue/spliteNumber;
-            String code = ""+ Api.getRegisterId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" "+topic;
+            String code = ""+ Api.getId(getApplicationContext())+" "+String.format( "%.2f", amountValue/spliteNumber )+" "+topic;
             Log.d("code",code);
             Bitmap myBitmap = QRCode.from(""+ code).withSize(btn_size/2,btn_size/2).bitmap();
             myImage.setImageBitmap(myBitmap);
