@@ -292,10 +292,22 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 else {
                     //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
                     //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
-                    merchantDetailResponseHandler(merchant, jsonObject);
-                    //merchantList.add(merchant);
+                    if(jsonObject.getBoolean("active")){
+                        merchantDetailResponseHandler(merchant, jsonObject);
+                        //merchantList.add(merchant);
+                        if(paymentModel.isTip()){
+                            paymentModel.setTip(jsonObject.getBoolean("tip"));
+                        }
 
-                    moveToCheckoutActivity(merchant, paymentModel);
+                        moveToCheckoutActivity(merchant, paymentModel);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(),"Merchant Deactivated",Toast.LENGTH_LONG).show();
+                        Intent intent = getIntent();
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
 
                 // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
@@ -335,6 +347,8 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 Log.d("address",address.toString());
                 merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
                 merchant.setPhoneNumber(result.opt("phoneNumber").toString());
+                merchant.setRegistedId(result.opt("registedId").toString());
+                merchant.setAccountNumber(result.opt("merchantAccountNumber").toString());
                 Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
 
@@ -344,8 +358,10 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         myIntent.putExtra("id",  merchant.getId());
         myIntent.putExtra("name",merchant.getMerchantName());
         myIntent.putExtra("address",merchant.getMerchantAddress());
+        myIntent.putExtra("registedId",merchant.getRegistedId());
         myIntent.putExtra("scannerType", this.scannerType);
         myIntent.putExtra("phoneNumber", merchant.getPhoneNumber());
+        myIntent.putExtra("accountNumber", merchant.getAccountNumber());
         myIntent.putExtra("Paymodel",paymentModel);
         scanActivity.this.startActivity(myIntent);
 
@@ -503,6 +519,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                     myIntent.putExtra("scannerType", this.scannerType);
                     myIntent.putExtra("phoneNumber", jsonObject.getString("phoneNumber"));
                     myIntent.putExtra("Paymodel",paymentModel);
+                    myIntent.putExtra("registedId",jsonObject.getString("registedId"));
                     scanActivity.this.startActivity(myIntent);
                 }
                 else  if(roles.get(0).equals("merchant")){

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.welcome);
        /* Bundle b = getIntent().getExtras();
         if(b!=null){
             //String myString = b.getString("KEY_DATA_EXTRA_FROM_ACTV_B");
@@ -48,22 +48,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        appState();
+        //appState();
         finish();
     }
     private void appState(){
-        boolean register = Api.isRegister(getApplication());
+
         boolean verify = Api.isRegisterVerify(getApplicationContext());
-        if( register&& verify){
+        boolean firstLigon = Api.isFirstTimeLogin(getApplicationContext());
+        boolean regisiter = Api.isRegister(getApplicationContext());
+        if(!verify && firstLigon && regisiter){
+            moveToPinActivity();
+        }
+        else {
             //signupLink.setVisibility(View.GONE);
             moveToLoginActivity();
         }
-        else if(register && !verify){
-            moveToPinActivity();
-        }
-        else{
-            moveToRegisterActivity();
-        }
+
 
     }
     public void moveToPinActivity(){

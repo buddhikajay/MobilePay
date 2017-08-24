@@ -160,7 +160,7 @@ public class MerchantTransactionDetailActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        finish();
+        //finish();
 
     }
     private void moveMerchantTransactionReport() {
