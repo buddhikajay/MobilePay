@@ -32,6 +32,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.view.*;
 
 public class registerActivity extends AppCompatActivity {
 
@@ -44,13 +45,14 @@ public class registerActivity extends AppCompatActivity {
     private EditText mobileNoField;
     private EditText passwordField;
     private EditText rePasswordField;
-
+    private EditText usernameField;
 
     private String accountNo;
     private String nic;
     private String mobileNo;
     private String password;
     private String rePassword;
+    private String username;
 
      Button signup;
     @Override
@@ -67,6 +69,7 @@ public class registerActivity extends AppCompatActivity {
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
         rePasswordField = (EditText) findViewById(R.id.retypepassword);
+        usernameField = (EditText) findViewById(R.id.username);
 
         signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,7 @@ public class registerActivity extends AppCompatActivity {
         mobileValidate(mobileNoField);
         nicValidation(nicField);
         //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+
     }
     private void nicValidation(final EditText nic){
 
@@ -215,7 +219,14 @@ public class registerActivity extends AppCompatActivity {
         mobileNo = mobileNoField.getText().toString();
         password = passwordField.getText().toString();
         rePassword =rePasswordField.getText().toString();
-        if (accountNo.matches("")){
+        username = usernameField.getText().toString();
+        if(username.equals("")){
+            usernameField.requestFocus();
+            usernameField.setError("Enter Username");
+
+        }
+
+        else if (accountNo.matches("")){
             accountNoField.requestFocus();
             accountNoField.setError("Enter Account Number");
             //showError(accountNoField,"Enter Account Number");
@@ -270,6 +281,7 @@ public class registerActivity extends AppCompatActivity {
         try {
             payload.put("accountNumber",accountNo);
             payload.put("nic",nic);
+            payload.put("username",username);
             payload.put("phoneNumber",mobileNo);
             payload.put("password",password);
         } catch (JSONException e) {
@@ -346,7 +358,8 @@ public class registerActivity extends AppCompatActivity {
 
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo,username);
+                Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
@@ -380,5 +393,6 @@ public class registerActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

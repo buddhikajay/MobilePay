@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -65,19 +66,45 @@
         android:textColor="@color/white"
         android:background="@color/colorPrimaryDark"
         android:layout_marginTop="8dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_amount_per_person"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_qrcode"
         android:layout_gravity="center"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_collected"
-        android:text="Your bill amount is collected"
 
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center">
+            <at.grabner.circleprogress.CircleProgressView
+                android:id="@+id/circleView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                CircleProgressView:cpv_autoTextSize="true"
+                CircleProgressView:cpv_maxValue="100"
+                CircleProgressView:cpv_rimColor="@color/colorPrimaryDark"
+                CircleProgressView:cpv_rimWidth="50dp"
+                CircleProgressView:cpv_seekMode="false"
+                CircleProgressView:cpv_spinColor="@color/colorPrimary"
+                android:layout_gravity="center"
+
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_collected"
+            android:text="Your bill amount is collected"
+
+            />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

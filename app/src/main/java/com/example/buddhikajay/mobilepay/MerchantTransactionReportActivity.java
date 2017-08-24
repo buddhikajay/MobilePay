@@ -193,7 +193,7 @@ public class MerchantTransactionReportActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        finish();
+        //finish();
 
     }
     private void moveScan() {

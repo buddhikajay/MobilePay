@@ -69,7 +69,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        finish();
+        //finish();
 
     }
 

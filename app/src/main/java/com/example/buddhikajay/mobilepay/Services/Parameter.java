@@ -17,6 +17,12 @@ public class Parameter {
 //    public static String identityServer = "https://192.168.8.103:9446";
 //    public static String apim = "https://192.168.8.103:8243";
 
+    //http://10.254.102.141
+//    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
+//    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
+//    public static String identityServer = "https://192.168.43.82:9446";
+//    public static String apim = "https://192.168.43.82:8243";
+
 
 
     public static String mechantpayUrl= apim+"/merchantpay/1.0.0/transaction/merchantpay";
@@ -28,7 +34,14 @@ public class Parameter {
     public static String  urlLogin = apim+"/merchantpay/1.0.0/login";
     public static String  urlVoidTransaction = apim+"/merchantpay/1.0.0/transaction/void";
     public static String  urlUserRole = apim+"/merchantpay/1.0.0/default/user/role";
+    public static String  urlResendPin = apim+"/merchantpay/1.0.0/resend/pin";
+    public static String  urlForgotPassword = apim+"/merchantpay/1.0.0/forgot/password";
+    public static String  urlDirectpayLogin = apim+"/merchantpay/1.0.0/directpay/user/login";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
+
+    //MQTT param
+
+    public static String MQTT_BROKER_URL ="tcp://iot.eclipse.org:1883";
 
 }

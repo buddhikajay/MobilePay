@@ -12,9 +12,13 @@ public class finishActivity extends AppCompatActivity {
     private String amount;
     private String payee;
     private String recept;
+
+    private String tipAmount;
     private boolean inApp;
+    private boolean tip;
 
     private boolean back;
+    private boolean gotoInapp=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,8 @@ public class finishActivity extends AppCompatActivity {
         payee = intent.getStringExtra("payee");
         recept = intent.getStringExtra("recept");
         inApp = intent.getBooleanExtra("inApp",false);
+        tip = intent.getBooleanExtra("tip",false);
+
         //Log.d("Amount",amount);
         TextView amountText = (TextView) findViewById(R.id.transaction_amount);
         amountText.setText(amount);
@@ -43,6 +49,21 @@ public class finishActivity extends AppCompatActivity {
         receiptText.setText(recept);
 
         TextView transactionmsg = (TextView) findViewById(R.id.merchant_name);
+
+        TextView tipAmount_text = (TextView) findViewById(R.id.tip_amount_text);
+        TextView tipAmount_text_mid = (TextView) findViewById(R.id.tip_amount_text_mid);
+        TextView tipAmount_value = (TextView) findViewById(R.id.tip_amount_value);
+
+        if(!tip){
+            tipAmount_text.setVisibility(View.GONE);
+            tipAmount_text_mid.setVisibility(View.GONE);
+            tipAmount_value.setVisibility(View.GONE);
+        }
+        else {
+            tipAmount = intent.getStringExtra("tipAmount");
+            tipAmount_value.setText(tipAmount);
+
+        }
         transactionmsg.setText(payee);
         Button btn=(Button)findViewById(R.id.finish_btn);
         btn.setOnClickListener(new View.OnClickListener()
@@ -54,6 +75,7 @@ public class finishActivity extends AppCompatActivity {
                 if(inApp){
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.supun.molly");
                     startActivity(launchIntent);
+                    finish();
                 }
                 else {
                     Intent myIntent = new Intent(finishActivity.this, scanActivity.class);
@@ -88,10 +110,10 @@ public class finishActivity extends AppCompatActivity {
         //CheckoutActivity.this.startActivity(myIntent);
         //finish();
 
-        if(!back){
-            finish();
-            //moveLogin();
-        }
+//        if(!back){
+//            finish();
+//            //moveLogin();
+//        }
 
 
 

@@ -140,6 +140,8 @@ public class VolleyRequestHandlerApi {
                         else if(networkResponse != null && networkResponse.statusCode == HttpStatus.SC_BAD_REQUEST){
                             Toast.makeText(context,"error",Toast.LENGTH_LONG).show();
 
+                            callback.enableButton();
+
                         }
                         else if(error instanceof NoConnectionError){
                             callback.login();
