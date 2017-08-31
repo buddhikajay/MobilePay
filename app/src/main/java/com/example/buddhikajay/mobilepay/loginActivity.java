@@ -1,8 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +49,7 @@ public class loginActivity extends AppCompatActivity {
 
     private EditText passField;
     private EditText nicField;
+    private View mProgressView;
     //private EditText accountField;
     private TextView signupLink;
 
@@ -73,6 +78,7 @@ public class loginActivity extends AppCompatActivity {
         passLayout = (TextInputLayout) findViewById(R.id.pinErr);
         nicField = (EditText) findViewById(R.id.login_nic);
         nicLayout = (TextInputLayout) findViewById(R.id.nic_error);
+        mProgressView = findViewById(R.id.login_progress);;
 
         ImageView logo = (ImageView) findViewById(R.id.logo);
 
@@ -203,6 +209,7 @@ public class loginActivity extends AppCompatActivity {
     }
     private void login(final View v){
        // Log.d("login data",""+Api.getNic(getApplicationContext()));
+        showProgress(true);
         if(isEnterdValideLoginData()){
             Log.d("...login data validate.","");
             JSONObject params = getLoginDetail();
@@ -223,6 +230,7 @@ public class loginActivity extends AppCompatActivity {
                 public void enableButton() {
 
                     btn.setEnabled(true);
+                    showProgress(false);
                     //v.setVisibility(View.VISIBLE);
                 }
             }, Parameter.urlDirectpayLogin,"",params,getApplicationContext());
@@ -357,6 +365,7 @@ public class loginActivity extends AppCompatActivity {
 //        }
 
         if(result.has("data")) {
+            showProgress(false);
             JSONArray array = (JSONArray) result.opt("data");
             try {
                 if (array.length() != 0) {
@@ -401,7 +410,7 @@ public class loginActivity extends AppCompatActivity {
             }
         }
         else if(result.has("errors")){
-
+            showProgress(false);
             Toast.makeText(getApplicationContext(),"Username or Password wrong",Toast.LENGTH_LONG).show();
             btn.setEnabled(true);
         }
@@ -425,7 +434,7 @@ public class loginActivity extends AppCompatActivity {
     //ToDO reuseble component change architecture
 
     private void getMerchantDetail(final Merchant merchant,final PaymentModel paymentModel){
-
+        showProgress(true);
         JSONObject detail = new JSONObject();
         try {
             detail.put("id",""+merchant.getId());
@@ -454,7 +463,9 @@ public class loginActivity extends AppCompatActivity {
         }
     }
     private void responseProcess(JSONObject result,Merchant merchant,PaymentModel paymentModel){
+        showProgress(false);
         if(result.has("data")){
+
             JSONArray array= (JSONArray) result.opt("data");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
@@ -584,6 +595,39 @@ public class loginActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
 

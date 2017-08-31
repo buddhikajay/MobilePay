@@ -1,7 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -43,7 +48,20 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
     private void doStuff() {
-
+        // Here, thisActivity is the current activity
+//        if (!appPermission()) {
+//
+//
+//
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)) {}
+//            else {ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},1);}
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_PHONE_STATE)) {}
+//            else {ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_PHONE_STATE},2);}
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.SEND_SMS)) {}
+//            else {ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},3);}
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {}
+//            else {ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},4);}
+//        }
         appState();
         finish();
     }
@@ -84,5 +102,16 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Intent myIntent = new Intent(this, registerActivity.class);
         startActivity(myIntent);
+    }
+    private boolean appPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)return false;
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED)return false;
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED)return false;
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)return false;
+
+
+        return  true;
+
+
     }
 }
