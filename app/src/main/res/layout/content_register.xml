@@ -12,7 +12,16 @@
     tools:context="com.example.buddhikajay.mobilepay.registerActivity"
     tools:showIn="@layout/activity_register"
     android:background="#ffffff">
-
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp" />
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -24,9 +33,9 @@
         android:layout_alignParentTop="true">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:id="@+id/logo"
-        android:src="@drawable/logo_wide1"
+        android:src="@drawable/logodirect"
         android:layout_alignRight="@+id/login_pin"
         android:layout_alignEnd="@+id/login_pin"
         android:layout_marginTop="10dp"/>

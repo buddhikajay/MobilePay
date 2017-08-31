@@ -1,6 +1,10 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +28,9 @@ public class pinActivity extends AppCompatActivity {
     private EditText pin;
     private ImageView refreshIcon;
      Button ok_btn;
+
+    private View mProgressView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,7 @@ public class pinActivity extends AppCompatActivity {
         pin = (EditText) findViewById(R.id.reg_pin);
         ok_btn = (Button) findViewById(R.id.ok_button);
         refreshIcon = (ImageView) findViewById(R.id.refresh_icon);
+        mProgressView = findViewById(R.id.login_progress);;
         refreshIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +60,7 @@ public class pinActivity extends AppCompatActivity {
     }
 
     private void registerUser(View v){
+        showProgress(true);
         if(pintextValidation()){
         String pintext = pin.getText().toString();
         Log.d("user id",""+ Api.getRegisterId(getApplicationContext()));
@@ -83,6 +92,7 @@ public class pinActivity extends AppCompatActivity {
                 @Override
                 public void enableButton() {
                     ok_btn.setEnabled(true);
+                    showProgress(false);
                 }
             }, Parameter.registerVerifyUrl,"",payload,getApplicationContext());
         }
@@ -107,6 +117,7 @@ public class pinActivity extends AppCompatActivity {
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
+                showProgress(false);
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("sss", jsonObject.opt("success").toString() );
                 Api.setRegisterVerify(getApplicationContext());
@@ -123,6 +134,7 @@ public class pinActivity extends AppCompatActivity {
 
         }
         else if(result.has("errors")){
+            showProgress(false);
             JSONArray array= (JSONArray) result.opt("errors");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
@@ -205,5 +217,37 @@ public class pinActivity extends AppCompatActivity {
             }
         }
         refreshIcon.setEnabled(true);
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 }
