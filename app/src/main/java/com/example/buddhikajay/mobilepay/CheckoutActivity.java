@@ -1,8 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -78,6 +82,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private String tipTransactionId;
 
     private String mainAmount ;
+    private View mProgressView;
 
 
     @Override
@@ -105,6 +110,7 @@ public class CheckoutActivity extends AppCompatActivity {
         TextView merchantidTextView = (TextView) findViewById(R.id.merchantTextView);
         TextView nameTextView = (TextView) findViewById(R.id.merchantNameTextView);
         TextView addressTextView = (TextView) findViewById(R.id.addressTextView);
+        mProgressView = findViewById(R.id.login_progress);;
 
         amountErr = (TextInputLayout) findViewById(R.id.amountEditText_err);
         tipErr = (TextInputLayout) findViewById(R.id.tipEdit_err);
@@ -420,6 +426,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void enableButton() {
                 payButton.setEnabled(true);
+                showProgress(false);
             }
         }, Parameter.mechantpayUrl,Api.getAccessToken(getApplicationContext()),pay,getApplicationContext());
     }
@@ -448,7 +455,7 @@ public class CheckoutActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        showProgress(true);
                         payTransaction(paymentType,intent.getStringExtra("id"),amount, Api.getAccessToken(getApplicationContext()),intent,false);
                         Log.d("merchantId",intent.getStringExtra("id"));
 //                        if(paymentModel.isTip() ){
@@ -521,6 +528,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
     private void responseProcess(JSONObject result,String amount,Intent intent,boolean tip){
+        showProgress(false);
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
@@ -796,6 +804,38 @@ public class CheckoutActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
 
