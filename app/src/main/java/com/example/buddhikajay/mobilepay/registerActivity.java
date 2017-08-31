@@ -1,15 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.MobileNumberPicker;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
@@ -40,8 +36,6 @@ import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.view.*;
-
 public class registerActivity extends AppCompatActivity {
 
 
@@ -53,7 +47,8 @@ public class registerActivity extends AppCompatActivity {
     private EditText mobileNoField;
     private EditText passwordField;
     private EditText rePasswordField;
-    private EditText usernameField;
+    private EditText firstNameField;
+    private EditText lastNameField;
     private View mProgressView;
 
     private String accountNo;
@@ -61,7 +56,8 @@ public class registerActivity extends AppCompatActivity {
     private String mobileNo;
     private String password;
     private String rePassword;
-    private String username;
+    private String firstName;
+    private String lastName;
 
      Button signup;
     @Override
@@ -78,7 +74,8 @@ public class registerActivity extends AppCompatActivity {
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
         rePasswordField = (EditText) findViewById(R.id.retypepassword);
-        usernameField = (EditText) findViewById(R.id.username);
+        firstNameField = (EditText) findViewById(R.id.first_name);
+        lastNameField = (EditText) findViewById(R.id.last_name);
         mProgressView = findViewById(R.id.login_progress);;
         signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
@@ -234,10 +231,16 @@ public class registerActivity extends AppCompatActivity {
         mobileNo = mobileNoField.getText().toString();
         password = passwordField.getText().toString();
         rePassword =rePasswordField.getText().toString();
-        username = usernameField.getText().toString();
-        if(username.equals("")){
-            usernameField.requestFocus();
-            usernameField.setError("Enter Username");
+        firstName = firstNameField.getText().toString();
+        lastName = lastNameField.getText().toString();
+        if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter First Name");
+
+        }
+        else if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter Last Name");
 
         }
 
@@ -304,7 +307,8 @@ public class registerActivity extends AppCompatActivity {
         try {
             payload.put("accountNumber",accountNo);
             payload.put("nic",nic);
-            payload.put("username",username);
+            payload.put("firstName", firstName);
+            payload.put("lastName", lastName);
             payload.put("phoneNumber",mobileNo);
             payload.put("ime",imei);
             payload.put("password",password);
@@ -380,11 +384,11 @@ public class registerActivity extends AppCompatActivity {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
                 Log.d("RegisterActivity:status","Succss");
-                Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
+                Log.d("RegisterActivity:id", jsonObject.opt("registedId").toString());
 
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo,username);
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo, firstName,lastName);
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
