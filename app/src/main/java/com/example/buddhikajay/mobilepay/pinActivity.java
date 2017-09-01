@@ -232,6 +232,9 @@ public class pinActivity extends AppCompatActivity {
                 if(jsonObject.opt("status").toString().equals("5000")){
                     //Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
                 }
+                else if(jsonObject.opt("status").toString().equals("500")){
+                    Toast.makeText(getApplicationContext(),"Invalid Code",Toast.LENGTH_LONG).show();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
