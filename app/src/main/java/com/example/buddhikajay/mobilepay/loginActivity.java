@@ -411,7 +411,13 @@ public class loginActivity extends AppCompatActivity {
         }
         else if(result.has("errors")){
             showProgress(false);
-            Toast.makeText(getApplicationContext(),"Username or Password wrong",Toast.LENGTH_LONG).show();
+            if(Api.isFirstTimeLogin(getApplicationContext())){
+                Toast.makeText(getApplicationContext(),"Invalide Nic or Password",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Wrong Password",Toast.LENGTH_LONG).show();
+            }
+
             btn.setEnabled(true);
         }
         btn.setEnabled(true);
