@@ -546,18 +546,18 @@ public class CheckoutActivity extends AppCompatActivity {
                     if (scannerType) {
 
                         String addresssplite[] = address.split(",");
-                        Log.d("username",Api.getUsername(getApplicationContext()));
+                        Log.d("firstName",Api.getFirstName(getApplicationContext()));
 
-                        String payerMsg = Api.getUsername(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
+                        String payerMsg = Api.getLastName(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
                         String payerAccount = Api.getAccountNumber(getApplicationContext());
-                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getUsername(getApplicationContext())+".";
+                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getLastName(getApplicationContext())+".";
 
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
 
                     } else {
 
-                        String payerMsg = Api.getUsername(getApplicationContext())+" a fund transfer has been made by your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+" for "+amount+" on " +dateFormat.format(new Date())+" ,Your fund transfer has been successfully Dr by your account.";
+                        String payerMsg = Api.getLastName(getApplicationContext())+" a fund transfer has been made by your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+" for "+amount+" on " +dateFormat.format(new Date())+" ,Your fund transfer has been successfully Dr by your account.";
                          Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
                          Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
                         FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");
