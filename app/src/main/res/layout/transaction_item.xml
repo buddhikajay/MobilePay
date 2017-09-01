@@ -21,6 +21,21 @@
 
 
     <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Date"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        android:gravity="left"
+        android:textSize="10sp"
+        />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <TextView
         android:id="@+id/userAccountNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +43,7 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:gravity="left"
+
         android:textSize="14sp"
 
         />
@@ -45,23 +61,9 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:gravity="left"
+
         android:textSize="14sp"
 
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        android:gravity="left"
-        android:textSize="10sp"
         />
 </LinearLayout>
 

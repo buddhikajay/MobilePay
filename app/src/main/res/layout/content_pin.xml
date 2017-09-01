@@ -12,6 +12,16 @@
     tools:context="com.example.buddhikajay.mobilepay.loginActivity"
     tools:showIn="@layout/activity_pin"
     android:background="#ffffff">
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -38,6 +48,53 @@
         android:hint="Direct Pay Last Transaction"
         />
         </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:textAlignment="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resend Pin"
+                    android:textSize="14sp"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:textAlignment="center"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right"
+                android:gravity="right">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/refresh_icon"
+                    android:layout_gravity="right"
+                    android:id="@+id/refresh_icon"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

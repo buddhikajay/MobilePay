@@ -28,7 +28,7 @@ public class MyQRActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            String code = ""+Api.getRegisterId(getApplicationContext())+" $ user";
+            String code = ""+Api.getId(getApplicationContext())+" $ user";
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -65,8 +65,8 @@ public class MyQRActivity extends AppCompatActivity {
 
         //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
         //scanActivity.this.startActivity(myIntent);
-        if(!back)
-        finish();
+//        if(!back)
+//        finish();
     }
     public void moveLogin(){
 

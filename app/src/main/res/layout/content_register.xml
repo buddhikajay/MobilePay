@@ -12,7 +12,19 @@
     tools:context="com.example.buddhikajay.mobilepay.registerActivity"
     tools:showIn="@layout/activity_register"
     android:background="#ffffff">
-
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -21,13 +33,61 @@
         android:layout_alignParentTop="true">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:id="@+id/logo"
-        android:src="@drawable/logo_wide1"
+        android:src="@drawable/logodirect"
         android:layout_alignRight="@+id/login_pin"
         android:layout_alignEnd="@+id/login_pin"
         android:layout_marginTop="10dp"/>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/first_name"
+            android:text=""
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:cursorVisible="true"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
+            android:focusable="true"
+            android:layout_below="@+id/logo"
+            android:layout_marginTop="10dp"
+            android:hint="First Name"
+            android:maxLength="16"
+            />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/last_name"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:cursorVisible="true"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textCursorDrawable="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
+                android:focusable="true"
+                android:layout_below="@+id/logo"
+                android:layout_marginTop="10dp"
+                android:hint="Last Name"
+                android:maxLength="16"
+                />
+        </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +106,7 @@
         android:textCursorDrawable="@color/colorPrimary"
         android:textColor="@color/colorAccent"
         android:focusable="true"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/username"
         android:layout_marginTop="10dp"
         android:hint="@string/Account_hint"
         android:maxLength="16"
@@ -159,5 +219,5 @@
         android:focusable="true"
         />
     </LinearLayout>
-
+</ScrollView>
 </RelativeLayout>

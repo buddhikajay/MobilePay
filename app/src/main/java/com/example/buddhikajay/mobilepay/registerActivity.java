@@ -1,13 +1,18 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.MobileNumberPicker;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
@@ -29,9 +33,9 @@ import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class registerActivity extends AppCompatActivity {
 
@@ -44,13 +48,17 @@ public class registerActivity extends AppCompatActivity {
     private EditText mobileNoField;
     private EditText passwordField;
     private EditText rePasswordField;
-
+    private EditText firstNameField;
+    private EditText lastNameField;
+    private View mProgressView;
 
     private String accountNo;
     private String nic;
     private String mobileNo;
     private String password;
     private String rePassword;
+    private String firstName;
+    private String lastName;
 
      Button signup;
     @Override
@@ -67,14 +75,16 @@ public class registerActivity extends AppCompatActivity {
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
         rePasswordField = (EditText) findViewById(R.id.retypepassword);
-
+        firstNameField = (EditText) findViewById(R.id.first_name);
+        lastNameField = (EditText) findViewById(R.id.last_name);
+        mProgressView = findViewById(R.id.login_progress);;
         signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup.setEnabled(false);
                 //Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
-                if(isValideRgisterData()){
+                if( isValideRgisterData()){
                     userRegister(v);
                 }
                 else {
@@ -87,6 +97,7 @@ public class registerActivity extends AppCompatActivity {
         mobileValidate(mobileNoField);
         nicValidation(nicField);
         //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+
     }
     private void nicValidation(final EditText nic){
 
@@ -103,7 +114,7 @@ public class registerActivity extends AppCompatActivity {
                 Pattern p;
                 Matcher m;
                 nic.removeTextChangedListener(this);
-                if (s.length()<=9){
+                if (s.length()<=9 || s.length()>10){
                     Log.d("change","9");
                     regex = "[^\\d]";
                     p = Pattern.compile(regex);
@@ -122,8 +133,14 @@ public class registerActivity extends AppCompatActivity {
 
                 }
                 else if(s.length()==10){
-                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
-
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b' || s.toString().matches("\\d+")){
+                            if(s.toString().matches("\\d+$")){
+                                int maxLength = 12;
+                                InputFilter[] fArray = new InputFilter[1];
+                                fArray[0] = new InputFilter.LengthFilter(maxLength);
+                                nicField.setFilters(fArray);
+                                nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                            }
                     }
                     else {
                         String cleanString = s.toString().replaceAll("[^\\d]", "");
@@ -184,7 +201,7 @@ public class registerActivity extends AppCompatActivity {
                             }
                         }
                         else if(s.length() ==3){
-                            regex = "^[0](11|71|70|75|76|77|72|78])";
+                            regex = "^[0](11|71|70|75|76|77|72|78)";
                             p = Pattern.compile(regex);
                             m = p.matcher(s.toString());
                             if(!m.matches()){
@@ -215,7 +232,20 @@ public class registerActivity extends AppCompatActivity {
         mobileNo = mobileNoField.getText().toString();
         password = passwordField.getText().toString();
         rePassword =rePasswordField.getText().toString();
-        if (accountNo.matches("")){
+        firstName = firstNameField.getText().toString();
+        lastName = lastNameField.getText().toString();
+        if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter First Name");
+
+        }
+        else if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter Last Name");
+
+        }
+
+        else if (accountNo.matches("")){
             accountNoField.requestFocus();
             accountNoField.setError("Enter Account Number");
             //showError(accountNoField,"Enter Account Number");
@@ -265,12 +295,23 @@ public class registerActivity extends AppCompatActivity {
     }
     private JSONObject getRegisterData(){
         //create pay load
+        String imei;
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            imei = telephonyManager.getDeviceId();
 
+        }
+        catch (java.lang.SecurityException e){
+            imei = "NO_PERMISSION";
+        }
         JSONObject payload = new JSONObject();
         try {
             payload.put("accountNumber",accountNo);
             payload.put("nic",nic);
+            payload.put("firstName", firstName);
+            payload.put("lastName", lastName);
             payload.put("phoneNumber",mobileNo);
+            payload.put("ime",imei);
             payload.put("password",password);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -281,7 +322,7 @@ public class registerActivity extends AppCompatActivity {
         Log.d("registerActivity", "user validations");
         //Toast.makeText(getApplicationContext(),"Credential not valide",Toast.LENGTH_LONG).show();
 
-
+        showProgress(true);
             JSONObject payload = getRegisterData();
             VolleyRequestHandlerApi.api(new VolleyCallback(){
                 @Override
@@ -300,6 +341,7 @@ public class registerActivity extends AppCompatActivity {
                 @Override
                 public void enableButton() {
                     signup.setEnabled(true);
+                    showProgress(false);
                 }
             }, Parameter.registerUrl,"",payload,getApplicationContext());
 
@@ -339,17 +381,23 @@ public class registerActivity extends AppCompatActivity {
         if(result.has("data")){
             JSONArray array= (JSONArray) result.opt("data");
             try {
+
                 JSONObject jsonObject = array.getJSONObject(0);
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
                 Log.d("RegisterActivity:status","Succss");
-                Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
+                Log.d("RegisterActivity:id", jsonObject.opt("registedId").toString());
 
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),nic,mobileNo,roles.get(0).toString());
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo, firstName,lastName);
+                Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-                Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+
+
+                String verificatioCode = jsonObject.opt("verificationCode").toString();
+                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
+
                 finish();
                 moveToPinActivity();
                 //showmessgebox();
@@ -378,6 +426,42 @@ public class registerActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        showProgress(false);
+    }
+
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".finishActivity"
     android:background="#ffffff">
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -91,7 +101,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="MerchantId:"
+                    android:text="Merchant ID :"
                     android:id="@+id/merchantTextView"
                     android:layout_marginTop="16dp"
                     android:textSize="14sp"
@@ -103,7 +113,7 @@
                     android:text="0097"
                     android:id="@+id/merchantIdTextView"
                     android:layout_marginTop="16dp"
-                    android:textSize="30sp"
+                    android:textSize="23sp"
                     android:textColor="@color/white"
                     />
                 <LinearLayout
@@ -171,7 +181,8 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:id="@+id/amountEditText_err">
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,7 +202,8 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:id="@+id/tipEdit_err">
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
