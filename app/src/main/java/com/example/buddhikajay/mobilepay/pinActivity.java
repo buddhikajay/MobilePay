@@ -160,8 +160,13 @@ public class pinActivity extends AppCompatActivity {
                     pin.requestFocus();
                     pin.setError("Pin Number Wrong");
                     ok_btn.setEnabled(true);
-                    //Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+
                 }
+                else if(jsonObject.opt("status").toString().equals("500")){
+                    Toast.makeText(getApplicationContext(),"Invalid Code",Toast.LENGTH_LONG).show();
+                }
+                ok_btn.setEnabled(true);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -243,11 +248,12 @@ public class pinActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 if(jsonObject.opt("status").toString().equals("5000")){
-                    //Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Invalid Verificaton Code",Toast.LENGTH_LONG).show();
                 }
                 else if(jsonObject.opt("status").toString().equals("500")){
                     Toast.makeText(getApplicationContext(),"Invalid Code",Toast.LENGTH_LONG).show();
                 }
+                ok_btn.setEnabled(true);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

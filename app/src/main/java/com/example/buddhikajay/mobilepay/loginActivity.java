@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -548,6 +549,62 @@ public class loginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+//    private void nicValidation(final EditText nic){
+//
+//        nic.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String regex;
+//                Pattern p;
+//                Matcher m;
+//                nic.removeTextChangedListener(this);
+//                if (s.length()<=9){
+//                    Log.d("change","9");
+//                    regex = "[^\\d]";
+//                    p = Pattern.compile(regex);
+//                    m = p.matcher(s.toString());
+//                    nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                    if(m.matches()){
+//                        String cleanString = s.toString().replaceAll(regex, "");
+//                        nic.setText(cleanString);
+//
+//                        nic.setSelection(cleanString.length());
+//                    }
+//                    if(s.length()==9){
+//                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+//                    }
+//
+//
+//                }
+//                else if(s.length()==10){
+//                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
+//
+//                    }
+//                    else {
+//                        String cleanString = s.toString().replaceAll("[^\\d]", "");
+//                        nic.setText(cleanString);
+//                        nic.setSelection(9);
+//                    }
+//                }
+//                nic.addTextChangedListener(this);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//
+//    }
+
+
     private void nicValidation(final EditText nic){
 
         nic.addTextChangedListener(new TextWatcher() {
@@ -563,7 +620,7 @@ public class loginActivity extends AppCompatActivity {
                 Pattern p;
                 Matcher m;
                 nic.removeTextChangedListener(this);
-                if (s.length()<=9){
+                if (s.length()<=9 || s.length()>10){
                     Log.d("change","9");
                     regex = "[^\\d]";
                     p = Pattern.compile(regex);
@@ -582,8 +639,22 @@ public class loginActivity extends AppCompatActivity {
 
                 }
                 else if(s.length()==10){
-                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b' || s.toString().matches("\\d+")){
+                        if(s.toString().matches("\\d+$")){
+                            int maxLength = 12;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        }
+                        else{
 
+                            int maxLength = 10;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+                        }
                     }
                     else {
                         String cleanString = s.toString().replaceAll("[^\\d]", "");
@@ -602,7 +673,6 @@ public class loginActivity extends AppCompatActivity {
 
 
     }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
