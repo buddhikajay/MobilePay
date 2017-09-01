@@ -41,6 +41,7 @@ public class pinActivity extends AppCompatActivity {
 
             }
         });
+        pinValidation(pin);
     }
 
     private void registerUser(View v){
@@ -134,5 +135,21 @@ public class pinActivity extends AppCompatActivity {
         Intent myIntent = new Intent(pinActivity.this, loginActivity.class);
         pinActivity.this.startActivity(myIntent);
         finish();
+    }
+    private boolean pinValidation(final EditText pin){
+
+        if(pin.getText().toString().length()>0){
+            Double pinVal = Double.parseDouble(pin.getText().toString());
+            if(1<=pinVal && pinVal<2){
+                return true;
+            }
+            else return false;
+
+        }
+        else {
+            return false;
+        }
+
+
     }
 }
