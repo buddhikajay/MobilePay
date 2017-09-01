@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class pinActivity extends AppCompatActivity {
     private EditText pin;
@@ -57,6 +62,8 @@ public class pinActivity extends AppCompatActivity {
 
             }
         });
+
+        pinValidate(pin);
 
     }
 
@@ -97,6 +104,10 @@ public class pinActivity extends AppCompatActivity {
                 }
             }, Parameter.registerVerifyUrl,"",payload,getApplicationContext());
         }
+        else {
+            showProgress(false);
+            ok_btn.setEnabled(true);
+        }
 
     }
     private boolean pintextValidation(){
@@ -105,12 +116,14 @@ public class pinActivity extends AppCompatActivity {
         if (pintext.matches("")){
             pin.requestFocus();
             pin.setError("Enter Pin Number");
+            showProgress(false);
             //showError(accountNoField,"Enter Account Number");
 
         }
         else if(!pinValidation(pin)){
             pin.requestFocus();
             pin.setError("EInvalide Pin Number");
+            showProgress(false);
         }
         else {
             return true;
@@ -269,6 +282,43 @@ public class pinActivity extends AppCompatActivity {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+
+    }
+
+    private void pinValidate(final EditText pinText) {
+        pinText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pinText.removeTextChangedListener(this);
+                if (s.length() == 1) {
+                    if (s.charAt(0) != '1') {
+                        pinText.setText(null);
+                    } else {
+                        pinText.setText(s + ".");
+                        pinText.setSelection(2);
+                    }
+                } else if (s.length() == 3) {
+                    if (s.charAt(2) == '.') {
+                        pinText.setText(s.subSequence(0, 2));
+                    }
+                } else if (s.length() == 4) {
+                    if (s.charAt(3) == '.') {
+                        pinText.setText(s.subSequence(0, 3));
+                    }
+                }
+                pinText.addTextChangedListener(this);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 }
