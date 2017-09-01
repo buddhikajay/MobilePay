@@ -345,7 +345,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 merchant.setMerchantName(result.opt("merchantName").toString());
                 JSONObject address = (JSONObject) result.opt("address");
                 Log.d("address",address.toString());
-                merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
+                merchant.setMerchantAddress(address.opt("streetAddress").toString()+", "+address.opt("locality").toString()+", "+address.opt("region").toString());
                 merchant.setPhoneNumber(result.opt("phoneNumber").toString());
                 merchant.setRegistedId(result.opt("registedId").toString());
                 merchant.setAccountNumber(result.opt("merchantAccountNumber").toString());

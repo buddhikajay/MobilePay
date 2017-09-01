@@ -139,6 +139,7 @@ public class Api {
 
         return token;
     }
+
     public static String getRegisterId(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String token =sharedPref.getString("registedId",null);
