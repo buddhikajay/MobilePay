@@ -57,7 +57,7 @@ public class pinActivity extends AppCompatActivity {
 
             }
         });
-        pinValidation(pin);
+
     }
 
     private void registerUser(View v){
@@ -107,6 +107,10 @@ public class pinActivity extends AppCompatActivity {
             pin.setError("Enter Pin Number");
             //showError(accountNoField,"Enter Account Number");
 
+        }
+        else if(!pinValidation(pin)){
+            pin.requestFocus();
+            pin.setError("EInvalide Pin Number");
         }
         else {
             return true;
