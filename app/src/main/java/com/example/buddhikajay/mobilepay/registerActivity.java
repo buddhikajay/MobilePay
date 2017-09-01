@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -392,7 +393,8 @@ public class registerActivity extends AppCompatActivity {
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-                Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+                DecimalFormat df = new DecimalFormat("0.00##");
+                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", 1.2),getApplicationContext());
                 finish();
                 moveToPinActivity();
                 //showmessgebox();
