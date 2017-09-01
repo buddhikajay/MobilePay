@@ -514,7 +514,8 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 if(roles.get(0).equals("user")){
                     Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
                     myIntent.putExtra("id",jsonObject.getString("id"));
-                    myIntent.putExtra("name",jsonObject.getString("username"));
+                    myIntent.putExtra("firstName",jsonObject.getString("firstName"));
+                    myIntent.putExtra("lastName",jsonObject.getString("lastName"));
                     myIntent.putExtra("accountNumber",jsonObject.getString("accountNumber"));
                     myIntent.putExtra("scannerType", this.scannerType);
                     myIntent.putExtra("phoneNumber", jsonObject.getString("phoneNumber"));

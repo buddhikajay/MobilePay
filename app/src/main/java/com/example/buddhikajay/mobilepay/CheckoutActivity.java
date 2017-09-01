@@ -50,7 +50,8 @@ import java.util.Date;
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
-    String username;
+    String firstName;
+    String lastName;
     String accountNumber;
     String address;
 
@@ -101,7 +102,8 @@ public class CheckoutActivity extends AppCompatActivity {
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
-        username = intent.getStringExtra("name");
+        firstName = intent.getStringExtra("firstName");
+        lastName = intent.getStringExtra("lastName");
         phoneNumber = intent.getStringExtra("phoneNumber");
         registedId = intent.getStringExtra("registedId");
         scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
@@ -143,7 +145,7 @@ public class CheckoutActivity extends AppCompatActivity {
             addressTextView.setVisibility(View.GONE);
             tipTextView.setVisibility(View.GONE);
             spitter.setVisibility(View.GONE);
-            nameTextView.setText(intent.getStringExtra("name"));
+            nameTextView.setText(intent.getStringExtra("firstName "+"lastName"));
             paymentType = "Fund_Transfer";
             getSupportActionBar().setTitle("FundTransfer");
             merchantidTextView.setText("User ID :");
