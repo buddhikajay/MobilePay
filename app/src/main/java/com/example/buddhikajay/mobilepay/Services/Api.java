@@ -66,11 +66,17 @@ public class Api {
 
         return nic;
     }
-    public static String getUsername(Context context){
+    public static String getFirstName(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String username =sharedPref.getString("username",null);
+        String firstName =sharedPref.getString("firstName",null);
 
-        return username;
+        return firstName;
+    }
+    public static String getLastName(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String lastName =sharedPref.getString("lastName",null);
+
+        return lastName;
     }
     public static boolean setAccessToken(Context context,String token){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();

@@ -393,8 +393,10 @@ public class registerActivity extends AppCompatActivity {
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
+
+                String verificationCode = jsonObject.opt("verificationCode").toString();
                 DecimalFormat df = new DecimalFormat("0.00##");
-                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", 1.2),getApplicationContext());
+                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificationCode)),getApplicationContext());
                 finish();
                 moveToPinActivity();
                 //showmessgebox();
