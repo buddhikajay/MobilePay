@@ -50,7 +50,9 @@ import java.util.Date;
 public class CheckoutActivity extends AppCompatActivity {
 
     String phoneNumber;
-    String username;
+    String firstName;
+    String lastName;
+    String userName;
     String accountNumber;
     String address;
 
@@ -101,7 +103,7 @@ public class CheckoutActivity extends AppCompatActivity {
         final Intent intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
-        username = intent.getStringExtra("name");
+
         phoneNumber = intent.getStringExtra("phoneNumber");
         registedId = intent.getStringExtra("registedId");
         scannerType = intent.getBooleanExtra("scannerType", true);// true: Merchant Pay, false : direct pay
@@ -140,10 +142,14 @@ public class CheckoutActivity extends AppCompatActivity {
 
             //hide address
             //merchantAddressLabel.setVisibility(View.INVISIBLE);
+            firstName = intent.getStringExtra("firstName");
+            lastName = intent.getStringExtra("lastName");
+            Log.d("firstname",firstName);
+            Log.d("registerid",registedId);
             addressTextView.setVisibility(View.GONE);
             tipTextView.setVisibility(View.GONE);
             spitter.setVisibility(View.GONE);
-            nameTextView.setText(intent.getStringExtra("name"));
+            nameTextView.setText(firstName+"  "+lastName);
             paymentType = "Fund_Transfer";
             getSupportActionBar().setTitle("FundTransfer");
             merchantidTextView.setText("User ID :");
@@ -153,6 +159,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         }
         else {
+            userName = intent.getStringExtra("name");
             addressTextView.setText(intent.getStringExtra("address"));
             address = intent.getStringExtra("address");
             Log.d("address",intent.getStringExtra("address"));
@@ -250,7 +257,7 @@ public class CheckoutActivity extends AppCompatActivity {
         if (!amountText.equals("") ){
             double amountValue = Double.parseDouble(amountText);
             Intent intent = new Intent(CheckoutActivity.this,BillSpliteActivity.class);
-            intent.putExtra("merchantName",username);
+            intent.putExtra("merchantName",userName);
             intent.putExtra("merchantId",merchantId);
             intent.putExtra("amount",amountValue);
             intent.putExtra("phoneNumber",phoneNumber);
@@ -445,7 +452,13 @@ public class CheckoutActivity extends AppCompatActivity {
         AlertDialog alertDialog=new AlertDialog.Builder(CheckoutActivity.this).create();
         alertDialog .setTitle("Payment Confirmation");
         alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog .setMessage("Pay "+ total+" to "+username+"?");
+        if(scannerType){
+            alertDialog .setMessage("Pay "+ total+" to "+username+"?");
+        }
+        else{
+            alertDialog .setMessage("Pay "+ total+" to "+firstName+" "+lastName +"?");
+        }
+
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -537,7 +550,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 if(!tip) {
                     Log.d("No tip", "" + amount + " has been reciveded from " + Api.getNic(getApplicationContext()));
-                    Log.d("No tip", "LKR " + amount + " has been payed to " + intent.getStringExtra("name").toString());
+                   // Log.d("No tip", "LKR " + amount + " has been payed to " + intent.getStringExtra("name").toString());
                     String msg_to_payee = "payment on your account ending with ";
                     Log.d("phonenumb1", phoneNumber);
                     Log.d("phonenumb2", Api.getPhoneNumber(getApplicationContext()));
@@ -548,9 +561,9 @@ public class CheckoutActivity extends AppCompatActivity {
                         String addresssplite[] = address.split(",");
                         Log.d("firstName",Api.getFirstName(getApplicationContext()));
 
-                        String payerMsg = Api.getLastName(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+username+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
+                        String payerMsg = Api.getLastName(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+userName+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
                         String payerAccount = Api.getAccountNumber(getApplicationContext());
-                        String payeeMsg = username+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getLastName(getApplicationContext())+".";
+                        String payeeMsg = firstName+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getLastName(getApplicationContext())+".";
 
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
