@@ -86,6 +86,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private String mainAmount ;
     private View mProgressView;
+    private boolean error;
 
 
     @Override
@@ -123,12 +124,16 @@ public class CheckoutActivity extends AppCompatActivity {
         payButton = (Button) findViewById(R.id.buttonPay);
         Button spitter = (Button) findViewById(R.id.buttonSpilite);
 
-        amountTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                amountErr.setError(null);
-            }
-        });
+//        amountTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(error){
+//                    amountErr.setError(null);
+//                    error = false;
+//                }
+//
+//            }
+//        });
 
        // test_bill_amount = (TextView) findViewById(R.id.text_bill_amount);
         //test_bill_amount_amount = (TextView)findViewById(R.id.text_bill_amount_value);
@@ -239,11 +244,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private boolean checkError(){
 
-        if(amountTextView.getText().toString().replaceAll("[$, LKR]", "").equals("")){
-            amountErr.setError("Enter Amount");
-
+        if(amountTextView.getText().toString().replaceAll("[$, LKR]", "").equals("") ){
+            amountTextView.setFocusable(true);
+            amountTextView.setError("Enter Amount");
+            error = true;
             return false;
 
+        }
+        else if(Double.parseDouble(amountTextView.getText().toString().replaceAll("[$, LKR]", "") )== 0.0){
+            amountTextView.setFocusable(true);
+            amountTextView.setError("Enter Amount");
+            error = true;
+            return false;
         }
 
         return true;
