@@ -48,13 +48,19 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
         TextView Amount = (TextView) convertView.findViewById(R.id.amount);
         TextView Date = (TextView) convertView.findViewById(R.id.date);
         // Populate the data into the template view using the data object
-        if(transactionModel.isAppUserAccount_isFromAccountNuber()){
-            Log.d("acc",transactionModel.getToAccountNumber());
-            AccountNumber.setText(transactionModel.getToAccountNumber());
-        }
-        else {
-            AccountNumber.setText(transactionModel.getFromAccountNumber());
-        }
+
+
+            if(transactionModel.isOtherAccountOwnerRoleIsMerchant()){
+                AccountNumber.setText(transactionModel.getMerchant().getMerchantName());
+            }
+            else{
+                AccountNumber.setText(transactionModel.getUser().getLastName());
+
+            }
+
+
+
+
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen

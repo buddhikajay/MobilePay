@@ -400,6 +400,7 @@ public class loginActivity extends AppCompatActivity {
                         Log.d("username",jsonObject.getString("name"));
                         Api.setRegisterId(getApplicationContext(),jsonObject.getString("userId"),jsonObject.getString("registedId"),jsonObject.getString("phoneNumber"),nicField.getText().toString(),jsonObject.getString("accountNumber"),jsonObject.getString("firstName"),jsonObject.getString("lastName"));
                         Log.d("first time login","true");
+                        Api.setFirstTimeLogin(getApplicationContext(),nicField.getText().toString());
                     }
 
                 }
