@@ -141,9 +141,16 @@ public class pinActivity extends AppCompatActivity {
                 Api.setRegisterVerify(getApplicationContext());
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
-                Toast.makeText(getApplicationContext(),"Registation Success",Toast.LENGTH_LONG).show();
+
                 finish();
-                moveToLogin();
+                if(Api.isForgetPasswordRequest(getApplicationContext())){
+                    Intent intent = new Intent(this,ForgetPassword.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(),"Enter your new password",Toast.LENGTH_LONG).show();
+                }else {
+                    moveToLogin();
+                    Toast.makeText(getApplicationContext(),"Registation Success",Toast.LENGTH_LONG).show();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -171,6 +178,7 @@ public class pinActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        ok_btn.setEnabled(true);
     }
     private void moveToLogin(){
 

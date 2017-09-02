@@ -31,7 +31,7 @@ public class Parameter {
     public static String  registerVerifyUrl = apim+"/merchantpay/1.0.0/register/verify";
     public static String  urlMerchantDetail = apim+"/merchantpay/1.0.0/merchant/details";
     public static String  urlTransactionDetail = apim+"/merchantpay/1.0.0/transactions/agent/between";
-    public static String  urlLogin = apim+"/merchantpay/1.0.0/login";
+    public static String  urlLogin = apim+"/merchantpay/1.0.0/requestChangePasswordByNic";
     public static String  urlVoidTransaction = apim+"/merchantpay/1.0.0/transaction/void";
     public static String  urlUserRole = apim+"/merchantpay/1.0.0/default/user/role";
     public static String  urlResendPin = apim+"/merchantpay/1.0.0/resend/pin";
@@ -44,4 +44,5 @@ public class Parameter {
 
     public static String MQTT_BROKER_URL ="tcp://iot.eclipse.org:1883";
 
+    public static String urlForgetPasswordNIC = apim+"/merchantpay/1.0.0/forgot/password/nic";
 }

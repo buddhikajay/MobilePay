@@ -60,7 +60,7 @@ public class loginActivity extends AppCompatActivity {
     private TextInputLayout passLayout;
     private TextInputLayout nicLayout;
 
-     Button btn;
+    Button btn;
     Button reg_btn;
 
 
@@ -209,10 +209,10 @@ public class loginActivity extends AppCompatActivity {
         return params;
     }
     private void login(final View v){
-       // Log.d("login data",""+Api.getNic(getApplicationContext()));
+       // Log.d("requestChangePasswordByNic data",""+Api.getNic(getApplicationContext()));
         showProgress(true);
         if(isEnterdValideLoginData()){
-            Log.d("...login data validate.","");
+            Log.d("..login data validate.","");
             JSONObject params = getLoginDetail();
 
             VolleyRequestHandlerApi.api(new VolleyCallback(){
@@ -245,7 +245,7 @@ public class loginActivity extends AppCompatActivity {
                }
 
                @Override
-               public void login() {
+               public void requestChangePasswordByNic() {
 
                }
 
@@ -332,7 +332,7 @@ public class loginActivity extends AppCompatActivity {
 //        if(result.has("access_token")){
 //            Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
 //            Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
-//            //login successs go totransaction
+//            //requestChangePasswordByNic successs go totransaction
 //            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
 //            Toast.makeText(getApplicationContext(),"logged in",Toast.LENGTH_LONG).show();
 //
@@ -393,7 +393,7 @@ public class loginActivity extends AppCompatActivity {
 
                     }
 
-                    //TODO success login
+                    //TODO success requestChangePasswordByNic
 
 
                     if (Api.isFirstTimeLogin(getApplicationContext())) {
@@ -545,8 +545,15 @@ public class loginActivity extends AppCompatActivity {
         //editor.putString("register", "false");
         //editor.apply();
         Log.d("forget","click");
-        Intent intent = new Intent(this,ForgetPassword.class);
+        Intent intent = new Intent(this,forgotPasswordPromptActivity.class);
         startActivity(intent);
+        finish();
+
+//        if(Api.isRegisterVerify(getApplicationContext()))
+//        startActivity(intent);
+//        else{
+//            Toast.makeText(getApplicationContext(),"This user does not exist",Toast.LENGTH_LONG).show();
+//        }
     }
 
 //    private void nicValidation(final EditText nic){
@@ -574,7 +581,7 @@ public class loginActivity extends AppCompatActivity {
 //                        String cleanString = s.toString().replaceAll(regex, "");
 //                        nic.setText(cleanString);
 //
-//                        nic.setSelection(cleanString.length());
+//                        nic.setSelection(cleanStrinisRegisterVerifyg.length());
 //                    }
 //                    if(s.length()==9){
 //                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
