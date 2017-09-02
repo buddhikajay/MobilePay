@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -59,7 +60,7 @@ public class loginActivity extends AppCompatActivity {
     private TextInputLayout passLayout;
     private TextInputLayout nicLayout;
 
-     Button btn;
+    Button btn;
     Button reg_btn;
 
 
@@ -208,10 +209,10 @@ public class loginActivity extends AppCompatActivity {
         return params;
     }
     private void login(final View v){
-       // Log.d("login data",""+Api.getNic(getApplicationContext()));
+       // Log.d("requestChangePasswordByNic data",""+Api.getNic(getApplicationContext()));
         showProgress(true);
         if(isEnterdValideLoginData()){
-            Log.d("...login data validate.","");
+            Log.d("..login data validate.","");
             JSONObject params = getLoginDetail();
 
             VolleyRequestHandlerApi.api(new VolleyCallback(){
@@ -244,7 +245,7 @@ public class loginActivity extends AppCompatActivity {
                }
 
                @Override
-               public void login() {
+               public void requestChangePasswordByNic() {
 
                }
 
@@ -331,7 +332,7 @@ public class loginActivity extends AppCompatActivity {
 //        if(result.has("access_token")){
 //            Api.setAccessToken(getApplicationContext(),result.opt("access_token").toString());
 //            Log.d("accesstoken",Api.getAccessToken(getApplicationContext()));
-//            //login successs go totransaction
+//            //requestChangePasswordByNic successs go totransaction
 //            Log.d("loginActivity",""+Api.isMerchant(getApplicationContext()));
 //            Toast.makeText(getApplicationContext(),"logged in",Toast.LENGTH_LONG).show();
 //
@@ -392,7 +393,7 @@ public class loginActivity extends AppCompatActivity {
 
                     }
 
-                    //TODO success login
+                    //TODO success requestChangePasswordByNic
 
 
                     if (Api.isFirstTimeLogin(getApplicationContext())) {
@@ -544,9 +545,72 @@ public class loginActivity extends AppCompatActivity {
         //editor.putString("register", "false");
         //editor.apply();
         Log.d("forget","click");
-        Intent intent = new Intent(this,ForgetPassword.class);
+        Intent intent = new Intent(this,forgotPasswordPromptActivity.class);
         startActivity(intent);
+        finish();
+
+//        if(Api.isRegisterVerify(getApplicationContext()))
+//        startActivity(intent);
+//        else{
+//            Toast.makeText(getApplicationContext(),"This user does not exist",Toast.LENGTH_LONG).show();
+//        }
     }
+
+//    private void nicValidation(final EditText nic){
+//
+//        nic.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String regex;
+//                Pattern p;
+//                Matcher m;
+//                nic.removeTextChangedListener(this);
+//                if (s.length()<=9){
+//                    Log.d("change","9");
+//                    regex = "[^\\d]";
+//                    p = Pattern.compile(regex);
+//                    m = p.matcher(s.toString());
+//                    nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                    if(m.matches()){
+//                        String cleanString = s.toString().replaceAll(regex, "");
+//                        nic.setText(cleanString);
+//
+//                        nic.setSelection(cleanStrinisRegisterVerifyg.length());
+//                    }
+//                    if(s.length()==9){
+//                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+//                    }
+//
+//
+//                }
+//                else if(s.length()==10){
+//                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
+//
+//                    }
+//                    else {
+//                        String cleanString = s.toString().replaceAll("[^\\d]", "");
+//                        nic.setText(cleanString);
+//                        nic.setSelection(9);
+//                    }
+//                }
+//                nic.addTextChangedListener(this);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//
+//    }
+
 
     private void nicValidation(final EditText nic){
 
@@ -563,7 +627,7 @@ public class loginActivity extends AppCompatActivity {
                 Pattern p;
                 Matcher m;
                 nic.removeTextChangedListener(this);
-                if (s.length()<=9){
+                if (s.length()<=9 || s.length()>10){
                     Log.d("change","9");
                     regex = "[^\\d]";
                     p = Pattern.compile(regex);
@@ -582,8 +646,22 @@ public class loginActivity extends AppCompatActivity {
 
                 }
                 else if(s.length()==10){
-                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b'){
+                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b' || s.toString().matches("\\d+")){
+                        if(s.toString().matches("\\d+$")){
+                            int maxLength = 12;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        }
+                        else{
 
+                            int maxLength = 10;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+                        }
                     }
                     else {
                         String cleanString = s.toString().replaceAll("[^\\d]", "");
@@ -602,7 +680,6 @@ public class loginActivity extends AppCompatActivity {
 
 
     }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow

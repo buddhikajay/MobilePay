@@ -48,6 +48,28 @@ public class Api {
 
         return nic;
     }
+
+    public static void setNic(Context context,String nic){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putString("nic", nic);
+        editor.apply();
+    }
+    public static void setId(Context context,String id){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putString("id", id);
+        editor.apply();
+    }
+
+    public static void setForgetPasswordRequest(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putBoolean("forgetPasswordRequest", true);
+        editor.apply();
+    }
+    public static boolean isForgetPasswordRequest(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        boolean token =sharedPref.getBoolean("forgetPasswordRequest",false);
+        return token;
+    }
     public static String getAccountNumber(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String accountNumber =sharedPref.getString("accountNumber",null);

@@ -21,14 +21,12 @@
         android:hardwareAccelerated="false"
         android:icon="@mipmap/logo_mini"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
+        android:supportsRtl="true"
         android:theme="@style/DirectPayTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".loginActivity"
             android:label="@string/app_name"
@@ -59,7 +57,8 @@
         <activity android:name=".MerchantTransactionDetailActivity" />
         <activity android:name=".BillSpliteActivity" />
         <activity android:name=".ForgetPassword" />
-        <activity android:name=".WelcomeActivity"
+        <activity
+            android:name=".WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,13 +66,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".MyBroadcastReceiver"  android:exported="true">
+
+        <receiver
+            android:name=".MyBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
-    </application>
 
+        <activity android:name=".forgotPasswordPromptActivity"></activity>
+    </application>
 
 </manifest>
