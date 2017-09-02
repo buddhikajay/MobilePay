@@ -44,6 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -547,7 +548,10 @@ public class CheckoutActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                JSONObject dateTime = jsonObject.getJSONObject("dateTime");
+                String date =dateFormat.format( dateFormat.parse(dateTime.getString("date")));
+                String payerAccount = Api.getAccountNumber(getApplicationContext());
                 if(!tip) {
                     Log.d("No tip", "" + amount + " has been reciveded from " + Api.getNic(getApplicationContext()));
                    // Log.d("No tip", "LKR " + amount + " has been payed to " + intent.getStringExtra("name").toString());
@@ -561,18 +565,21 @@ public class CheckoutActivity extends AppCompatActivity {
                         String addresssplite[] = address.split(",");
                         Log.d("firstName",Api.getFirstName(getApplicationContext()));
 
-                        String payerMsg = Api.getLastName(getApplicationContext())+" a payment on your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" at PLACE("+userName+"),"+addresssplite[2]+","+ "is approved and Dr from your account.";
-                        String payerAccount = Api.getAccountNumber(getApplicationContext());
-                        String payeeMsg = firstName+" a payment has been done to your account ending with "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " for "+amount+" on " +dateFormat.format(new Date())+" by "+Api.getLastName(getApplicationContext())+".";
+                        //String payeeMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                        String payerMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
 
+                        String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                        //String payerMsg = "DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
 
                     } else {
 
-                        String payerMsg = Api.getLastName(getApplicationContext())+" a fund transfer has been made by your account ending with "+accountNumber.substring(accountNumber.length()-4,accountNumber.length())+" for "+amount+" on " +dateFormat.format(new Date())+" ,Your fund transfer has been successfully Dr by your account.";
-                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been tranfered to "+intent.getStringExtra("name"),getApplicationContext());
-                         Api.sendSms(phoneNumber, ""+amount+" has been transfered from "+Api.getNic(getApplicationContext()),getApplicationContext());
+                        String payerMsg =" DirectPay-Fund Transfer Successful "+amount+" to User "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
+                        String payeeMsg =" DirectPay - Fund Transfer Service - Transafer Successful "+amount+" made to User "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+" on "+date;
+
+                        Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
+                        Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
                         FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");
                     }
                     if (paymentModel.isTip()) {
@@ -604,7 +611,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //                        }
 
 
-                    sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount);
+                    sendSmsToTipMerchant(jsonObject.optString("toAccount").toString(),amount,date,payerAccount);
 
                 }
 
@@ -613,6 +620,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
@@ -680,11 +689,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     }
-    private void sendSmsToTipMerchant(String id,final String amount){
+    private void sendSmsToTipMerchant(String id,final String amount,String date,String payerAccount){
 
-        getMerchantDetail(id,amount);
+        getMerchantDetail(id,amount,date,payerAccount);
     }
-    private void getMerchantDetail(String id,final String amount){
+    private void getMerchantDetail(String id, final String amount, final String date, final String payerAccount){
 
         JSONObject detail = new JSONObject();
         try {
@@ -698,8 +707,14 @@ public class CheckoutActivity extends AppCompatActivity {
                         JSONArray array= (JSONArray) result.opt("data");
                         try {
                             JSONObject jsonObject = array.getJSONObject(0);
-                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), ""+amount+" has been reciveded tip from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to tip "+jsonObject.optString("merchantName").toString(),getApplicationContext());
+                            String accountTip = jsonObject.getString("merchantAccountNumber");
+                            String payerAccount = Api.getAccountNumber(getApplicationContext());
+                            String payerMsg = " DirectPay - Payment Successful "+amount+" tip to Merchant "+accountTip.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
+
+                            String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to tip "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), payeeMsg,getApplicationContext());
+                            Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payeeMsg,getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
