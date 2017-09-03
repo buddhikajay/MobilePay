@@ -274,7 +274,7 @@ public class CheckoutActivity extends AppCompatActivity {
             intent.putExtra("merchantId",merchantId);
             intent.putExtra("amount",amountValue);
             intent.putExtra("phoneNumber",phoneNumber);
-
+            intent.putExtra("accountNumber",accountNumber);
             startActivity(intent);
             finish();
         }
@@ -666,7 +666,14 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         myIntent.putExtra("amount",amount);
-        myIntent.putExtra("payee",name);
+        myIntent.putExtra("scannerType",scannerType);
+        if(scannerType){
+            myIntent.putExtra("payee",name);
+        }
+        else{
+            myIntent.putExtra("payee",lastName);
+        }
+
         myIntent.putExtra("recept",reciptNumber);
         myIntent.putExtra("inApp",inApp);
         myIntent.putExtra("tip",false);
@@ -685,6 +692,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent myIntent = new Intent(CheckoutActivity.this, finishActivity.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         myIntent.putExtra("amount",mainAmount);
+        myIntent.putExtra("scannerType",scannerType);
         myIntent.putExtra("payee",name);
         myIntent.putExtra("recept",mainTransactionId);
         myIntent.putExtra("tipId",tipTransactionId);
