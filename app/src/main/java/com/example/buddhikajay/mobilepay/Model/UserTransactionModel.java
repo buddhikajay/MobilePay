@@ -102,8 +102,8 @@ public class UserTransactionModel extends Application implements Serializable {
                 }
                 else{
                     this.user = new User();
-                    this.user.setFirstname(payeeDetail.getString("firstName"));
-                    this.user.setLastName(payeeDetail.getString("lastName"));
+                    this.user.setFirstname(payeeDetaildata.getString("firstName"));
+                    this.user.setLastName(payeeDetaildata.getString("lastName"));
                 }
 
             }
