@@ -16,6 +16,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     private String amount;
     private String date;
     private String type;
+    private boolean roleIsMerchant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,16 +28,23 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         amount = intent.getStringExtra("amount");
         date = intent.getStringExtra("date");
         type = intent.getStringExtra("type");
+        roleIsMerchant = intent.getBooleanExtra("roleIsMerchant",false);
+
+
 
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.merchant_name);
         TextView amountView = (TextView) findViewById(R.id.amount);
         TextView dateView = (TextView) findViewById(R.id.date);
         TextView typeView = (TextView) findViewById(R.id.type);
+        TextView userType = (TextView) findViewById(R.id.uset_type);
+        if(!roleIsMerchant){
+            userType.setText("user");
+        }
 
         recieptView.setText(recieptNumber);
         nameView.setText(name);
-        amountView.setText(amount);
+        amountView.setText(amount+" LKR");
         dateView.setText(date);
         typeView.setText(type);
 

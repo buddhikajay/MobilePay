@@ -100,14 +100,14 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
 
             for (int i = 0; i < count; i++) {
                 UserTransactionModel model = list.get(i);
-                if(model.isAppUserAccount_isFromAccountNuber()){
-                    filterableString = list.get(i).getToAccountNumber();
+                if(model.isOtherAccountOwnerRoleIsMerchant()){
+                    filterableString = list.get(i).getMerchant().getMerchantName();
                 }
                 else {
-                    filterableString = list.get(i).getFromAccountNumber();
+                    filterableString = list.get(i).getUser().getLastName();
                 }
 
-                if (filterableString.toLowerCase().contains(filterString)) {
+                if (filterableString.toLowerCase().contains(filterString.toLowerCase())) {
                     nlist.add(model);
                 }
             }

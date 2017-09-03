@@ -66,23 +66,26 @@ public class UserTransactionModel extends Application implements Serializable {
 
             if(this.appUserAccount_isFromAccountNuber){
                 JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
-                JSONArray data = payeeDetaildata.getJSONArray("data");
-                JSONObject payeeDetail = data.getJSONObject(0);
+                JSONArray payeeData = payeeDetaildata.getJSONArray("data");
+                JSONObject payeeDetail = payeeData.getJSONObject(0);
 
-                Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                    if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                        Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                        merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                        this.merchant = merchantTemp;
+                        this.isOtherAccountOwnerRoleIsMerchant = true;
+                    }
+                else {
+                        this.user = new User();
+                        this.user.setFirstname(payeeDetaildata.getString("firstName"));
+                        this.user.setLastName(payeeDetaildata.getString("lastName"));
+                    }
 
-                if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
-                    merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
-                    this.isOtherAccountOwnerRoleIsMerchant = true;
-                }
-                else{
-                    this.user = new User();
-                    this.user.setFirstname(payeeDetail.getString("firstName"));
-                    this.user.setFirstname(payeeDetail.getString("lastName"));
 
-                }
 
-                this.merchant = merchantTemp;
+
+
+
 
             }
             else{
@@ -90,17 +93,19 @@ public class UserTransactionModel extends Application implements Serializable {
                 JSONArray data = payeeDetaildata.getJSONArray("data");
                 JSONObject payeeDetail = data.getJSONObject(0);
 
-                Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+
                 if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                    Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
                     merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                    this.merchant = merchantTemp;
                     this.isOtherAccountOwnerRoleIsMerchant = true;
                 }
                 else{
                     this.user = new User();
                     this.user.setFirstname(payeeDetail.getString("firstName"));
-                    this.user.setFirstname(payeeDetail.getString("lastName"));
+                    this.user.setLastName(payeeDetail.getString("lastName"));
                 }
-                this.merchant = merchantTemp;
+
             }
 
 //            if(this.type.equals("Merchant_Pay")){
