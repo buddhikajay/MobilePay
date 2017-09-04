@@ -22,49 +22,43 @@
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="Date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
+        android:layout_weight="0.33"
         android:gravity="left"
-        android:textSize="10sp"
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:text="Date"
+        android:textColor="#333333"
+        android:textSize="10sp" />
+    <!--    <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />-->
+
     <TextView
         android:id="@+id/userAccountNumber"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AccountNumber: "
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
         android:gravity="left"
-
+        android:text="AccountNumber: "
+        android:textColor="#333333"
         android:textSize="14sp"
-
-        />
-    <View
+        android:layout_width="wrap_content"
+        android:layout_weight="0.09" />
+<!--    <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"/>-->
 
     <TextView
         android:id="@+id/amount"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Amount"
-        android:textAppearance="?android:attr/textAppearanceButton"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
+        android:layout_weight="0.33"
         android:gravity="left"
-
-        android:textSize="14sp"
-
-        />
+        android:text="Amount"
+        android:textAlignment="textEnd"
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        android:textColor="#333333"
+        android:textSize="14sp" />
 </LinearLayout>
 
     <!--ImageView
