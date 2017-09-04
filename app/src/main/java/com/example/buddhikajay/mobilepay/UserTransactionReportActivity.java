@@ -201,7 +201,13 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserTransactionReportActivity.this,UserTransactionDetailActivity.class);
                 UserTransactionModel model = arrayOfTrnsactions.get(position);
                 intent.putExtra("receipt",model.getRecieptNumber());
-                intent.putExtra("name",model.getMerchant().getMerchantName());
+                intent.putExtra("roleIsMerchant",model.isOtherAccountOwnerRoleIsMerchant());
+                if(model.isOtherAccountOwnerRoleIsMerchant()){
+                    intent.putExtra("name",model.getMerchant().getMerchantName());
+                }
+                else {
+                    intent.putExtra("name",model.getUser().getLastName());
+                }
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
