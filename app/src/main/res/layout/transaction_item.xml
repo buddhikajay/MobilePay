@@ -23,6 +23,7 @@
     <TextView
         android:id="@+id/date"
         android:layout_height="wrap_content"
+        android:layout_width="109dp"
         android:layout_alignParentTop="true"
         android:layout_weight="0.33"
         android:gravity="left"
@@ -37,11 +38,12 @@
     <TextView
         android:id="@+id/userAccountNumber"
         android:layout_height="wrap_content"
+
         android:gravity="left"
         android:text="AccountNumber: "
         android:textColor="#333333"
         android:textSize="14sp"
-        android:layout_width="wrap_content"
+        android:layout_width="109dp"
         android:layout_weight="0.09" />
 <!--    <View
         android:layout_width="0dp"
@@ -50,6 +52,7 @@
 
     <TextView
         android:id="@+id/amount"
+        android:layout_width="109dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.33"
         android:gravity="left"
