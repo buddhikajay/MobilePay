@@ -1,6 +1,10 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +31,8 @@ public class ForgetPassword extends AppCompatActivity {
     private EditText rePassField;
     private TextInputLayout rePassLayout;
     private Button passwordChange;
+    private View mProgressView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,7 @@ public class ForgetPassword extends AppCompatActivity {
         final TextInputLayout passLayout = (TextInputLayout) findViewById(R.id.password_error);
         rePassField = (EditText) findViewById(R.id.re_enter_password);
         rePassLayout = (TextInputLayout) findViewById(R.id.re_enter_password_error);
+        mProgressView = findViewById(R.id.forget_progress);;
 
         passwordChange = (Button) findViewById(R.id.button_change_password);
 
@@ -59,6 +66,7 @@ public class ForgetPassword extends AppCompatActivity {
         passwordChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgress(true);
                 passwordChange.setEnabled(false);
                 changePassword();
             }
@@ -100,6 +108,8 @@ public class ForgetPassword extends AppCompatActivity {
             }, Parameter.urlForgotPassword,"",payload,getApplicationContext());
         }
         else {
+            showProgress(false);
+            passwordChange.setEnabled(true);
             rePassLayout.setError("password not match");
         }
     }
@@ -111,8 +121,8 @@ public class ForgetPassword extends AppCompatActivity {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
 
-                Api.reSetPin(getApplicationContext());
-                Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+               // Api.reSetPin(getApplicationContext());
+             //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
                 moveToLogin();
                 //showmessgebox();
 
@@ -141,12 +151,48 @@ public class ForgetPassword extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        showProgress(false);
+        passwordChange.setEnabled(false);
     }
 
     private void moveToLogin(){
 
-        Intent intent  = new Intent(this,pinActivity.class);
+        Intent intent  = new Intent(this,loginActivity.class);
         startActivity(intent);
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
 
     }
 

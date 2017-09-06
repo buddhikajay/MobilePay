@@ -12,6 +12,7 @@ public class finishActivity extends AppCompatActivity {
     private String amount;
     private String payee;
     private String recept;
+    private boolean scanerType;
 
     private String tipAmount;
     private boolean inApp;
@@ -40,6 +41,7 @@ public class finishActivity extends AppCompatActivity {
         recept = intent.getStringExtra("recept");
         inApp = intent.getBooleanExtra("inApp",false);
         tip = intent.getBooleanExtra("tip",false);
+        scanerType = intent.getBooleanExtra("scannerType",false);
 
         //Log.d("Amount",amount);
         TextView amountText = (TextView) findViewById(R.id.transaction_amount);
@@ -49,7 +51,11 @@ public class finishActivity extends AppCompatActivity {
         receiptText.setText(recept);
 
         TextView transactionmsg = (TextView) findViewById(R.id.merchant_name);
+        TextView merchantOrUser = (TextView) findViewById(R.id.merchant_or_user);
 
+        if(!scanerType){
+            merchantOrUser.setText("User");
+        }
         TextView tipAmount_text = (TextView) findViewById(R.id.tip_amount_text);
         TextView tipAmount_text_mid = (TextView) findViewById(R.id.tip_amount_text_mid);
         TextView tipAmount_value = (TextView) findViewById(R.id.tip_amount_value);

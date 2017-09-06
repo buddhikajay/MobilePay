@@ -282,14 +282,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
 
                 JSONObject jsonObject = array.getJSONObject(0);
-                JSONArray roles = jsonObject.getJSONArray("role");
-                if(roles.get(0).equals("user")){
-                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
-                    Intent intent = getIntent();
-                    startActivity(intent);
-                    finish();
-                }
-                else {
+//                JSONArray roles = jsonObject.getJSONArray("role");
+//                if(roles.get(0).equals("user")){
+//                    Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
+//                    Intent intent = getIntent();
+//                    startActivity(intent);
+//                    finish();
+//                }
+//                else {
                     //merchant.setMerchantName(jsonObject.opt("merchantName").toString());
                     //merchant.setMerchantAddress(jsonObject.opt("merchantAddress").toString());
                     if(jsonObject.getBoolean("active")){
@@ -308,7 +308,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                         finish();
                     }
 
-                }
+//                }
 
                 // Log.d("scanActivity:mDetail", merchant.getMerchantName() );
                 //Log.d("scanActivity:mDetail", merchant.getMerchantAddress()  );
@@ -323,7 +323,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             JSONArray array= (JSONArray) result.opt("errors");
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
-                if(jsonObject.opt("status").toString().equals("5000")){
+                if(jsonObject.opt("status").toString().equals("5005")){
                     //setContentView(R.layout.activity_scan);
                     Toast.makeText(getApplicationContext(),"Requested Merchant ID Does Not Exist",Toast.LENGTH_LONG).show();
                     Intent intent = getIntent();
@@ -345,7 +345,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 merchant.setMerchantName(result.opt("merchantName").toString());
                 JSONObject address = (JSONObject) result.opt("address");
                 Log.d("address",address.toString());
-                merchant.setMerchantAddress(address.opt("streetAddress").toString()+","+address.opt("locality").toString()+","+address.opt("region").toString());
+                merchant.setMerchantAddress(address.opt("streetAddress").toString()+", "+address.opt("locality").toString()+", "+address.opt("region").toString());
                 merchant.setPhoneNumber(result.opt("phoneNumber").toString());
                 merchant.setRegistedId(result.opt("registedId").toString());
                 merchant.setAccountNumber(result.opt("merchantAccountNumber").toString());
@@ -514,7 +514,8 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 if(roles.get(0).equals("user")){
                     Intent myIntent = new Intent(scanActivity.this, CheckoutActivity.class);
                     myIntent.putExtra("id",jsonObject.getString("id"));
-                    myIntent.putExtra("name",jsonObject.getString("username"));
+                    myIntent.putExtra("firstName",jsonObject.getString("firstName"));
+                    myIntent.putExtra("lastName",jsonObject.getString("lastName"));
                     myIntent.putExtra("accountNumber",jsonObject.getString("accountNumber"));
                     myIntent.putExtra("scannerType", this.scannerType);
                     myIntent.putExtra("phoneNumber", jsonObject.getString("phoneNumber"));

@@ -48,13 +48,19 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
         TextView Amount = (TextView) convertView.findViewById(R.id.amount);
         TextView Date = (TextView) convertView.findViewById(R.id.date);
         // Populate the data into the template view using the data object
-        if(transactionModel.isAppUserAccount_isFromAccountNuber()){
-            Log.d("acc",transactionModel.getToAccountNumber());
-            AccountNumber.setText(transactionModel.getToAccountNumber());
-        }
-        else {
-            AccountNumber.setText(transactionModel.getFromAccountNumber());
-        }
+
+
+            if(transactionModel.isOtherAccountOwnerRoleIsMerchant()){
+                AccountNumber.setText(transactionModel.getMerchant().getMerchantName());
+            }
+            else{
+                AccountNumber.setText(transactionModel.getUser().getLastName());
+
+            }
+
+
+
+
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
         // Return the completed view to render on screen
@@ -94,14 +100,14 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
 
             for (int i = 0; i < count; i++) {
                 UserTransactionModel model = list.get(i);
-                if(model.isAppUserAccount_isFromAccountNuber()){
-                    filterableString = list.get(i).getToAccountNumber();
+                if(model.isOtherAccountOwnerRoleIsMerchant()){
+                    filterableString = list.get(i).getMerchant().getMerchantName();
                 }
                 else {
-                    filterableString = list.get(i).getFromAccountNumber();
+                    filterableString = list.get(i).getUser().getLastName();
                 }
 
-                if (filterableString.toLowerCase().contains(filterString)) {
+                if (filterableString.toLowerCase().contains(filterString.toLowerCase())) {
                     nlist.add(model);
                 }
             }

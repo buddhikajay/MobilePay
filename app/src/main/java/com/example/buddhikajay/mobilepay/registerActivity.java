@@ -1,15 +1,12 @@
 package com.example.buddhikajay.mobilepay;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
-import com.example.buddhikajay.mobilepay.Services.MobileNumberPicker;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
 import com.example.buddhikajay.mobilepay.Services.SecurityHandler;
 
@@ -37,10 +33,9 @@ import org.json.JSONObject;
 import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.view.*;
 
 public class registerActivity extends AppCompatActivity {
 
@@ -53,7 +48,8 @@ public class registerActivity extends AppCompatActivity {
     private EditText mobileNoField;
     private EditText passwordField;
     private EditText rePasswordField;
-    private EditText usernameField;
+    private EditText firstNameField;
+    private EditText lastNameField;
     private View mProgressView;
 
     private String accountNo;
@@ -61,7 +57,8 @@ public class registerActivity extends AppCompatActivity {
     private String mobileNo;
     private String password;
     private String rePassword;
-    private String username;
+    private String firstName;
+    private String lastName;
 
      Button signup;
     @Override
@@ -78,7 +75,8 @@ public class registerActivity extends AppCompatActivity {
         mobileNoField = (EditText) findViewById(R.id.mobileNo);
         passwordField = (EditText) findViewById(R.id.password);
         rePasswordField = (EditText) findViewById(R.id.retypepassword);
-        usernameField = (EditText) findViewById(R.id.username);
+        firstNameField = (EditText) findViewById(R.id.first_name);
+        lastNameField = (EditText) findViewById(R.id.last_name);
         mProgressView = findViewById(R.id.login_progress);;
         signup = (Button) findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +99,69 @@ public class registerActivity extends AppCompatActivity {
         //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
 
     }
+//    private void nicValidation(final EditText nic){
+//
+//        nic.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String regex;
+//                Pattern p;
+//                Matcher m;
+//                nic.removeTextChangedListener(this);
+//                if (s.length()<=9 || s.length()>10){
+//                    Log.d("change","9");
+//                    regex = "[^\\d]";
+//                    p = Pattern.compile(regex);
+//                    m = p.matcher(s.toString());
+//                    nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                    if(m.matches()){
+//                        String cleanString = s.toString().replaceAll(regex, "");
+//                        nic.setText(cleanString);
+//
+//                        nic.setSelection(cleanString.length());
+//                    }
+//                    if(s.length()==9){
+//                        nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+//                    }
+//
+//
+//                }
+//                else if(s.length()==10){
+//                    if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b' || s.toString().matches("\\d+")){
+//                            if(s.toString().matches("\\d+$")){
+//                                int maxLength = 12;
+//                                InputFilter[] fArray = new InputFilter[1];
+//                                fArray[0] = new InputFilter.LengthFilter(maxLength);
+//                                nicField.setFilters(fArray);
+//                                nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                            }
+//                    }
+//                    else {
+//                        String cleanString = s.toString().replaceAll("[^\\d]", "");
+//                        nic.setText(cleanString);
+//                        nic.setSelection(9);
+//                    }
+//                }
+//                nic.addTextChangedListener(this);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//
+//    }
+
+
+
     private void nicValidation(final EditText nic){
 
         nic.addTextChangedListener(new TextWatcher() {
@@ -136,13 +197,21 @@ public class registerActivity extends AppCompatActivity {
                 }
                 else if(s.length()==10){
                     if(s.charAt(9)=='v' || s.charAt(9)=='V' || s.charAt(9)=='x' || s.charAt(9)=='X' || s.charAt(9)=='B' || s.charAt(9)=='b' || s.toString().matches("\\d+")){
-                            if(s.toString().matches("\\d+$")){
-                                int maxLength = 12;
-                                InputFilter[] fArray = new InputFilter[1];
-                                fArray[0] = new InputFilter.LengthFilter(maxLength);
-                                nicField.setFilters(fArray);
-                                nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            }
+                        if(s.toString().matches("\\d+$")){
+                            int maxLength = 12;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        }
+                        else{
+
+                            int maxLength = 10;
+                            InputFilter[] fArray = new InputFilter[1];
+                            fArray[0] = new InputFilter.LengthFilter(maxLength);
+                            nicField.setFilters(fArray);
+                            nicField.setInputType(InputType.TYPE_CLASS_TEXT);
+                        }
                     }
                     else {
                         String cleanString = s.toString().replaceAll("[^\\d]", "");
@@ -234,10 +303,16 @@ public class registerActivity extends AppCompatActivity {
         mobileNo = mobileNoField.getText().toString();
         password = passwordField.getText().toString();
         rePassword =rePasswordField.getText().toString();
-        username = usernameField.getText().toString();
-        if(username.equals("")){
-            usernameField.requestFocus();
-            usernameField.setError("Enter Username");
+        firstName = firstNameField.getText().toString();
+        lastName = lastNameField.getText().toString();
+        if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter First Name");
+
+        }
+        else if(firstName.equals("")){
+            firstNameField.requestFocus();
+            firstNameField.setError("Enter Last Name");
 
         }
 
@@ -304,7 +379,8 @@ public class registerActivity extends AppCompatActivity {
         try {
             payload.put("accountNumber",accountNo);
             payload.put("nic",nic);
-            payload.put("username",username);
+            payload.put("firstName", firstName);
+            payload.put("lastName", lastName);
             payload.put("phoneNumber",mobileNo);
             payload.put("ime",imei);
             payload.put("password",password);
@@ -380,15 +456,19 @@ public class registerActivity extends AppCompatActivity {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
                 Log.d("RegisterActivity:status","Succss");
-                Log.d("RegisterActivity:id", jsonObject.opt("id").toString());
+                Log.d("RegisterActivity:id", jsonObject.opt("registedId").toString());
 
                 JSONArray roles = jsonObject.getJSONArray("role");
                 Log.d("RegisterActivity:role", roles.get(0).toString());
-                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo,username);
+                Api.setRegisterId(getApplicationContext(),jsonObject.opt("id").toString(),jsonObject.opt("registedId").toString(),nic,mobileNo,roles.get(0).toString(),accountNo, firstName,lastName);
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-                Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
+
+
+                String verificatioCode = jsonObject.opt("verificationCode").toString();
+                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
+
                 finish();
                 moveToPinActivity();
                 //showmessgebox();
