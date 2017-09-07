@@ -13,7 +13,6 @@
     tools:showIn="@layout/activity_transaction_report"
     android:background="#ffffff"
     android:orientation="vertical">
-
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
@@ -31,28 +30,60 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/txt_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
             android:text="FromDate"
-            android:id="@+id/txt_from"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:textSize="18sp"
+            android:layout_weight="0.93"
+            android:background="#f2f2f2"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TODate"
-            android:id="@+id/txt_todate"/>
+            android:text="-"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <Button
+        <TextView
+            android:id="@+id/txt_todate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Load"
+            android:layout_weight="2.00"
+            android:background="#f2f2f2"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:text="TODate"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
             android:id="@+id/btn_load"
-            android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/succss_msg"
+            android:gravity="center"
+            android:text="Load"
+            android:textColor="#ffffff"
+            tools:text="@android:string/search_go" />
     </LinearLayout>
-<LinearLayout
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -61,15 +92,15 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="SearchByName"
-        android:textSize="14sp"
-        android:id="@+id/search_box"
-        android:focusableInTouchMode="true"
 
-        />
+        <EditText
+            android:id="@+id/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:hint="Search By Account"
+
+            android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
@@ -77,29 +108,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:weightSum="1">
 
         <TextView
+            android:id="@+id/date_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.33"
             android:text="Date"
-            android:textSize="14sp"
-            android:id="@+id/date_header"/>
+            android:textSize="16sp" />
+
         <TextView
+            android:id="@+id/detail_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:layout_weight="0.33"
             android:text="Detail"
-            android:id="@+id/detail_header"/>
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
         <TextView
+            android:id="@+id/amount_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.33"
             android:text="Amount"
-            android:textSize="14sp"
-            android:id="@+id/amount_header"/>
+            android:textAlignment="textEnd"
+            android:textSize="16sp" />
 
     </LinearLayout>
+
     <ListView
         android:id="@+id/transactionList"
         android:layout_width="match_parent"
