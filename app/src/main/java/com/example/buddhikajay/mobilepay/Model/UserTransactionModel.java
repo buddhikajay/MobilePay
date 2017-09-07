@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +53,9 @@ public class UserTransactionModel extends Application implements Serializable {
 
             this.amount = object.getString("originalAmount");
             JSONObject date = object.getJSONObject("dateTime");
-            this.date = dateTimeFilter(date.getString("date"));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            this.date =dateFormat.format( dateFormat.parse(date.getString("date")));
+            //this.date = dateTimeFilter(date.getString("date"));
             this.recieptNumber = object.getString("id");
             this.type =object.getString("type");
             this.status = object.getString("status");
@@ -141,6 +144,8 @@ public class UserTransactionModel extends Application implements Serializable {
 
 
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
