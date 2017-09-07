@@ -40,31 +40,7 @@
         android:layout_alignEnd="@+id/login_pin"
         android:layout_marginTop="10dp"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/logo"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:cursorVisible="true"
-                android:ems="10"
-                android:focusable="true"
-                android:hint="Username"
-                android:inputType="text"
-                android:maxLength="16"
-                android:text=""
-                android:textColor="@color/colorAccent"
-                android:textCursorDrawable="@color/colorPrimary"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+        
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +50,13 @@
             android:id="@+id/accountNo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/username"
+
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/first_name"
+            android:text=""
+            android:layout_centerVertical="true"
+
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
@@ -82,13 +64,60 @@
             android:cursorVisible="true"
             android:ems="10"
             android:focusable="true"
-            android:hint="@string/Account_hint"
-            android:inputType="number"
+            android:layout_below="@+id/logo"
+            android:layout_marginTop="10dp"
+            android:hint="First Name"
             android:maxLength="16"
-            android:text=""
-            android:textColor="@color/colorAccent"
-            android:textCursorDrawable="@color/colorPrimary"
-            android:textSize="14sp" />
+            />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/last_name"
+                android:text=""
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:cursorVisible="true"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textCursorDrawable="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
+                android:focusable="true"
+                android:layout_below="@+id/logo"
+                android:layout_marginTop="10dp"
+                android:hint="Last Name"
+                android:maxLength="16"
+                />
+        </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/accountNo"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:cursorVisible="true"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:textCursorDrawable="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        android:focusable="true"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="10dp"
+        android:hint="@string/Account_hint"
+        android:maxLength="16"
+        />
+
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

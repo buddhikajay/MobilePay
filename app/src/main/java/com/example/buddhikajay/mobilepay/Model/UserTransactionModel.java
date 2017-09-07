@@ -29,7 +29,8 @@ public class UserTransactionModel extends Application implements Serializable {
     private String recieptNumber;
     private String type;
     private String status;
-
+    private User user;
+    private boolean isOtherAccountOwnerRoleIsMerchant;
     private boolean appUserAccount_isFromAccountNuber;
 
     public UserTransactionModel(String fromAccountNumber, String amount, String date, Merchant merchant, String recieptNumber, String toAccountNumber) {
@@ -65,33 +66,46 @@ public class UserTransactionModel extends Application implements Serializable {
 
             if(this.appUserAccount_isFromAccountNuber){
                 JSONObject payeeDetaildata = object.getJSONObject("payeeDetail");
-                JSONArray data = payeeDetaildata.getJSONArray("data");
-                JSONObject payeeDetail = data.getJSONObject(0);
+                JSONArray payeeData = payeeDetaildata.getJSONArray("data");
+                JSONObject payeeDetail = payeeData.getJSONObject(0);
 
-                Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                    if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                        Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+                        merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                        this.merchant = merchantTemp;
+                        this.isOtherAccountOwnerRoleIsMerchant = true;
+                    }
+                else {
+                        this.user = new User();
+                        this.user.setFirstname(payeeDetaildata.getString("firstName"));
+                        this.user.setLastName(payeeDetaildata.getString("lastName"));
+                    }
 
-                if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
-                    merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
-                }
-                else{
-                    merchantTemp.setMerchantName(payeeDetail.getString("username"));
-                }
 
-                this.merchant = merchantTemp;
+
+
+
+
+
             }
             else{
                 JSONObject payeeDetaildata = object.getJSONObject("payerDetail");
                 JSONArray data = payeeDetaildata.getJSONArray("data");
                 JSONObject payeeDetail = data.getJSONObject(0);
 
-                Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
+
                 if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
+                    Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
                     merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                    this.merchant = merchantTemp;
+                    this.isOtherAccountOwnerRoleIsMerchant = true;
                 }
                 else{
-                    merchantTemp.setMerchantName(payeeDetail.getString("username"));
+                    this.user = new User();
+                    this.user.setFirstname(payeeDetaildata.getString("firstName"));
+                    this.user.setLastName(payeeDetaildata.getString("lastName"));
                 }
-                this.merchant = merchantTemp;
+
             }
 
 //            if(this.type.equals("Merchant_Pay")){
@@ -129,6 +143,14 @@ public class UserTransactionModel extends Application implements Serializable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isOtherAccountOwnerRoleIsMerchant() {
+        return isOtherAccountOwnerRoleIsMerchant;
+    }
+
+    public void setOtherAccountOwnerRoleIsMerchant(boolean otherAccountOwnerRoleIsMerchant) {
+        isOtherAccountOwnerRoleIsMerchant = otherAccountOwnerRoleIsMerchant;
     }
 
     public Merchant getMerchant() {
@@ -185,6 +207,14 @@ public class UserTransactionModel extends Application implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public static ArrayList<UserTransactionModel> getTransaction() {

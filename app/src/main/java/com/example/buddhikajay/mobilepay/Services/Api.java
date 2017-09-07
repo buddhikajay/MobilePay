@@ -48,6 +48,28 @@ public class Api {
 
         return nic;
     }
+
+    public static void setNic(Context context,String nic){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putString("nic", nic);
+        editor.apply();
+    }
+    public static void setId(Context context,String id){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putString("id", id);
+        editor.apply();
+    }
+
+    public static void setForgetPasswordRequest(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putBoolean("forgetPasswordRequest", true);
+        editor.apply();
+    }
+    public static boolean isForgetPasswordRequest(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        boolean token =sharedPref.getBoolean("forgetPasswordRequest",false);
+        return token;
+    }
     public static String getAccountNumber(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String accountNumber =sharedPref.getString("accountNumber",null);
@@ -66,11 +88,17 @@ public class Api {
 
         return nic;
     }
-    public static String getUsername(Context context){
+    public static String getFirstName(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String username =sharedPref.getString("username",null);
+        String firstName =sharedPref.getString("firstName",null);
 
-        return username;
+        return firstName;
+    }
+    public static String getLastName(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        String lastName =sharedPref.getString("lastName",null);
+
+        return lastName;
     }
     public static boolean setAccessToken(Context context,String token){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
@@ -78,14 +106,15 @@ public class Api {
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String registedId,String nic,String phone,String role,String accountNumber,String username){
+    public static boolean setRegisterId(Context context,String id,String registedId,String nic,String phone,String role,String accountNumber,String firstName,String lastName){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         Log.d("Apirole",role);
         editor.putString("id", id);
         editor.putString("registedId", registedId);
         editor.putString("nic", nic);
         editor.putString("phoneNumber", phone);
-        editor.putString("username", username);
+        editor.putString("firstName", firstName);
+        editor.putString("lastName", lastName);
         editor.putString("accountNumber", accountNumber);
         editor.putString("role", role);
         editor.putBoolean("register", true);
@@ -95,7 +124,7 @@ public class Api {
 
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String registedId,String phone,String nic,String accountNumber,String username){
+    public static boolean setRegisterId(Context context,String id,String registedId,String phone,String nic,String accountNumber,String firstName,String lastName){
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("id", id);
         editor.putString("registedId", registedId);
@@ -104,7 +133,8 @@ public class Api {
         editor.putString("phoneNumber", phone);
         editor.putBoolean("first_login", false);
         editor.putString("accountNumber", accountNumber);
-        editor.putString("username", username);
+        editor.putString("firstName", firstName);
+        editor.putString("lastName", lastName);
         editor.putString("nic", nic);
         editor.apply();
 
@@ -131,6 +161,7 @@ public class Api {
 
         return token;
     }
+
     public static String getRegisterId(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String token =sharedPref.getString("registedId",null);

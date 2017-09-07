@@ -41,6 +41,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import at.grabner.circleprogress.CircleProgressView;
@@ -59,6 +62,7 @@ public class BillSpliteActivity extends AppCompatActivity {
     private String merchantId;
     private String merchantName;
     private String phoneNumber;
+    private String accountNumber;
 
 
     private boolean back;
@@ -90,6 +94,7 @@ public class BillSpliteActivity extends AppCompatActivity {
         merchantId = intent.getStringExtra("merchantId");
         merchantName = intent.getStringExtra("merchantName");
         phoneNumber = intent.getStringExtra("phoneNumber");
+        accountNumber = intent.getStringExtra("accountNumber");
 
         numberOfSplitter = (EditText) findViewById(R.id.number_of_spliters);
         button_qrcodeGenerate = (Button) findViewById(R.id.button_generate_qrcode);
@@ -216,14 +221,23 @@ public class BillSpliteActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Log.d("Transaction:Checkout",jsonObject.toString());
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                JSONObject dateTime = jsonObject.getJSONObject("dateTime");
+                String date =dateFormat.format( dateFormat.parse(dateTime.getString("date")));
+                String payerAccount = Api.getAccountNumber(getApplicationContext());
 
-                    Log.d("",""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()));
-                    Log.d("","LKR "+amount+" has been payed to "+merchantName);
-                    //Api.sendSms(phoneNumber, ""+amount+" has been reciveded from "+Api.getNic(getApplicationContext()),getApplicationContext());
-                    //Api.sendSms(Api.getPhoneNumber(getApplicationContext()), "LKR "+amount+" has been payed to "+merchantName,getApplicationContext());
+                String payerMsg = " DirectPay - Payment Successful LKR "+String.format("%.2f", amount)+" paid to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
+
+                String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful LKR "+String.format("%.2f", amount)+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                //String payerMsg = "DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
+
+                Api.sendSms(phoneNumber, payerMsg,getApplicationContext());
+                    Api.sendSms(Api.getPhoneNumber(getApplicationContext()),payeeMsg ,getApplicationContext());
                     moveToFinishActivity(jsonObject.optString("transactionId").toString());
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
