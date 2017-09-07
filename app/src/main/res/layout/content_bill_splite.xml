@@ -17,7 +17,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -93,7 +96,6 @@
                 CircleProgressView:cpv_seekMode="false"
                 CircleProgressView:cpv_spinColor="@color/colorPrimary"
                 android:layout_gravity="center"
-
                 />
         </LinearLayout>
 
