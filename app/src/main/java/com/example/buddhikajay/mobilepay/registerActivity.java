@@ -378,7 +378,7 @@ public class registerActivity extends AppCompatActivity {
         JSONObject payload = new JSONObject();
         try {
             payload.put("accountNumber",accountNo);
-            payload.put("nic",nic);
+            payload.put("nic",nic.toLowerCase());
             payload.put("firstName", firstName);
             payload.put("lastName", lastName);
             payload.put("phoneNumber",mobileNo);
