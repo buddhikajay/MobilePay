@@ -31,7 +31,6 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         roleIsMerchant = intent.getBooleanExtra("roleIsMerchant",false);
 
 
-
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.merchant_name);
         TextView amountView = (TextView) findViewById(R.id.amount);
