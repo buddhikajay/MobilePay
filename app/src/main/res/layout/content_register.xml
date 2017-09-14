@@ -50,13 +50,10 @@
 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
             android:inputType="text"
 
             android:id="@+id/first_name"
             android:text=""
-
-
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
 
@@ -173,7 +170,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password"
         android:text=""
@@ -196,7 +193,7 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberPassword"
+                android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/retypepassword"
                 android:text=""

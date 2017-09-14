@@ -168,6 +168,7 @@ public class loginActivity extends AppCompatActivity {
 
             showError(passLayout);
         }
+        showProgress(false);
         return false;
     }
 

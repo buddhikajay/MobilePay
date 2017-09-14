@@ -36,10 +36,12 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         TextView amountView = (TextView) findViewById(R.id.amount);
         TextView dateView = (TextView) findViewById(R.id.date);
         TextView typeView = (TextView) findViewById(R.id.type);
-        TextView userType = (TextView) findViewById(R.id.uset_type);
-        if(!roleIsMerchant){
+        TextView tofromView = (TextView) findViewById(R.id.to_from);
+
+        //TextView userType = (TextView) findViewById(R.id.uset_type);
+        /*if(!roleIsMerchant){
             userType.setText("user");
-        }
+        }*/
 
         recieptView.setText(recieptNumber);
         nameView.setText(name);
