@@ -1,6 +1,7 @@
 package com.example.buddhikajay.mobilepay.Component;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,9 +58,16 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
                 AccountNumber.setText(transactionModel.getUser().getLastName());
 
             }
-
-
-
+            if(transactionModel.isAppUserAccount_isFromAccountNuber()){
+                AccountNumber.setTextColor(Color.BLUE);
+                Amount.setTextColor(Color.BLUE);
+                Date.setTextColor(Color.BLUE);
+            }
+            else{
+                AccountNumber.setTextColor(Color.RED);
+                Amount.setTextColor(Color.RED);
+                Date.setTextColor(Color.RED);
+            }
 
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
