@@ -56,6 +56,13 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
 
         }
 
+        if(type.equals("MERCHANT_PAY")){
+            tofromView.setText("To");
+        }
+        else{
+            tofromView.setText("From");
+        }
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,7 +90,6 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     }
 
     public void moveTransactionReport(){
-
         Intent intent = new Intent(this,UserTransactionReportActivity.class);
         startActivity(intent);
     }
