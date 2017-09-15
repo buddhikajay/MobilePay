@@ -1,14 +1,18 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -215,7 +219,13 @@ public class CheckoutActivity extends AppCompatActivity {
                         total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
                         Log.d("total", total.toString());
                     }
-                    showmessgebox(paymentType, total + " LKR", amount, intent.getStringExtra("name"), intent);
+                    //sms permission
+                    if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.SEND_SMS},
+                                1);
+                    } else {
+                        showmessgebox(paymentType, total + " LKR", amount, intent.getStringExtra("name"), intent);
+                    }
 
                 }
                 payButton.setEnabled(true);
