@@ -45,4 +45,7 @@ public class Parameter {
     public static String MQTT_BROKER_URL ="tcp://iot.eclipse.org:1883";
 
     public static String urlForgetPasswordNIC = apim+"/merchantpay/1.0.0/forgot/password/nic";
+
+    public static boolean dev=true;
+
 }
