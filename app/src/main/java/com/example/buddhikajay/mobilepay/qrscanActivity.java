@@ -16,4 +16,5 @@ public class qrscanActivity extends AppCompatActivity {
         Button btn=(Button)findViewById(R.id.qrscan_button);
         
     }
+
 }

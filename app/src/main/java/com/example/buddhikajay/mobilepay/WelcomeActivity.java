@@ -68,7 +68,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private void appState(){
 
         boolean verify = Api.isRegisterVerify(getApplicationContext());
-        boolean firstLigon = Api.isFirstTimeLogin(getApplicationContext());
+        //boolean firstLigon = Api.isFirstTimeLogin(getApplicationContext());
         boolean regisiter = Api.isRegister(getApplicationContext());
         if(!verify && regisiter){
             moveToPinActivity();
@@ -95,23 +95,19 @@ public class WelcomeActivity extends AppCompatActivity {
             myIntent.putExtra("Paymodel",paymentModel);
         }
         startActivity(myIntent);
-
     }
     public void moveToRegisterActivity(){
-
 
         Intent myIntent = new Intent(this, registerActivity.class);
         startActivity(myIntent);
     }
-    private boolean appPermission(){
+    /*private boolean appPermission(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)return false;
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED)return false;
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED)return false;
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)return false;
 
-
         return  true;
-
-
     }
+    */
 }

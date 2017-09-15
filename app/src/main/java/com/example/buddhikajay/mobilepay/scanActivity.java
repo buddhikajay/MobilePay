@@ -1,9 +1,13 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -182,16 +186,22 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
     }
     private void merchantPay(){
-
         Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = true; // merchant pay
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
+        //camera permission
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                   1);
+        }
         QrScanner();
     }
     private void fundTransfer(){
         Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = false; // merchant pay
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
+        //camera permission
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
         QrScanner();
     }
     private void transactionList(){
@@ -216,6 +226,30 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         finish();
         Intent intent = new Intent(this,MerchantTransactionReportActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    QrScanner();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
