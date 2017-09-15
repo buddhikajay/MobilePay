@@ -3,6 +3,7 @@ package com.example.buddhikajay.mobilepay;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -55,8 +56,8 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         }
-
-        if(type.equals("MERCHANT_PAY")){
+        Log.d("transaction_type:",type);
+        if(type.equals("Merchant_Pay")){
             tofromView.setText("To");
         }
         else{
