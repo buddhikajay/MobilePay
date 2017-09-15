@@ -1,6 +1,8 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -185,27 +187,42 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         startActivity(intent);
 
     }
-    private void merchantPay(){
-        Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
+    public void merchantPay() {
+        Toast.makeText(getApplicationContext(), "Scan Your Qr Code", Toast.LENGTH_LONG).show();
         scannerType = true; // merchant pay
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         //camera permission
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                   1);
+        if (ContextCompat.checkSelfPermission(scanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(scanActivity.this, new String[]{Manifest.permission.CAMERA},
+                    1);
+        } else {
+            QrScanner();
         }
-        QrScanner();
     }
+        /*public void grantCamera(final Activity context){
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                ActivityCompat.requestPermissions( context, new String[]{Manifest.permission.CAMERA},
+                        1);
+            }
+        });
+        t.start();
+        }*/
+
     private void fundTransfer(){
         Toast.makeText(getApplicationContext(),"Scan Your Qr Code",Toast.LENGTH_LONG).show();
         scannerType = false; // merchant pay
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backbtn);
         //camera permission
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+    if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(scanActivity.this, new String[]{Manifest.permission.CAMERA},
+                    1);
+    } else {
         QrScanner();
     }
-    private void transactionList(){
+    }
 
+    private void transactionList(){
         if(!Api.isMerchant(getApplicationContext())){
             moveToUserReport();
         }
@@ -214,7 +231,6 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             //Toast.makeText(getApplicationContext(),"merchant",Toast.LENGTH_LONG).show();
             moveToMerchantReport();
         }
-
 
     }
     private void moveToUserReport(){
@@ -237,7 +253,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    QrScanner();
+                   QrScanner();
 
                 } else {
 
@@ -417,7 +433,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
          }
          //Intent myIntent = new Intent(scanActivity.this, loginActivity.class);
          //scanActivity.this.startActivity(myIntent);
-         finish();
+         //finish();
     }
 
     public void scanQR() {

@@ -200,8 +200,6 @@ public class Api {
        return  token;
     }
 
-
-
     public static void sendSms(String phoneNumber, String message,Context context) {
         try{
             SmsManager sms = SmsManager.getDefault();
