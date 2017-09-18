@@ -420,7 +420,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 else {
                     pay.put("customParam",customType);
                 }
-
             }
             else {
                 pay.put("paymentCategory", paymentModel.getQrModels().get(0).getPaymentCategory());
