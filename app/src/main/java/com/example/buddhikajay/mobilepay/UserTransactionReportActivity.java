@@ -211,7 +211,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("amount",model.getAmount());
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
-
+                intent.putExtra("status",model.getStatus());
                 startActivity(intent);
 
             }

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.buddhikajay.mobilepay.Model.UserTransactionModel;
 
+import static com.example.buddhikajay.mobilepay.R.id.status;
+
 public class UserTransactionDetailActivity extends AppCompatActivity {
 
     private UserTransactionModel model;
@@ -17,6 +19,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     private String amount;
     private String date;
     private String type;
+    private String status;
     private boolean roleIsMerchant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         amount = intent.getStringExtra("amount");
         date = intent.getStringExtra("date");
         type = intent.getStringExtra("type");
+        status=intent.getStringExtra("status");
         roleIsMerchant = intent.getBooleanExtra("roleIsMerchant",false);
 
 
@@ -57,11 +61,12 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
 
         }
         Log.d("transaction_type:",type);
-        if(type.equals("Merchant_Pay")){
-            tofromView.setText("To");
+        Log.d("transaction_status:",status);
+        if(type.equals("refund")|| type.equals("Fund_Transfer")){
+            tofromView.setText("From");
         }
         else{
-            tofromView.setText("From");
+            tofromView.setText("To");
         }
 
     }
