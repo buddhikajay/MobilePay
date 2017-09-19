@@ -29,6 +29,7 @@
     //store data
     <string name="access_token">1</string>
     <string name="register">2</string>
+    <string name="transaction">3</string>
 
     //login Screen
     <string name="login_hint">Password</string>

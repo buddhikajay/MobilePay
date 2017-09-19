@@ -1,6 +1,7 @@
 package com.example.buddhikajay.mobilepay;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
@@ -128,14 +129,15 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 listView.setAdapter(null);
                 loadingbar.setVisibility(View.VISIBLE);
                 getTransaction();
-
-
             }
         });
         Search();
         currentDate();
 
-
+    if(Api.isSave(getApplicationContext())) {
+        JSONArray array= Api.getTransactionHistory(getApplicationContext());
+        populateTransactionList(array);
+    }
     }
 
     private void Search() {
@@ -212,6 +214,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
                 intent.putExtra("status",model.getStatus());
+                intent.putExtra("appUserAccount_isFromAccountNuber",model.isAppUserAccount_isFromAccountNuber());
                 startActivity(intent);
 
             }
@@ -272,6 +275,8 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 if(array.length()!=0){
                     JSONObject jsonObject = array.getJSONObject(0);
                     Log.d("Transaction:Transaction",jsonObject.toString());
+                    //save transaction data
+                    Api.setSave(getApplicationContext(),array);
                     populateTransactionList(array);
                     loadDate=true;
                     loadingbar.setVisibility(View.GONE);
