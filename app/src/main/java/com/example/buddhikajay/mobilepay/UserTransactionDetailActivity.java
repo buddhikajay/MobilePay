@@ -21,6 +21,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     private String type;
     private String status;
     private boolean roleIsMerchant;
+    private boolean appUserAccount_isFromAccountNuber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         type = intent.getStringExtra("type");
         status=intent.getStringExtra("status");
         roleIsMerchant = intent.getBooleanExtra("roleIsMerchant",false);
-
+        appUserAccount_isFromAccountNuber=intent.getBooleanExtra("appUserAccount_isFromAccountNuber",false);
 
         TextView recieptView = (TextView) findViewById(R.id.receipt_number);
         TextView nameView = (TextView) findViewById(R.id.merchant_name);
@@ -62,12 +63,26 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         }
         Log.d("transaction_type:",type);
         Log.d("transaction_status:",status);
-        if(type.equals("refund")|| type.equals("Fund_Transfer")){
+        if(type.equals("refund")){
             tofromView.setText("From");
         }
-        else{
-            tofromView.setText("To");
+        else if (type.equals("Fund_Transfer")){
+            if (appUserAccount_isFromAccountNuber){
+                tofromView.setText("To");
+            }
+            else{
+                tofromView.setText("From");
+            }
         }
+        else if (type.equals("Merchant_Pay")){
+            if (appUserAccount_isFromAccountNuber){
+                tofromView.setText("To");
+            }
+            else{
+                tofromView.setText("From");
+            }
+        }
+
 
     }
     @Override

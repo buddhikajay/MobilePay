@@ -23,6 +23,7 @@ import com.example.buddhikajay.mobilepay.Component.VolleyComponent;
 import com.example.buddhikajay.mobilepay.R;
 
 import org.apache.http.HttpStatus;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,79 +37,89 @@ import java.util.Map;
 public class Api {
 
 
-    public static String getAccessToken(Context context){
+    public static String getAccessToken(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.access_token), Context.MODE_PRIVATE);
-        String token =sharedPref.getString("access_token",null);
+        String token = sharedPref.getString("access_token", null);
 
         return token;
     }
-    public static String getNic(Context context){
+
+    public static String getNic(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String nic =sharedPref.getString("nic",null);
+        String nic = sharedPref.getString("nic", null);
 
         return nic;
     }
 
-    public static void setNic(Context context,String nic){
+    public static void setNic(Context context, String nic) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("nic", nic);
         editor.apply();
     }
-    public static void setId(Context context,String id){
+
+    public static void setId(Context context, String id) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("id", id);
         editor.apply();
     }
 
-    public static void setForgetPasswordRequest(Context context){
+    public static void setForgetPasswordRequest(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putBoolean("forgetPasswordRequest", true);
         editor.apply();
     }
-    public static boolean isForgetPasswordRequest(Context context){
+
+    public static boolean isForgetPasswordRequest(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        boolean token =sharedPref.getBoolean("forgetPasswordRequest",false);
+        boolean token = sharedPref.getBoolean("forgetPasswordRequest", false);
         return token;
     }
-    public static String getAccountNumber(Context context){
+
+    public static String getAccountNumber(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String accountNumber =sharedPref.getString("accountNumber",null);
+        String accountNumber = sharedPref.getString("accountNumber", null);
 
         return accountNumber;
     }
-    public static void setAccountNumber(Context context,String accountNumber){
+
+    public static void setAccountNumber(Context context, String accountNumber) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
         editor.putString("accountNumber", accountNumber);
         editor.apply();
 
     }
-    public static String getPhoneNumber(Context context){
+
+    public static String getPhoneNumber(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String nic =sharedPref.getString("phoneNumber",null);
+        String nic = sharedPref.getString("phoneNumber", null);
 
         return nic;
     }
-    public static String getFirstName(Context context){
+
+    public static String getFirstName(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String firstName =sharedPref.getString("firstName",null);
+        String firstName = sharedPref.getString("firstName", null);
 
         return firstName;
     }
-    public static String getLastName(Context context){
+
+    public static String getLastName(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String lastName =sharedPref.getString("lastName",null);
+        String lastName = sharedPref.getString("lastName", null);
 
         return lastName;
     }
-    public static boolean setAccessToken(Context context,String token){
+
+    public static boolean setAccessToken(Context context, String token) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.access_token), context.MODE_PRIVATE).edit();
         editor.putString("access_token", token);
         editor.apply();
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String registedId,String nic,String phone,String role,String accountNumber,String firstName,String lastName){
+
+    public static boolean setRegisterId(Context context, String id, String registedId, String nic, String phone, String role, String accountNumber, String firstName, String lastName) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
-        Log.d("Apirole",role);
+        Log.d("Apirole", role);
         editor.putString("id", id);
         editor.putString("registedId", registedId);
         editor.putString("nic", nic);
@@ -124,7 +135,8 @@ public class Api {
 
         return true;
     }
-    public static boolean setRegisterId(Context context,String id,String registedId,String phone,String nic,String accountNumber,String firstName,String lastName){
+
+    public static boolean setRegisterId(Context context, String id, String registedId, String phone, String nic, String accountNumber, String firstName, String lastName) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
         editor.putString("id", id);
         editor.putString("registedId", registedId);
@@ -141,44 +153,49 @@ public class Api {
         return true;
     }
 
-    public static boolean setRegisterVerify(Context context){
+    public static boolean setRegisterVerify(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
         editor.putBoolean("register_verify", true);
         editor.apply();
         return true;
     }
-    public static boolean reSetPin(Context context){
+
+    public static boolean reSetPin(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
         editor.putBoolean("register_verify", false);
         editor.apply();
         return true;
     }
-    public static String getId(Context context){
+
+    public static String getId(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String token =sharedPref.getString("id",null);
+        String token = sharedPref.getString("id", null);
 
         return token;
     }
 
     public static String getRegisterId(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        String token =sharedPref.getString("registedId",null);
+        String token = sharedPref.getString("registedId", null);
 
         return token;
     }
-    public static boolean isRegisterVerify(Context context){
+
+    public static boolean isRegisterVerify(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        boolean token =sharedPref.getBoolean("register_verify",false);
+        boolean token = sharedPref.getBoolean("register_verify", false);
         return token;
     }
-    public static boolean isFirstTimeLogin(Context context){
+
+    public static boolean isFirstTimeLogin(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
-        boolean token =sharedPref.getBoolean("first_login",true);
+        boolean token = sharedPref.getBoolean("first_login", true);
         return token;
     }
-    public static void setFirstTimeLogin(Context context,String nic){
+
+    public static void setFirstTimeLogin(Context context, String nic) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
 
         editor.putString("nic", nic);
@@ -186,6 +203,37 @@ public class Api {
         editor.apply();
 
     }
+
+    //save transactions
+    public static boolean isSave(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.transaction), Context.MODE_PRIVATE);
+        boolean token = sharedPref.getBoolean("save_transaction", false);
+        return token;
+    }
+
+    public static void setSave(Context context, JSONArray transactionData) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.transaction), context.MODE_PRIVATE).edit();
+        editor.putBoolean("save_transaction", true);
+        editor.putString("transactionData", transactionData.toString());
+        editor.apply();
+    }
+
+    public static JSONArray getTransactionHistory(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.transaction), Context.MODE_PRIVATE);
+        String strJson = sharedPref.getString("transactionData", null);
+
+        try {
+            return new JSONArray(strJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new JSONArray();
+    }
+
+
+
+
     public static boolean isMerchant(Context context){
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
         String token =sharedPref.getString("role",null);
