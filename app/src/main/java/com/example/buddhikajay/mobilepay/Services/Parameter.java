@@ -5,17 +5,19 @@ package com.example.buddhikajay.mobilepay.Services;
  */
 
 public class Parameter {
+    public static boolean dev=true;
+
 
     //prod
-    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
-    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
-    public static String identityServer = "https://13.58.144.197:9446";
-    public static String apim = "https://13.58.144.197:8243";
+//    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
+//    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
+//    public static String identityServer = "https://13.58.144.197:9446";
+//    public static String apim = "https://13.58.144.197:8243";
     //dev
-//    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
-//    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
-//    public static String identityServer = "https://192.168.8.103:9446";
-//    public static String apim = "https://192.168.8.103:8243";
+    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
+    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
+    public static String identityServer = "https://192.168.8.103:9446";
+    public static String apim = "https://192.168.8.103:8243";
 
     //http://10.254.102.141
 //    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
@@ -46,6 +48,17 @@ public class Parameter {
 
     public static String urlForgetPasswordNIC = apim+"/merchantpay/1.0.0/forgot/password/nic";
 
-    public static boolean dev=true;
+    //parameters to limit transaction details
+    public static int page=1;
+    public static int offset=5;
 
+
+//static {
+//    if (dev){
+//        clientkey = "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
+//        secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
+//        identityServer = "https://192.168.8.103:9446";
+//        apim = "https://192.168.8.103:8243";
+//    }
+//}
 }

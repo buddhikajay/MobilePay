@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 
 import com.example.buddhikajay.mobilepay.Component.UserTransactionAdapter;
+import com.example.buddhikajay.mobilepay.Model.PaymentModel;
 import com.example.buddhikajay.mobilepay.Model.UserTransactionModel;
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
@@ -41,7 +43,8 @@ import android.text.Editable;
 import java.util.Locale;
 
 public class UserTransactionReportActivity extends AppCompatActivity {
-
+    boolean flag;
+    private int page=1;
     private int headersize;
     private Button btn_load;
     private TextView text_from_date;
@@ -219,12 +222,32 @@ public class UserTransactionReportActivity extends AppCompatActivity {
 
             }
         });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                if (!flag) {
+                    flag=true;
+
+                    page++;
+
+                }
+                Log.d("page",page+"");
+            }
+        });
 
 
     }
     public void getTransaction(){
         JSONObject parameter = new JSONObject();
         try {
+            parameter.put("page",page);
+            parameter.put("offset",Parameter.offset);
             parameter.put("userId",""+ Api.getId(getApplicationContext()));
             JSONObject fromdate = new JSONObject();
             fromdate.put("year",fYear);
@@ -270,7 +293,16 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private void responseProcess(JSONObject result){
 
         if(result.has("data")){
+            flag=false;
             JSONArray array= (JSONArray) result.opt("data");
+            if (Api.isSave(getApplicationContext())){
+                JSONArray temp=Api.getTransactionHistory(getApplicationContext());
+                try {
+                    array=concatArray(array,temp);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
                 if(array.length()!=0){
                     JSONObject jsonObject = array.getJSONObject(0);
@@ -306,6 +338,17 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public JSONArray concatArray(JSONArray array,JSONArray temp) throws JSONException{
+        JSONArray result=new JSONArray();
+        for(int i=1; i<array.length();i++){
+            result.put(array.get(i));
+        }
+        for(int i=1; i<temp.length();i++){
+            result.put(temp.get(i));
+        }
+        return result;
     }
 
     public void moveLogin(){
