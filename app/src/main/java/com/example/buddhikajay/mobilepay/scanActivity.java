@@ -513,7 +513,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
                 }
                 else {
-                    moveLogin();
+//                    moveLogin();
                 }
                 break;
         }
