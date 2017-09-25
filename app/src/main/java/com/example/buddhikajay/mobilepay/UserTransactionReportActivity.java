@@ -61,6 +61,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private ListView listView;
     private boolean loadDate;
     private RelativeLayout loadingbar;
+    private AbsListView.OnScrollListener listScrollListner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,8 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         btn_load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Api.setSave(getApplicationContext(),null);
+                page=1;
                 listView.setAdapter(null);
                 loadingbar.setVisibility(View.VISIBLE);
                 getTransaction();
@@ -136,11 +139,32 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         });
         Search();
         currentDate();
+        //Api.setSave(getApplicationContext(),null);
+        if(Api.isSave(getApplicationContext())) {
+            //
+            JSONArray array= Api.getTransactionHistory(getApplicationContext());
+            populateTransactionList(array);
+        }
 
-    if(Api.isSave(getApplicationContext())) {
-        JSONArray array= Api.getTransactionHistory(getApplicationContext());
-        populateTransactionList(array);
-    }
+        listScrollListner = new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
+                    if (!flag) {
+                        flag = true;
+                        page++;
+                        getTransaction();
+                    }
+                    Log.d("page", page + "");
+
+            }
+        };
     }
 
     private void Search() {
@@ -189,6 +213,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         Intent myIntent = new Intent(UserTransactionReportActivity.this, scanActivity.class);
         UserTransactionReportActivity.this.startActivity(myIntent);
         finish();
+        Api.setSave(getApplicationContext(),null);
     }
 
     private void populateTransactionList(JSONArray transactions) {
@@ -222,24 +247,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
 
             }
         });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
 
-            }
-
-            @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-                if (!flag) {
-                    flag=true;
-
-                    page++;
-
-                }
-                Log.d("page",page+"");
-            }
-        });
 
 
     }
@@ -268,7 +276,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+            Log.d("parameter",parameter.toString());
         VolleyRequestHandlerApi.api(new VolleyCallback(){
 
 
@@ -293,7 +301,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private void responseProcess(JSONObject result){
 
         if(result.has("data")){
-            flag=false;
+
             JSONArray array= (JSONArray) result.opt("data");
             if (Api.isSave(getApplicationContext())){
                 JSONArray temp=Api.getTransactionHistory(getApplicationContext());
@@ -309,8 +317,11 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                     Log.d("Transaction:Transaction",jsonObject.toString());
                     //save transaction data
                     Api.setSave(getApplicationContext(),array);
+                    listView.setOnScrollListener(null);
                     populateTransactionList(array);
+                    listView.setOnScrollListener(listScrollListner);
                     loadDate=true;
+                    flag=false;
                     loadingbar.setVisibility(View.GONE);
                 }
                 else {
@@ -342,10 +353,10 @@ public class UserTransactionReportActivity extends AppCompatActivity {
 
     public JSONArray concatArray(JSONArray array,JSONArray temp) throws JSONException{
         JSONArray result=new JSONArray();
-        for(int i=1; i<array.length();i++){
+        for(int i=0; i<array.length();i++){
             result.put(array.get(i));
         }
-        for(int i=1; i<temp.length();i++){
+        for(int i=0; i<temp.length();i++){
             result.put(temp.get(i));
         }
         return result;

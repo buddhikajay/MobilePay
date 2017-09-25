@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.buddhikajay.mobilepay.Model.UserTransactionModel;
 import com.example.buddhikajay.mobilepay.R;
+import com.example.buddhikajay.mobilepay.UserTransactionDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
                 Amount.setTextColor(Color.RED);
                 Date.setTextColor(Color.RED);
             }
+//            if (UserTransactionDetailActivity.type.equals("refund"))
 
         Amount.setText(transactionModel.getAmount()+" LKR");
         Date.setText(transactionModel.getDate());
