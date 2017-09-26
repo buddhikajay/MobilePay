@@ -415,7 +415,7 @@ public class loginActivity extends AppCompatActivity {
         else if(result.has("errors")){
             showProgress(false);
             if(Api.isFirstTimeLogin(getApplicationContext())){
-                Toast.makeText(getApplicationContext(),"Invalide Nic or Password",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Invalid NIC or Password",Toast.LENGTH_LONG).show();
             }
             else{
                 Toast.makeText(getApplicationContext(),"Wrong Password",Toast.LENGTH_LONG).show();
