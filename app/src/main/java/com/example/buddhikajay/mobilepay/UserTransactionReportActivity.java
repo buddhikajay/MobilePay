@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -62,6 +63,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private boolean loadDate;
     private RelativeLayout loadingbar;
     private AbsListView.OnScrollListener listScrollListner;
+    private boolean scrollbyfinger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,15 +151,18 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         listScrollListner = new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-
+                    if(scrollState == SCROLL_STATE_FLING){
+                        scrollbyfinger = true;
+                    }
             }
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 
-                    if (!flag) {
+                    if (!flag && scrollbyfinger) {
                         flag = true;
+                        scrollbyfinger = false;
                         page++;
                         getTransaction();
                     }
@@ -319,7 +324,10 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                     Api.setSave(getApplicationContext(),array);
                     listView.setOnScrollListener(null);
                     populateTransactionList(array);
-                    listView.setOnScrollListener(listScrollListner);
+                    if(Api.isSave(getApplicationContext())){
+                        listView.setOnScrollListener(listScrollListner);
+                    }
+
                     loadDate=true;
                     flag=false;
                     loadingbar.setVisibility(View.GONE);
