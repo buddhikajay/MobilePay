@@ -239,6 +239,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("roleIsMerchant",model.isOtherAccountOwnerRoleIsMerchant());
                 if(model.isOtherAccountOwnerRoleIsMerchant()){
                     intent.putExtra("name",model.getMerchant().getMerchantName());
+                    intent.putExtra("address",model.getMerchant().getMerchantAddress());
                 }
                 else {
                     intent.putExtra("name",model.getUser().getLastName());
@@ -247,6 +248,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
                 intent.putExtra("date",model.getDate());
                 intent.putExtra("type",model.getType());
                 intent.putExtra("status",model.getStatus());
+
                 intent.putExtra("appUserAccount_isFromAccountNuber",model.isAppUserAccount_isFromAccountNuber());
                 startActivity(intent);
 

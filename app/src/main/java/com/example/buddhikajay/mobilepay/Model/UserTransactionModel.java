@@ -34,6 +34,7 @@ public class UserTransactionModel extends Application implements Serializable {
     private boolean isOtherAccountOwnerRoleIsMerchant;
     private boolean appUserAccount_isFromAccountNuber;
 
+
     public UserTransactionModel(String fromAccountNumber, String amount, String date, Merchant merchant, String recieptNumber, String toAccountNumber) {
 
         this.fromAccountNumber = fromAccountNumber;
@@ -42,6 +43,7 @@ public class UserTransactionModel extends Application implements Serializable {
         this.date = date;
         this.merchant = merchant;
         this.recieptNumber = recieptNumber;
+
 
     }
 
@@ -75,8 +77,15 @@ public class UserTransactionModel extends Application implements Serializable {
                     if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
                         Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
                         merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+
+
+                        JSONObject address = payeeDetail.getJSONObject("address");
+                        merchantTemp.setMerchantAddress(address.getString("streetAddress").toString()+","+address.getString("locality").toString()+","+address.getString("region").toString());
+
                         this.merchant = merchantTemp;
+                        Log.d("merchantAddress:",merchant.getMerchantAddress());
                         this.isOtherAccountOwnerRoleIsMerchant = true;
+
                     }
                 else {
                         this.user = new User();
@@ -100,7 +109,11 @@ public class UserTransactionModel extends Application implements Serializable {
                 if(payeeDetail.getJSONArray("roles").get(0).equals("merchant")){
                     Merchant merchantTemp = new Merchant(payeeDetail.getString("id"));
                     merchantTemp.setMerchantName(payeeDetail.getString("merchantName"));
+                    JSONObject address = payeeDetail.getJSONObject("address");
+                    merchantTemp.setMerchantAddress(address.getString("streetAddress").toString()+","+address.getString("locality").toString()+","+address.getString("region").toString());
+
                     this.merchant = merchantTemp;
+                    Log.d("merchantAddress:",merchant.getMerchantAddress());
                     this.isOtherAccountOwnerRoleIsMerchant = true;
                 }
                 else{

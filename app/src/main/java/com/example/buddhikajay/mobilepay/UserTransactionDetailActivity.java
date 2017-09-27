@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.buddhikajay.mobilepay.Model.UserTransactionModel;
@@ -22,6 +23,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
     private String status;
     private boolean roleIsMerchant;
     private boolean appUserAccount_isFromAccountNuber;
+    private String address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         type = intent.getStringExtra("type");
         status=intent.getStringExtra("status");
+
         roleIsMerchant = intent.getBooleanExtra("roleIsMerchant",false);
         appUserAccount_isFromAccountNuber=intent.getBooleanExtra("appUserAccount_isFromAccountNuber",false);
 
@@ -43,7 +46,15 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         TextView dateView = (TextView) findViewById(R.id.date);
         TextView typeView = (TextView) findViewById(R.id.type);
         TextView tofromView = (TextView) findViewById(R.id.to_from);
+        TextView addressView=(TextView) findViewById(R.id.merchantAddress);
 
+        if(type.equals("Merchant_Pay") || type.equals("refund")) {
+            address = intent.getStringExtra("address");
+            Log.d("address1111", address);
+        }
+        else {
+            addressView.setVisibility(View.GONE);
+        }
         //TextView userType = (TextView) findViewById(R.id.uset_type);
         /*if(!roleIsMerchant){
             userType.setText("user");
@@ -54,6 +65,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         amountView.setText(amount+" LKR");
         dateView.setText(date);
         typeView.setText(type);
+        //addressView.setText(address);
 
         if (getSupportActionBar() != null) {
 
@@ -64,6 +76,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
         Log.d("transaction_type:",type);
         Log.d("transaction_status:",status);
         if(type.equals("refund")){
+            addressView.setText(address);
             tofromView.setText("From");
         }
         else if (type.equals("Fund_Transfer")){
@@ -75,6 +88,7 @@ public class UserTransactionDetailActivity extends AppCompatActivity {
             }
         }
         else if (type.equals("Merchant_Pay")){
+            addressView.setText(address);
             if (appUserAccount_isFromAccountNuber){
                 tofromView.setText("To");
             }
