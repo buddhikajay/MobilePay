@@ -143,6 +143,7 @@
             android:paddingBottom="20dp"
             android:paddingLeft="16dp"
             android:text="Address"
+            android:id="@+id/merchantAddress"
             android:textColor="#757575"
             android:textSize="14sp" />
 

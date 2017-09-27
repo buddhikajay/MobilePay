@@ -213,15 +213,20 @@ public class Api {
 
     public static void setSave(Context context, JSONArray transactionData) {
         SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.transaction), context.MODE_PRIVATE).edit();
-        editor.putBoolean("save_transaction", true);
-        editor.putString("transactionData", transactionData.toString());
+        if(transactionData!=null) {
+            editor.putBoolean("save_transaction", true);
+            editor.putString("transactionData", transactionData.toString());
+        }
+        else {
+            editor.putBoolean("save_transaction", false);
+            editor.putString("transactionData", null);
+        }
         editor.apply();
     }
 
     public static JSONArray getTransactionHistory(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.transaction), Context.MODE_PRIVATE);
         String strJson = sharedPref.getString("transactionData", null);
-
         try {
             return new JSONArray(strJson);
         } catch (JSONException e) {

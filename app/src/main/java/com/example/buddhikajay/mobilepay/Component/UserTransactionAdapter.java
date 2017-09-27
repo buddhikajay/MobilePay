@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.buddhikajay.mobilepay.Model.Merchant;
 import com.example.buddhikajay.mobilepay.Model.UserTransactionModel;
 import com.example.buddhikajay.mobilepay.R;
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.UserTransactionDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +67,11 @@ public class UserTransactionAdapter extends ArrayAdapter<UserTransactionModel> {
                 Date.setTextColor(Color.BLUE);
             }
             else{
+                AccountNumber.setTextColor(Color.GREEN);
+                Amount.setTextColor(Color.GREEN);
+                Date.setTextColor(Color.GREEN);
+            }
+            if (transactionModel.getType().equals("refund")){
                 AccountNumber.setTextColor(Color.RED);
                 Amount.setTextColor(Color.RED);
                 Date.setTextColor(Color.RED);
