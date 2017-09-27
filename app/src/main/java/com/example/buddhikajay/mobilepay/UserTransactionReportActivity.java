@@ -143,7 +143,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         currentDate();
         //Api.setSave(getApplicationContext(),null);
         if(Api.isSave(getApplicationContext())) {
-            //
+            loadDate=true;
             JSONArray array= Api.getTransactionHistory(getApplicationContext());
             populateTransactionList(array);
         }
