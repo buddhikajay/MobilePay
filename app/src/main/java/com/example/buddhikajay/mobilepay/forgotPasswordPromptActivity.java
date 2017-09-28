@@ -204,7 +204,7 @@ public void requestChangePasswordByNic() {
                 Toast.makeText(getApplicationContext(),"Invalide Nic or Password",Toast.LENGTH_LONG).show();
             }
             else{
-                Toast.makeText(getApplicationContext(),"Wrong Password",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Wrong NIC",Toast.LENGTH_LONG).show();
             }
 
 
