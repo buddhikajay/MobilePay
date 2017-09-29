@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,14 +68,11 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_scan);
 
-
-
-
         if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.manubutton);
+            //getSupportActionBar().setHomeAsUpIndicator(R.drawable.manubutton);
             //getSupportActionBar().setIcon(R.drawable.menubutton);
 
             //populateScanList();
@@ -460,6 +458,7 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     @Override
     public void onBackPressed() {
         moveLogin();
@@ -497,6 +496,14 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -513,11 +520,21 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
 
                 }
                 else {
-//                    moveLogin();
+                    moveLogin();
                 }
                 break;
+
         }
-        return true;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            moveLogin();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getUserDetail(final PaymentModel paymentModel){

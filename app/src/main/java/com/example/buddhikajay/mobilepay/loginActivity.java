@@ -75,7 +75,7 @@ public class loginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
          setSupportActionBar(toolbar);
         //Api.setRegisterVerify(getApplicationContext(),"false");
-         passField = (EditText) findViewById(R.id.login_pin);
+        passField = (EditText) findViewById(R.id.login_pin);
         passLayout = (TextInputLayout) findViewById(R.id.pinErr);
         nicField = (EditText) findViewById(R.id.login_nic);
         nicLayout = (TextInputLayout) findViewById(R.id.nic_error);
