@@ -225,12 +225,13 @@ public class BillSpliteActivity extends AppCompatActivity {
                 JSONObject dateTime = jsonObject.getJSONObject("dateTime");
                 String date =dateFormat.format( dateFormat.parse(dateTime.getString("date")));
                 String payerAccount = Api.getAccountNumber(getApplicationContext());
+                String tId = jsonObject.optString("transactionId").toString();
 
                 String payerMsg = " DirectPay - Payment Successful LKR "+String.format("%.2f", amount)+" paid to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
 
-                String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful LKR "+String.format("%.2f", amount)+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                //String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful LKR "+String.format("%.2f", amount)+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
                 //String payerMsg = "DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
-
+                String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+tId+" on "+date+" Thank you for using DirectPay";
                 Api.sendSms(phoneNumber, payerMsg,getApplicationContext());
                     Api.sendSms(Api.getPhoneNumber(getApplicationContext()),payeeMsg ,getApplicationContext());
                     moveToFinishActivity(jsonObject.optString("transactionId").toString());
