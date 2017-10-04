@@ -589,7 +589,8 @@ public class CheckoutActivity extends AppCompatActivity {
                         //String payeeMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
                         String payerMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
 
-                        String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                        //String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                        String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+mainTransactionId+" on "+date+" Thank you for using DirectPay";
                         //String payerMsg = "DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
@@ -597,8 +598,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     } else {
 
                         String payerMsg =" DirectPay-Fund Transfer Successful "+amount+" to User "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
-                        String payeeMsg =" DirectPay - Fund Transfer Service - Transafer Successful "+amount+" made to User "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+" on "+date;
-
+                        //String payeeMsg =" DirectPay - Fund Transfer Service - Transafer Successful "+amount+" made to User "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+" on "+date;
+                        String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+mainTransactionId+" on "+date+" Thank you for using DirectPay";
                         Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payerMsg,getApplicationContext());
                         Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
                         FundTransaferMsg(paymentModel.getQrModels().get(0).getPaymentCategory(), "split");
@@ -740,9 +741,9 @@ public class CheckoutActivity extends AppCompatActivity {
                             String payerAccount = Api.getAccountNumber(getApplicationContext());
                             String payerMsg = " DirectPay - Payment Successful "+amount+" tip to Merchant "+accountTip.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
 
-                            String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to tip "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
-
-                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), payeeMsg,getApplicationContext());
+                           //String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to tip "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
+                            String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+tipTransactionId+" on "+date+" Thank you for using DirectPay";
+                            Api.sendSms(jsonObject.opt("phoneNumber").toString(), payerMsg,getApplicationContext());
                             Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payeeMsg,getApplicationContext());
 
                         } catch (JSONException e) {
