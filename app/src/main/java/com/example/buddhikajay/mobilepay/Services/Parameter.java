@@ -5,7 +5,7 @@ package com.example.buddhikajay.mobilepay.Services;
  */
 
 public class Parameter {
-    public static boolean dev=true;
+    public static boolean dev=false;
 
 
     //prod

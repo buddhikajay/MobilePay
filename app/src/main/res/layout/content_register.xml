@@ -204,13 +204,30 @@
                 android:textCursorDrawable="@color/colorPrimary"
                 android:textColor="@color/colorAccent"
                 android:focusable="true"
-                android:layout_below="@+id/mobileNo"
+                android:layout_below="@+id/password"
                 android:layout_marginTop="10dp"
                 android:hint="@string/retype_password_hint"
                 />
 
         </android.support.design.widget.TextInputLayout>
 
+        <Button
+            android:id="@+id/termsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/retypepassword"
+            android:text="Terms and Conditions" />
+
+        <TextView
+            android:id="@+id/termsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/termsButton"
+            android:layout_marginTop="26dp"
+            android:text="Please click on the button to accept the terms and conditions!"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
         android:layout_width="fill_parent"
@@ -218,7 +235,7 @@
         android:text="@string/signup"
         android:id="@+id/signup_button"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/termsTextView"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_background_selector"
         android:textColor="@color/white"
