@@ -150,25 +150,50 @@ public class UserTransactionReportActivity extends AppCompatActivity {
         }
 
         listScrollListner = new AbsListView.OnScrollListener() {
+            private int visibleThreshold = 5;
+            private int page = 0;
+//            private int previousTotal = 0;
+
+//            public void EndlessScrollListener(int visibleThreshold) {
+//                this.visibleThreshold = visibleThreshold;
+//            }
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                     if(scrollState == SCROLL_STATE_FLING){
                         scrollbyfinger = true;
+                        Log.d("scrollListner","onscrolling");
                     }
+//                   Log.d("scrollstate",""+scrollState);
             }
 
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
+//                    if (!flag && scrollbyfinger) {
+//                        flag = true;
+//                        scrollbyfinger = false;
+//                        page++;
+//                        getTransaction();
+//                        Log.d("page", page + "");
+//                    }
+                    //Log.d("page", page + "");
+//                if (flag) {
+//                    if (totalItemCount > previousTotal) {
+//                        flag = false;
+//                        previousTotal = totalItemCount;
+//                    }
+//                }
+                if (!flag && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    // I load the next page of gigs using a background task,
+                    // but you can call any function here.
+                    flag = true;
+                    scrollbyfinger = false;
 
-                    if (!flag && scrollbyfinger) {
-                        flag = true;
-                        scrollbyfinger = false;
-                        page++;
-                        getTransaction();
-                    }
-                    Log.d("page", page + "");
-
+                    page++;
+                    getTransaction();
+//                    Log.d("page", page + "");
+                }
+                Log.d("page", page + "");
             }
         };
     }
@@ -277,7 +302,7 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     public void getTransaction(){
         JSONObject parameter = new JSONObject();
         try {
-            parameter.put("page",page);
+            parameter.put("page",Parameter.page);
             parameter.put("offset",Parameter.offset);
             parameter.put("userId",""+ Api.getId(getApplicationContext()));
             JSONObject fromdate = new JSONObject();
@@ -324,8 +349,8 @@ public class UserTransactionReportActivity extends AppCompatActivity {
     private void responseProcess(JSONObject result){
 
         if(result.has("data")){
-
             JSONArray array= (JSONArray) result.opt("data");
+
             if (Api.isSave(getApplicationContext())){
                 JSONArray temp=Api.getTransactionHistory(getApplicationContext());
                 try {

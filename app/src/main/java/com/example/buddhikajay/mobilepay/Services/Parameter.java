@@ -50,7 +50,7 @@ public class Parameter {
 
     //parameters to limit transaction details
     public static int page=1;
-    public static int offset=5;
+    public static int offset=6;
 
 
 //static {
