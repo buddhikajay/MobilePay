@@ -5,7 +5,7 @@ package com.example.buddhikajay.mobilepay.Services;
  */
 
 public class Parameter {
-    public static boolean dev=true;
+    public static boolean dev=false;
 
 
     //prod
@@ -25,6 +25,11 @@ public class Parameter {
 //    public static String identityServer = "https://192.168.43.82:9446";
 //    public static String apim = "https://192.168.43.82:8243";
 
+    //dev
+//    public static String clientkey= "R7kXceG1BtY962yH5PJTIHiyPlMa";
+//    public static String secretkey = "NVbkmXYt25V3fMXAXx41gZOpqVIa";
+//    public static String identityServer = "https://192.168.8.100:9446";
+//    public static String apim = "https://192.168.8.100:8243";
 
 
     public static String mechantpayUrl= apim+"/merchantpay/1.0.0/transaction/merchantpay";
