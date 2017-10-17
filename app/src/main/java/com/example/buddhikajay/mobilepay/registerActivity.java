@@ -1,12 +1,16 @@
 package com.example.buddhikajay.mobilepay;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +20,15 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Services.Parameter;
@@ -37,7 +44,7 @@ import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class registerActivity extends AppCompatActivity {
+public class registerActivity extends AppCompatActivity implements View.OnClickListener,DialogInterface.OnClickListener {
 
 
     //parameters
@@ -60,13 +67,19 @@ public class registerActivity extends AppCompatActivity {
     private String firstName;
     private String lastName;
 
+    private Button termsB;
+    private TextView termsT;
+
      Button signup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SecurityHandler.handleSSLHandshake();
         setContentView(R.layout.activity_register);
+        termsB=(Button)findViewById(R.id.termsButton);
+        termsB.setOnClickListener(this);
 
+        termsT=(TextView)findViewById(R.id.termsTextView);
 
         //get register parameters
 
@@ -85,6 +98,10 @@ public class registerActivity extends AppCompatActivity {
                 signup.setEnabled(false);
                 //Log.d("My Mobile Number",MobileNumberPicker.getInstance().getPhoneNumber(getApplication()));
                 if( isValideRgisterData()){
+                    if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(registerActivity.this, new String[]{Manifest.permission.SEND_SMS},
+                                1);
+                    }
                     userRegister(v);
                 }
                 else {
@@ -99,6 +116,68 @@ public class registerActivity extends AppCompatActivity {
         //nicField.setInputType(InputType.TYPE_CLASS_NUMBER);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            moveLogin();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void moveLogin(){
+
+        Intent myIntent = new Intent(registerActivity.this, loginActivity.class);
+        registerActivity.this.startActivity(myIntent);
+        finish();
+    }
+
+
+    public void onClick(View view) {
+        // TODO Auto-generated method stub
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setMessage("By downloading, browsing, accessing or using this DirectPay mobile application, you agree to be bound by these Terms and Conditions of Use. We reserve the right to amend these terms and conditions at any time. If you disagree with any of these Terms and Conditions, you must immediately discontinue your access to the Mobile Application and your use of the services offered on the Mobile Application. Continued use of the Mobile Application will constitute acceptance of these Terms and Conditions, as may be amended from time to time.\n Do you accept all our terms and conditions?")
+                .setIcon(R.drawable.ic_reprt)
+                .setTitle("Terms and Conditions of DirectPay")
+                .setPositiveButton("Yes", (this))
+                .setNegativeButton("No", (this))
+                .setNeutralButton("Cancel", (this))
+                .setCancelable(false)
+                .create();
+
+        ad.show();
+    }
+
+    public void onClick(DialogInterface dialog, int which) {
+        // TODO Auto-generated method stub
+        switch(which){
+            case DialogInterface.BUTTON_POSITIVE: // yes
+                termsT.setText("You have accepted the terms and conditions! Welcom to DirectPay App!");
+                break;
+            case DialogInterface.BUTTON_NEGATIVE: // no
+                termsT.setText("You have denied the terms and conditions. You may not register!");
+                break;
+            case DialogInterface.BUTTON_NEUTRAL: // neutral
+                termsT.setText("Please select yes or no!");
+                break;
+            default:
+                // nothing
+                break;
+        }
+    }
+
 //    private void nicValidation(final EditText nic){
 //
 //        nic.addTextChangedListener(new TextWatcher() {

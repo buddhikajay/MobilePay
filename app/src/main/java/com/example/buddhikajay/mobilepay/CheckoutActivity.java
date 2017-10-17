@@ -741,10 +741,13 @@ public class CheckoutActivity extends AppCompatActivity {
                             String payerAccount = Api.getAccountNumber(getApplicationContext());
                             String payerMsg = " DirectPay - Payment Successful "+amount+" tip to Merchant "+accountTip.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
 
+
                            //String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to tip "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
                             String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+tipTransactionId+" on "+date+" Thank you for using DirectPay";
+
                             Api.sendSms(jsonObject.opt("phoneNumber").toString(), payerMsg,getApplicationContext());
                             Api.sendSms(Api.getPhoneNumber(getApplicationContext()), payeeMsg,getApplicationContext());
+                            //Api.sendSms(phoneNumber, payeeMsg,getApplicationContext());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
