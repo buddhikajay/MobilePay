@@ -543,7 +543,7 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("nic",Api.getNic(getApplicationContext()));
                 Log.d("RegisterActivity:phone",Api.getPhoneNumber(getApplication()));
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
-
+                Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_PIN_VERIFICATION);
 
                 String verificatioCode = jsonObject.opt("verificationCode").toString();
                 Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());

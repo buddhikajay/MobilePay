@@ -186,6 +186,7 @@ public void requestChangePasswordByNic() {
                     Api.setNic(getApplicationContext(),nicField.getText().toString());
                     Api.setForgetPasswordRequest(getApplicationContext());
                     Api.setId(getApplicationContext(),id);
+                    Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_FORGET_PASSWORD);
                     Intent intent = new Intent(this,pinActivity.class);
                     startActivity(intent);
                     finish();

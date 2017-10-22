@@ -112,7 +112,10 @@ public class loginActivity extends AppCompatActivity {
                 finish();
             }
         });
+Log.d("isRegister",Api.isRegister(getApplication())+"");
 
+        Log.d("isRegisterVerify",Api.isRegisterVerify(getApplication())+"");
+        Log.d("isFirstTimeLogin",Api.isFirstTimeLogin(getApplication())+"");
         if(Api.isRegister(getApplication()) && Api.isRegisterVerify(getApplicationContext()) || !Api.isFirstTimeLogin(getApplicationContext())){
             nicField.setVisibility(View.GONE);
             reg_btn.setVisibility(View.GONE);
@@ -143,6 +146,7 @@ public class loginActivity extends AppCompatActivity {
             nicLayout.setVisibility(View.GONE);
         }
         nicValidation(nicField);
+        reg_btn.setVisibility(View.GONE);
 
     }
     private void innerAppOpen(){

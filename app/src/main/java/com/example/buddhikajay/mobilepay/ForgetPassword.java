@@ -120,7 +120,7 @@ public class ForgetPassword extends AppCompatActivity {
             try {
                 JSONObject jsonObject = array.getJSONObject(0);
                 Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-
+                Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_LOGIN);
                // Api.reSetPin(getApplicationContext());
              //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
                 moveToLogin();

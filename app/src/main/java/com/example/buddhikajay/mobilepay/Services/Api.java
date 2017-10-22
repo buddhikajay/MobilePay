@@ -278,5 +278,18 @@ public class Api {
 
     }
 
+    public static void setAppStatus(Context context,int status) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(String.valueOf(R.string.register), context.MODE_PRIVATE).edit();
+        editor.putInt("APP_STATUS", status);
+        editor.apply();
+
+    }
+
+    public static int getAppStatus(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(String.valueOf(R.string.register), Context.MODE_PRIVATE);
+        int APP_STATUS = sharedPref.getInt("APP_STATUS",0);
+
+        return APP_STATUS;
+    }
 
 }

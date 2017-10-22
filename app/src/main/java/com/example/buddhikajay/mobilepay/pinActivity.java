@@ -141,7 +141,7 @@ public class pinActivity extends AppCompatActivity {
                 Api.setRegisterVerify(getApplicationContext());
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 //Api.sendSms(Api.getPhoneNumber(getApplication()),jsonObject.opt("verificationCode").toString(),getApplicationContext());
-
+                Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_LOGIN);
                 finish();
                 if(Api.isForgetPasswordRequest(getApplicationContext())){
                     Intent intent = new Intent(this,ForgetPassword.class);

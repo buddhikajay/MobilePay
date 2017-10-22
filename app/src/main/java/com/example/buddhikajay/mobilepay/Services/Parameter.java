@@ -9,15 +9,15 @@ public class Parameter {
 
 
     //prod
-    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
-    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
-    public static String identityServer = "https://13.58.144.197:9446";
-    public static String apim = "https://13.58.144.197:8243";
+//    public static String clientkey= "FXSYUYqymoqIhPrzBJSxfCC2iHQa";
+//    public static String secretkey = "50N3F6NEDxWmyYibVW46k8_jtnga";
+//    public static String identityServer = "https://13.58.144.197:9446";
+//    public static String apim = "https://13.58.144.197:8243";
     //dev
-//    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
-//    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
-//    public static String identityServer = "https://192.168.8.103:9446";
-//    public static String apim = "https://192.168.8.103:8243";
+    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
+    public static String secretkey = "VcrOMqj6g0MPT4gj5dM47Zvu4Cwa";
+    public static String identityServer = "https://192.168.8.103:9446";
+    public static String apim = "https://192.168.8.103:8243";
 
     //http://10.254.102.141
 //    public static String clientkey= "i8XRnR_jYfpntyN_smyhZQXyr7Qa";
@@ -44,6 +44,7 @@ public class Parameter {
     public static String  urlResendPin = apim+"/merchantpay/1.0.0/resend/pin";
     public static String  urlForgotPassword = apim+"/merchantpay/1.0.0/forgot/password";
     public static String  urlDirectpayLogin = apim+"/merchantpay/1.0.0/directpay/user/login";
+    public static String  urlIme = apim+"/merchantpay/1.0.0/register/ime";
     //private String url = "https://192.168.8.102:8243/mobilepay/1.0.0/register";
     //authenticate crential
 
@@ -66,4 +67,11 @@ public class Parameter {
 //        apim = "https://192.168.8.103:8243";
 //    }
 //}
+
+    //App Start Up Status
+
+    public static  int APP_STATUS_REGISTATION = 0;
+    public static int APP_STATUS_PIN_VERIFICATION = 1;
+    public static int APP_STATUS_LOGIN = 2;
+    public static int APP_STATUS_FORGET_PASSWORD =3;
 }
