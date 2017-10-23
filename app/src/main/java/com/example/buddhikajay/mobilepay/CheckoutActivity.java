@@ -92,6 +92,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private View mProgressView;
     private boolean error;
 
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         }
 
-        final Intent intent = getIntent();
+        intent = getIntent();
 
         paymentModel = (PaymentModel)intent.getSerializableExtra("Paymodel");
 
@@ -205,29 +207,14 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 payButton.setEnabled(false);
-
-                if(checkError()) {
-                    String amount = amountTextView.getText().toString();
-
-                    //Log.d("CheckoutActivity:number",phoneNumber);
-
-                    //pay transaction
-
-                    Double total = Double.parseDouble(amount.toString().replaceAll("[$, LKR]", ""));
-                    Log.d("total", total.toString());
-                    if (paymentModel.isTip() && !tipTextView.getText().toString().equals("")) {
-                        total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
-                        Log.d("total", total.toString());
-                    }
-                    //sms permission
-                    if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.SEND_SMS},
-                                1);
-                    } else {
-                        showmessgebox(paymentType, total + " LKR", amount, intent.getStringExtra("name"), intent);
-                    }
-
+                if (ContextCompat.checkSelfPermission(CheckoutActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CheckoutActivity.this, new String[]{Manifest.permission.SEND_SMS},
+                            1);
                 }
+                else {
+                    paymentProcess();
+                }
+
                 payButton.setEnabled(true);
             }
         });
@@ -250,6 +237,28 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void paymentProcess(){
+        if(checkError()) {
+            String amount = amountTextView.getText().toString();
+
+            //Log.d("CheckoutActivity:number",phoneNumber);
+
+            //pay transaction
+
+            Double total = Double.parseDouble(amount.toString().replaceAll("[$, LKR]", ""));
+            Log.d("total", total.toString());
+            if (paymentModel.isTip() && !tipTextView.getText().toString().equals("")) {
+                total += Double.parseDouble(tipTextView.getText().toString().replaceAll("[$, LKR]", ""));
+                Log.d("total", total.toString());
+            }
+            //sms permission
+
+                showmessgebox(paymentType, total + " LKR", amount, intent.getStringExtra("name"), intent);
+
+
+        }
     }
 
     private boolean checkError(){
@@ -896,6 +905,15 @@ public class CheckoutActivity extends AppCompatActivity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == 3
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            paymentProcess();
         }
     }
 

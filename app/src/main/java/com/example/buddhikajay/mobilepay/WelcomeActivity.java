@@ -156,28 +156,41 @@ Log.d("identity_server",Parameter.identityServer);
 
     private void isAppRegister() {
 
+
+        if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},
+                    3);
+        }
+        else {
+
+            sendIme();
+
+        }
+    }
+
+    private void sendIme(){
         String imei;
         try {
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             imei = telephonyManager.getDeviceId();
-            Log.d("ime:",imei);
+            Log.d("ime:", imei);
 
-        }
-        catch (java.lang.SecurityException e){
+        } catch (java.lang.SecurityException e) {
+
             imei = "NO_PERMISSION";
         }
         JSONObject payload = new JSONObject();
         try {
-            payload.put("ime",imei);
+            payload.put("ime", imei);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d("Payeload",payload.toString());
-        VolleyRequestHandlerApi.api(new VolleyCallback(){
+        Log.d("Payeload", payload.toString());
+        VolleyRequestHandlerApi.api(new VolleyCallback() {
             @Override
-            public void onSuccess(JSONObject result){
+            public void onSuccess(JSONObject result) {
                 //Log.d("register response",result.toString());
                 responseProcess(result);
 
@@ -193,10 +206,7 @@ Log.d("identity_server",Parameter.identityServer);
             public void enableButton() {
 
             }
-        }, Parameter.urlIme,"",payload,getApplicationContext());
-
-
-
+        }, Parameter.urlIme, "", payload, getApplicationContext());
     }
     private void responseProcess(JSONObject result){
         Log.d("response",result.toString());
@@ -241,6 +251,15 @@ Log.d("identity_server",Parameter.identityServer);
             }
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == 3
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            sendIme();
+        }
     }
 
 }
