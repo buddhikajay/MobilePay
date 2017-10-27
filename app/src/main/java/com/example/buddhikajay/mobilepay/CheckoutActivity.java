@@ -700,7 +700,7 @@ public class CheckoutActivity extends AppCompatActivity {
         this.complete = true;
 
         if(web_purchase){
-            sendMsg(reciptNumber,name);
+            sendMsg(reciptNumber,name,merchantId);
         }
 
 
@@ -722,7 +722,7 @@ public class CheckoutActivity extends AppCompatActivity {
         this.complete = true;
 
         if(web_purchase){
-            sendMsg(mainTransactionId,name);
+            sendMsg(mainTransactionId,name,merchantId);
         }
 
 
@@ -815,7 +815,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
         return true;
     }
-    private void sendMsg(final String transactionId, final String merchantName){
+    private void sendMsg(final String transactionId, final String merchantName,final  String merchantId){
 
         new Thread(new Runnable() {
             public void run() {

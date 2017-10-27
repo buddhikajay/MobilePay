@@ -125,7 +125,7 @@ Log.d("identity_server",Parameter.identityServer);
 
     }
     public void moveToLoginActivity(){
-
+        Log.d("Inapp","1"+innerApp);
         Intent myIntent = new Intent(this, loginActivity.class);
 
         if(innerApp){
