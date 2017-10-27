@@ -546,12 +546,9 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
                 Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_PIN_VERIFICATION);
 
                 String verificatioCode = jsonObject.opt("verificationCode").toString();
-                Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
 
-                finish();
-                moveToPinActivity();
                 //showmessgebox();
-
+                SendSMS(verificatioCode);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -612,6 +609,23 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //            mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void SendSMS(String verificatioCode) {
+
+
+        if (ContextCompat.checkSelfPermission(registerActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(registerActivity.this, new String[]{Manifest.permission.SEND_SMS},
+                    3);
+        }
+        else {
+
+            Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
+
+            finish();
+            moveToPinActivity();
+
         }
     }
 
