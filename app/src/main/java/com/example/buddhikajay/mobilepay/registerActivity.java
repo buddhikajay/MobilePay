@@ -70,6 +70,8 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
     private Button termsB;
     private TextView termsT;
 
+    private String verificatioCode;
+
      Button signup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -545,10 +547,19 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
                 //Log.d("verification code",Api.getPhoneNumber(getApplication())+""+jsonObject.opt("verificationCode").toString());
                 Api.setAppStatus(getApplicationContext(),Parameter.APP_STATUS_PIN_VERIFICATION);
 
-                String verificatioCode = jsonObject.opt("verificationCode").toString();
+                verificatioCode = jsonObject.opt("verificationCode").toString();
 
                 //showmessgebox();
-                SendSMS(verificatioCode);
+                if (ContextCompat.checkSelfPermission(registerActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(registerActivity.this, new String[]{Manifest.permission.SEND_SMS},
+                            3);
+                }
+                else {
+
+                    SendSMS();
+
+                }
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -612,20 +623,21 @@ public class registerActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void SendSMS(String verificatioCode) {
+    private void SendSMS() {
 
+        Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
 
-        if (ContextCompat.checkSelfPermission(registerActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(registerActivity.this, new String[]{Manifest.permission.SEND_SMS},
-                    3);
-        }
-        else {
+        finish();
+        moveToPinActivity();
 
-            Api.sendSms(Api.getPhoneNumber(getApplication()),String.format("%.2f", Double.parseDouble(verificatioCode)),getApplicationContext());
+    }
 
-            finish();
-            moveToPinActivity();
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == 3
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            SendSMS();
         }
     }
 
