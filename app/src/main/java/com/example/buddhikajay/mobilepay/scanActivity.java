@@ -279,7 +279,16 @@ public class scanActivity extends AppCompatActivity implements ZXingScannerView.
                 PaymentModel paymentModel = QrCodeSplite.getInstance().spliteQrCode(rawResult.getText());
                 Log.d("code",paymentModel.toString());
                 //QrCodeDecode
-                if(scannerType){
+                if(!QrCodeSplite.getInstance().isValid()){
+                    Toast.makeText(getApplicationContext(),"Invalid Qr Code",Toast.LENGTH_LONG).show();
+                    if(mScannerView!=null) {
+                        mScannerView.stopCamera();   // Stop camera on pause<br />
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+                else if(scannerType){
 
                     Merchant merchant = new Merchant(paymentModel.getQrModels().get(0).getId());
                     getMerchantDetail(merchant,paymentModel);

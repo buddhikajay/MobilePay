@@ -62,7 +62,7 @@
             android:ems="10"
             android:focusable="true"
             android:hint="First Name"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords|textPersonName"
             android:maxLength="16"
             android:text="" />
         </android.support.design.widget.TextInputLayout>
@@ -84,7 +84,7 @@
                 android:ems="10"
                 android:focusable="true"
                 android:hint="Last Name"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords|textPersonName"
                 android:maxLength="16"
                 android:text=""
                 android:textColor="@color/colorAccent"
