@@ -3,6 +3,7 @@ package com.example.buddhikajay.mobilepay;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,9 @@ public class finishActivity extends AppCompatActivity {
 
     private boolean back;
     private boolean gotoInapp=true;
+    private boolean isSuccess;
+    static final int PAYMENT_RESULT_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class finishActivity extends AppCompatActivity {
         inApp = intent.getBooleanExtra("inApp",false);
         tip = intent.getBooleanExtra("tip",false);
         scanerType = intent.getBooleanExtra("scannerType",false);
+        isSuccess = intent.getBooleanExtra("isSuccess",false);
 
         //Log.d("Amount",amount);
         TextView amountText = (TextView) findViewById(R.id.transaction_amount);
@@ -79,21 +84,29 @@ public class finishActivity extends AppCompatActivity {
 
                 finish();
                 if(inApp){
-                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.supun.molly");
-                    startActivity(launchIntent);
-                    finish();
+                    Log.i("launchActivity","100");
+//                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.example.supun.molly");
+//                    startActivity(launchIntent);
+                    finishWithResult();
+
                 }
                 else {
                     Intent myIntent = new Intent(finishActivity.this, scanActivity.class);
                     finishActivity.this.startActivity(myIntent);
                 }
 
-
-
-
-
             }
         });
+    }
+    private void finishWithResult()
+    {
+        Bundle conData = new Bundle();
+        conData.putBoolean("param_result",isSuccess);
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(100, intent);
+        Log.i("launchActivity","200");
+        finish();
     }
     @Override
     public void onBackPressed() {
