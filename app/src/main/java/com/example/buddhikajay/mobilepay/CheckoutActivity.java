@@ -830,8 +830,10 @@ public class CheckoutActivity extends AppCompatActivity {
                     //String payload = '{"id":'"+transactionId+"','name':'"+merchantName+"','success':'true'}'';
                     JSONObject obj = new JSONObject();
                     obj.put("id", transactionId);
+                    obj.put("invoiceId", paymentModel.getQrModels().get(0).getPaymentCategory().split("main_web_")[1]);
                     obj.put("name", merchantName);
                     obj.put("amount", amountTextView.getText().toString());
+                    Log.d("paymodel",paymentModel.getQrModels().get(0).getPaymentCategory().split("main_web_")[1]);
                     obj.put("success", true);
                     String payload = obj.toString();
                     byte[] encodedPayload = new byte[0];

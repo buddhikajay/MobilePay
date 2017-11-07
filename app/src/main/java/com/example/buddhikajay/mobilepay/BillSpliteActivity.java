@@ -436,6 +436,43 @@ public class BillSpliteActivity extends AppCompatActivity {
             Log.d("transafers",fundTransfers+"");
         }
     }
-
+//    private void sendMsg(final String transactionId, final String merchantName,final  String merchantId){
+//
+//        new Thread(new Runnable() {
+//            public void run() {
+//                // a potentially  time consuming task
+//                MQTTClient mqttClient = new MQTTClient();
+//
+//                try {
+//                    mqttClient.initializeMQTTClient(getBaseContext(), "directpay_"+System.currentTimeMillis(), false, false, null, null);
+//                    JSONArray payloadArray = new JSONArray();
+//
+//
+//                    //String payload = '{"id":'"+transactionId+"','name':'"+merchantName+"','success':'true'}'';
+//                    JSONObject obj = new JSONObject();
+//                    obj.put("id", transactionId);
+//                    obj.put("invoiceId", paymentModel.getQrModels().get(0).getPaymentCategory().split("main_web_")[1]);
+//                    obj.put("name", merchantName);
+//                    obj.put("amount", amountTextView.getText().toString());
+//                    Log.d("paymodel",paymentModel.getQrModels().get(0).getPaymentCategory().split("main_web_")[1]);
+//                    obj.put("success", true);
+//                    String payload = obj.toString();
+//                    byte[] encodedPayload = new byte[0];
+//                    encodedPayload = payload.getBytes("UTF-8");
+//                    mqttClient.publish("Supun",2,encodedPayload);
+//                    mqttClient.disconnect();
+//
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                } catch (Throwable throwable) {
+//                    throwable.printStackTrace();
+//                }
+//            }
+//        }).start();
+//
+//
+//    }
 
 }

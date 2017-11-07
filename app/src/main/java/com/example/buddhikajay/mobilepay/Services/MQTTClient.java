@@ -119,7 +119,7 @@ public class MQTTClient implements MqttCallback {
                                      boolean quietMode, String userName, String password) throws MqttException {
 
         this.context = context;
-        this.brokerUrl = "ws://13.58.144.197:9001";
+        this.brokerUrl = "wss://gateway.directpay.lk/mqtt/";
         this.quietMode = quietMode;
         this.clean 	   = cleanSession;
         this.password = password;
