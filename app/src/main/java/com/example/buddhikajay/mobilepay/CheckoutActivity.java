@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,24 +24,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 import com.example.buddhikajay.mobilepay.Model.PaymentModel;
-import com.example.buddhikajay.mobilepay.Services.Api;
 import com.example.buddhikajay.mobilepay.Model.User;
+import com.example.buddhikajay.mobilepay.Services.Api;
+import com.example.buddhikajay.mobilepay.Services.MQTTClient;
+import com.example.buddhikajay.mobilepay.Services.Parameter;
+import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.buddhikajay.mobilepay.Services.Formate;
-import com.example.buddhikajay.mobilepay.Services.MQTTClient;
-import com.example.buddhikajay.mobilepay.Services.Parameter;
-import com.example.buddhikajay.mobilepay.Services.VolleyRequestHandlerApi;
-import com.example.buddhikajay.mobilepay.Component.VolleyCallback;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
@@ -50,7 +43,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -93,6 +85,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private boolean error;
 
     Intent intent;
+    private boolean isSuccess = false;
 
 
     @Override
@@ -597,7 +590,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                         //String payeeMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+payerAccount.substring(payerAccount.length()-4,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
                         String payerMsg = " DirectPay - Payment Successful "+amount+" paid to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
-
+                        isSuccess = true;
                         //String payeeMsg = " DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+payerAccount.substring(payerAccount.length()-3,payerAccount.length())+ " on "+date+" Thank you for using DirectPay";
                         String payeeMsg = " Recieved "+amount+" From "+Api.getLastName(getApplicationContext())+"Tran ID"+mainTransactionId+" on "+date+" Thank you for using DirectPay";
                         //String payerMsg = "DirectPay - Merchant Pay Service - Payment Successful "+amount+" made to Merchant "+accountNumber.substring(accountNumber.length()-3,accountNumber.length())+" on "+date;
@@ -696,6 +689,7 @@ public class CheckoutActivity extends AppCompatActivity {
         myIntent.putExtra("recept",reciptNumber);
         myIntent.putExtra("inApp",inApp);
         myIntent.putExtra("tip",false);
+        myIntent.putExtra("isSuccess",isSuccess);
         CheckoutActivity.this.startActivity(myIntent);
         this.complete = true;
 
